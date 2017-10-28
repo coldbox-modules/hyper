@@ -4,6 +4,9 @@ component accessors="true" {
     property name="data";
 
     function json() {
+        if ( ! isJSON( getData() ) ) {
+            throw( type = "DeserializeJsonException" );
+        }
         return deserializeJSON( getData() );
     }
 
