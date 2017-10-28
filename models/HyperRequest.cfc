@@ -84,8 +84,7 @@ component accessors="true" {
             throw( type = "NoUrlException" );
         }
 
-        var res = new Hyper.models.HyperResponse( this );
-        res.populateFromCFHTTP( makeCFHTTPRequest() );
+        var res = new Hyper.models.HyperResponse( this, makeCFHTTPRequest() );
 
         if ( res.isRedirect() ) {
             if ( shouldFollowRedirect() ) {
@@ -119,7 +118,7 @@ component accessors="true" {
     private function makeCFHTTPRequest() {
         local.res = "";
         cfhttp(
-            result = "local.res"
+            result = "local.res",
             url = getUrl(),
             method = getMethod(),
             redirect = false

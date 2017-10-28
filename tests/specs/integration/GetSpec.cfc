@@ -15,7 +15,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
             it( "can make a GET request", function() {
                 var res = hyper.get( "https://jsonplaceholder.typicode.com/posts/1" );
                 expect( res ).toBeInstanceOf(
-                    "HyperResponse",
+                    "Hyper.models.HyperResponse",
                     "A HyperResponse object should have been returned."
                 );
                 var data = res.json();
@@ -33,7 +33,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
             it( "has access to the original HyperRequest in the HyperResponse", function() {
                 var res = hyper.get( "https://jsonplaceholder.typicode.com/posts/1" );
                 expect( res ).toBeInstanceOf(
-                    "HyperResponse",
+                    "Hyper.models.HyperResponse",
                     "A HyperResponse object should have been returned."
                 );
                 var req = res.getRequest();

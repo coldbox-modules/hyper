@@ -15,7 +15,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
             it( "passes through all other methods to the HyperRequest", function() {
                 var res = hyper.setUrl( "https://jsonplaceholder.typicode.com/posts/1" ).get();
                 expect( res ).toBeInstanceOf(
-                    "HyperResponse",
+                    "Hyper.models.HyperResponse",
                     "A HyperResponse object should have been returned."
                 );
                 var data = res.json();
