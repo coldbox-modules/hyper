@@ -18,8 +18,8 @@ component accessors="true" setters="false" {
 
     function populateFromCFHTTP( res ) {
         variables.statusCode = res.responseheader.status_code;
-        res.responseheader.each( function( key, value ) {
-            variables.headers[ key ] = value;
+        res.responseheader.each( function( name, value ) {
+            variables.headers[ lcase( name ) ] = value;
         } );
         variables.data = res.filecontent;
 
@@ -27,7 +27,7 @@ component accessors="true" setters="false" {
     }
 
     function getHeader( name ) {
-        return variables.headers[ name ];
+        return variables.headers[ lcase( name ) ];
     }
 
     function isRedirect() {

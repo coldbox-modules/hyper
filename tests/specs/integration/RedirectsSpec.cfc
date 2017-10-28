@@ -40,7 +40,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 
             it( "has a helper method to not follow redirects", function() {
                 var res = hyper
-                    .setFollowRedirects( false )
+                    .withoutRedirecting()
                     .get( localEndpoint & "/redirect" );
                 expect( res.getStatusCode() ).toBe( 302 );
             } );
