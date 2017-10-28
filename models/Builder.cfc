@@ -6,4 +6,10 @@ component {
         return req.get();
     }
 
+    function onMissingMethod( missingMethodName, missingMethodArguments ) {
+        var req = new Hyper.models.HyperRequest();
+        invoke( req, missingMethodName, missingMethodArguments );
+        return req;
+    }
+
 }
