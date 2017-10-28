@@ -1,0 +1,35 @@
+{
+    "name":"hyper",
+    "version":"0.0.0",
+    "author":"",
+    "location":"elpete/hyper#v0.0.0",
+    "homepage":"https://github.com/elpete/hyper",
+    "documentation":"https://github.com/elpete/hyper",
+    "repository":{
+        "type":"git",
+        "URL":"https://github.com/elpete/hyper"
+    },
+    "bugs":"https://github.com/elpete/hyper/issues",
+    "slug":"hyper",
+    "shortDescription":"A ColdBox HTTP Builder",
+    "description":"A ColdBox HTTP Builder",
+    "type":"modules",
+    "dependencies":{},
+    "devDependencies":{
+        "testbox":"^2.4.0+80"
+    },
+    "installPaths":{
+        "testbox":"testbox",
+        "coldbox":"tests/resources/app/coldbox"
+    },
+    "scripts":{
+        "postVersion":"package set location='elpete/hyper#v`package version`'",
+        "onRelease":"publish",
+        "postPublish":"!git push && !git push --tags"
+    },
+    "ignore":[
+        "**/.*",
+        "test",
+        "tests"
+    ]
+}
