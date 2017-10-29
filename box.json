@@ -14,11 +14,10 @@
     "shortDescription":"A ColdBox HTTP Builder",
     "description":"A ColdBox HTTP Builder",
     "type":"modules",
-    "dependencies":{
-        "coldbox": "^4.3.0"
-    },
+    "dependencies":{},
     "devDependencies":{
-        "testbox":"^2.4.0+80"
+        "testbox":"^2.4.0+80",
+        "coldbox": "^4.3.0"
     },
     "installPaths":{
         "testbox":"testbox",
