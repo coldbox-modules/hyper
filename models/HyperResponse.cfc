@@ -20,6 +20,27 @@ component accessors="true" {
         return deserializeJSON( getData() );
     }
 
+    function isSuccess() {
+        return left( getStatusCode(), 1 ) == "2";
+    }
+
+    function isRedirect() {
+        return left( getStatusCode(), 1 ) == "3";
+    }
+
+    function isError() {
+        return left( getStatusCode(), 1 ) == "4" ||
+            left( getStatusCode(), 1 ) == "5";
+    }
+
+    function isClientError() {
+        return left( getStatusCode(), 1 ) == "4";
+    }
+
+    function isServerError() {
+        return left( getStatusCode(), 1 ) == "5";
+    }
+
     private function populateFromCFHTTP( res ) {
         variables.charset = res.charset;
         variables.statusCode = res.responseheader.status_code;
@@ -33,10 +54,6 @@ component accessors="true" {
 
     function getHeader( name ) {
         return variables.headers[ lcase( name ) ];
-    }
-
-    function isRedirect() {
-        return left( getStatusCode(), 1 ) == "3";
     }
 
 }
