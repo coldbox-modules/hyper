@@ -8,17 +8,22 @@ component accessors="true" {
     property name="bodyFormat" default="json";
     property name="referrer";
     property name="headers";
+    property name="queryParams";
 
     function init() {
+        variables.queryParams = {};
         variables.headers = {
             "content-type" = "application/json"
         };
         return this;
     }
 
-    function get( url ) {
+    function get( url, queryParams ) {
         if ( ! isNull( arguments.url ) ) {
             setUrl( arguments.url );
+        }
+        if ( ! isNull( arguments.queryParams ) ) {
+            setQueryParams( arguments.queryParams );
         }
         setMethod( "GET" );
         return makeRequest();
@@ -37,6 +42,30 @@ component accessors="true" {
         return makeRequest();
     }
 
+    function withQueryParams( queryParams = {} ) {
+        structEach( queryParams, setQueryParam );
+        return this;
+    }
+
+    function setQueryParam( name, value ) {
+        variables.queryParams[ lcase( name ) ] = value;
+        return this;
+    }
+
+    function getQueryParams() {
+        return variables.queryParams;
+    }
+
+    function hasQueryParam( name ) {
+        return variables.queryParams.keyExists( lcase( name ) );
+    }
+
+    function getQueryParam( name ) {
+        return hasQueryParam( name ) ?
+            variables.queryParams[ lcase( name ) ] :
+            "";
+    }
+
     function withHeaders( headers = {} ) {
         structEach( headers, setHeader );
         return this;
@@ -52,9 +81,13 @@ component accessors="true" {
     }
 
     function getHeader( name ) {
-        return variables.headers.keyExists( lcase( name ) ) ?
+        return hasHeader( name ) ?
             variables.headers[ lcase( name ) ] :
             "";
+    }
+
+    function hasHeader( name ) {
+        return variables.headers.keyExists( lcase( name ) );
     }
 
     function setProperties( properties = {} ) {
@@ -91,6 +124,10 @@ component accessors="true" {
         return this;
     }
 
+    function getFullUrl() {
+        return getBaseUrl() & getUrl() & serializeQueryParams();
+    }
+
     function makeRequest() {
         if ( getUrl() == "" ) {
             throw( type = "NoUrlException" );
@@ -105,6 +142,16 @@ component accessors="true" {
         }
 
         return res;
+    }
+
+    private function serializeQueryParams() {
+        if ( variables.queryParams.isEmpty() ) {
+            return "";
+        }
+        return "?" & variables.queryParams.reduce( function( pairs, name, value ) {
+            pairs.append( "#encodeForURL( name )#=#encodeForURL( value )#" );
+            return pairs;
+        }, [] ).toList( "&" );
     }
 
     private function shouldFollowRedirect() {
@@ -131,7 +178,7 @@ component accessors="true" {
         local.res = "";
         cfhttp(
             result = "local.res",
-            url = getUrl(),
+            url = getFullUrl(),
             method = getMethod(),
             redirect = false
         ) {

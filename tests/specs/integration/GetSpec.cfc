@@ -30,6 +30,24 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
                 }' ) );
             } );
 
+            it( "serializes query string params in the short hand", function() {
+                var res = hyper.get( "https://jsonplaceholder.typicode.com/posts", {
+                    "userId" = 1
+                } );
+                expect( res.getRequest().getFullUrl() ).toBe( "https://jsonplaceholder.typicode.com/posts?userId=1" );
+            } );
+
+            it( "serializes query string params in the long hand", function() {
+                var res = hyper
+                    .setBaseUrl( "https://jsonplaceholder.typicode.com" )
+                    .setUrl( "/posts" )
+                    .withQueryParams( {
+                        "userId" = 1
+                    } )
+                    .get();
+                expect( res.getRequest().getFullUrl() ).toBe( "https://jsonplaceholder.typicode.com/posts?userId=1" );
+            } );
+
             it( "has access to the original HyperRequest in the HyperResponse", function() {
                 var res = hyper.get( "https://jsonplaceholder.typicode.com/posts/1" );
                 expect( res ).toBeInstanceOf(
