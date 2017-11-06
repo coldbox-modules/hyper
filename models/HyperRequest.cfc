@@ -26,7 +26,7 @@ component accessors="true" {
             setQueryParams( arguments.queryParams );
         }
         setMethod( "GET" );
-        return makeRequest();
+        return send();
     }
 
     function post( url, body ) {
@@ -39,7 +39,7 @@ component accessors="true" {
         }
 
         setMethod( "POST" );
-        return makeRequest();
+        return send();
     }
 
     function withQueryParams( queryParams = {} ) {
@@ -128,7 +128,7 @@ component accessors="true" {
         return getBaseUrl() & getUrl() & serializeQueryParams();
     }
 
-    function makeRequest() {
+    function send() {
         if ( getUrl() == "" ) {
             throw( type = "NoUrlException" );
         }
@@ -164,7 +164,7 @@ component accessors="true" {
         redirectReq.setReferrer( res );
         redirectReq.setUrl( res.getHeader( "Location" ) );
         redirectReq.setMaximumRedirects( decrementRedirects() );
-        return redirectReq.makeRequest();
+        return redirectReq.send();
     }
 
     private function decrementRedirects() {
