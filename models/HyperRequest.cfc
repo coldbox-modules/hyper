@@ -3,6 +3,7 @@ component accessors="true" {
     property name="url" default="";
     property name="method" default="GET";
     property name="maximumRedirects" default="*";
+    property name="baseUrl" default="";
     property name="body" default="";
     property name="bodyFormat" default="json";
     property name="referrer";

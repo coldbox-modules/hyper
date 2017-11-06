@@ -12,6 +12,10 @@ component extends="testbox.system.BaseSpec" {
                 }
             } );
 
+            it( "can create a new request", function() {
+                 expect( hyper.new() ).toBeInstanceOf( "Hyper.models.HyperRequest" );
+            } );
+
             it( "passes through all other methods to the HyperRequest", function() {
                 var req = hyper.setUrl( "https://jsonplaceholder.typicode.com/posts/1" );
                 expect( req ).toBeInstanceOf(

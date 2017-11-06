@@ -1,8 +1,13 @@
 component {
 
+    this.defaults = new Hyper.models.HyperRequest();
+
+    function new() {
+        return duplicate( this.defaults );
+    }
+
     function onMissingMethod( missingMethodName, missingMethodArguments ) {
-        var req = new Hyper.models.HyperRequest();
-        return invoke( req, missingMethodName, missingMethodArguments );
+        return invoke( variables.new(), missingMethodName, missingMethodArguments );
     }
 
 }
