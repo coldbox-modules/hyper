@@ -1,5 +1,7 @@
 component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 
+    variables.localEndpoint = "http://#CGI[ "server_name" ]#:#CGI[ "server_port" ]#/tests/resources/app/index.cfm/api";
+
     function run() {
         describe( "POST requests", function() {
             beforeEach( function() {
@@ -13,7 +15,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
             } );
 
             it( "can make a POST request", function() {
-                var res = hyper.post( "http://jsonplaceholder.typicode.com/posts", '{
+                var res = hyper.post( "#localEndpoint#/create", '{
                     "title": "Example Title",
                     "body": "This is my post body"
                 }' );
@@ -27,7 +29,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 
             it( "can set the fields the long form way", function() {
                 var res = hyper
-                    .setUrl( "http://jsonplaceholder.typicode.com/posts" )
+                    .setUrl( "#localEndpoint#/create" )
                     .setBody( '{
                         "title": "Example Title",
                         "body": "This is my post body"
@@ -42,7 +44,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
             } );
 
             it( "automatically serializes complex values", function() {
-                var res = hyper.post( "http://jsonplaceholder.typicode.com/posts", {
+                var res = hyper.post( "#localEndpoint#/create", {
                     "title" = "Example Title",
                     "body"  = "This is my post body"
                 } );
@@ -57,7 +59,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
             it( "can post the data as form fields", function() {
                 var res = hyper
                     .asFormFields()
-                    .post( "http://jsonplaceholder.typicode.com/posts", {
+                    .post( "#localEndpoint#/create", {
                         "title" = "Example Title",
                         "body"  = "This is my post body"
                     } );
