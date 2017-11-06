@@ -44,6 +44,45 @@ component accessors="true" {
         return send();
     }
 
+    function put( url, body ) {
+        if ( ! isNull( arguments.url ) ) {
+            setUrl( arguments.url );
+        }
+
+        if ( ! isNull( arguments.body ) ) {
+            setBody( arguments.body );
+        }
+
+        setMethod( "PUT" );
+        return send();
+    }
+
+    function patch( url, body ) {
+        if ( ! isNull( arguments.url ) ) {
+            setUrl( arguments.url );
+        }
+
+        if ( ! isNull( arguments.body ) ) {
+            setBody( arguments.body );
+        }
+
+        setMethod( "PATCH" );
+        return send();
+    }
+
+    function delete( url, body ) {
+        if ( ! isNull( arguments.url ) ) {
+            setUrl( arguments.url );
+        }
+
+        if ( ! isNull( arguments.body ) ) {
+            setBody( arguments.body );
+        }
+
+        setMethod( "DELETE" );
+        return send();
+    }
+
     function withQueryParams( queryParams = {} ) {
         structEach( queryParams, setQueryParam );
         return this;
