@@ -23,6 +23,17 @@ component extends="testbox.system.BaseSpec" {
                 expect( req.getMethod() ).toBe( "PATCH" );
             } );
 
+            it( "can set multiple headers at once", function() {
+                expect( req.getHeader( "Accept" ) ).toBe( "" );
+                expect( req.getHeader( "X-Requested-With" ) ).toBe( "" );
+                req.withHeaders( {
+                    "Accept" = "application/xml",
+                    "X-Requested-With" = "XMLHTTPRequest"
+                } );
+                expect( req.getHeader( "Accept" ) ).toBe( "application/xml" );
+                expect( req.getHeader( "X-Requested-With" ) ).toBe( "XMLHTTPRequest" );
+            } );
+
             it( "throws an exception if the url is empty when trying to make a request", function() {
                 expect( function() {
                     req.get();

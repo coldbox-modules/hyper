@@ -37,6 +37,11 @@ component accessors="true" {
         return makeRequest();
     }
 
+    function withHeaders( headers = {} ) {
+        structEach( headers, setHeader );
+        return this;
+    }
+
     function setHeader( name, value ) {
         variables.headers[ lcase( name ) ] = value;
         return this;
