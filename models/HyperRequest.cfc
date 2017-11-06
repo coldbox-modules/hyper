@@ -1,9 +1,11 @@
 component accessors="true" {
 
+    property name="baseUrl" default="";
     property name="url" default="";
     property name="method" default="GET";
+    property name="username" default="";
+    property name="password" default="";
     property name="maximumRedirects" default="*";
-    property name="baseUrl" default="";
     property name="body" default="";
     property name="bodyFormat" default="json";
     property name="referrer";
@@ -88,6 +90,12 @@ component accessors="true" {
 
     function hasHeader( name ) {
         return variables.headers.keyExists( lcase( name ) );
+    }
+
+    function withBasicAuth( username, password ) {
+        setUsername( username );
+        setPassword( password );
+        return this;
     }
 
     function setProperties( properties = {} ) {
@@ -180,7 +188,9 @@ component accessors="true" {
             result = "local.res",
             url = getFullUrl(),
             method = getMethod(),
-            redirect = false
+            redirect = false,
+            username = getUsername(),
+            password = getPassword()
         ) {
             for ( var name in variables.headers ) {
                 cfhttpparam(
