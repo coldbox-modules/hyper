@@ -42,8 +42,14 @@ component accessors="true" {
         return this;
     }
 
+    function getHeaders() {
+        return variables.headers;
+    }
+
     function getHeader( name ) {
-        return variables.headers[ lcase( name ) ];
+        return variables.headers.keyExists( lcase( name ) ) ?
+            variables.headers[ lcase( name ) ] :
+            "";
     }
 
     function setProperties( properties = {} ) {
