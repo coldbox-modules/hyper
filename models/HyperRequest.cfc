@@ -33,6 +33,11 @@ component accessors="true" {
     property name="password" default="";
 
     /**
+    * Timeout, in seconds, for the request.
+    */
+    property name="timeout" default="10";
+
+    /**
     * The maximum number of redirects to follow.
     * A value of `*` will follow redirects infinitely.
     */
@@ -465,6 +470,7 @@ component accessors="true" {
         local.res = "";
         cfhttp(
             result = "local.res",
+            timeout = getTimeout(),
             url = getFullUrl(),
             method = getMethod(),
             redirect = false,

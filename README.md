@@ -228,6 +228,22 @@ Sets the password for the request.
 | ----- | ------ | -------- | ------- | ----------------------------- |
 | value | string | true     |         | The password for the request. |
 
+##### `getTimeout`
+
+Gets the timeout for the request.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
+##### `setTimeout`
+
+Sets the timeout for the request.
+
+| Name  | Type   | Required | Default | Description                   |
+| ----- | ------ | -------- | ------- | ----------------------------- |
+| value | string | true     |         | The timeout for the request.  |
+
 ##### `withoutRedirecting`
 
 A convenience method to not follow any redirects.
