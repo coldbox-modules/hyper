@@ -9,7 +9,7 @@ component accessors="true" {
     property name="statusCode" default="200" setter="false";
 
     /**
-     * The data returned by the request.
+     * The data for the response.
      */
     property name="data" default="" setter="false";
 
