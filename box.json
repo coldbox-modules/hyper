@@ -1,6 +1,6 @@
 {
     "name":"hyper",
-    "version":"0.0.0",
+    "version":"0.0.0-semantic-released",
     "author":"",
     "location":"elpete/hyper#v0.0.0",
     "homepage":"https://github.com/elpete/hyper",
@@ -24,9 +24,7 @@
         "coldbox":"tests/resources/app/coldbox"
     },
     "scripts":{
-        "postVersion":"package set location='elpete/hyper#v`package version`'",
-        "onRelease":"publish",
-        "postPublish":"!git push && !git push --tags"
+        "postVersion":"package set location='elpete/hyper#v`package version`'"
     },
     "ignore":[
         "**/.*",
