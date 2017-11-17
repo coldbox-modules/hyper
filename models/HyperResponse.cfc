@@ -102,7 +102,7 @@ component accessors="true" {
      * @res The CFHTTP struct.
      */
     private function populateFromCFHTTP( res ) {
-        variables.charset = res.charset;
+        variables.charset =  res.keyExists( "charset" ) ? res.charset : "UTF-8";
         variables.statusCode = res.responseheader.status_code;
         res.responseheader.each( function( name, value ) {
             variables.headers[ lcase( name ) ] = value;
