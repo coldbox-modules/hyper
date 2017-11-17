@@ -11,8 +11,8 @@
     },
     "bugs":"https://github.com/elpete/hyper/issues",
     "slug":"hyper",
-    "shortDescription":"A ColdBox HTTP Builder",
-    "description":"A ColdBox HTTP Builder",
+    "shortDescription":"A CFML HTTP Builder",
+    "description":"A CFML HTTP Builder",
     "type":"modules",
     "dependencies":{},
     "devDependencies":{
