@@ -195,9 +195,9 @@ component accessors="true" {
     * @returns     The HyperRequest instance.
     */
     function withQueryParams( queryParams = {} ) {
-        structEach( queryParams, function( name, value ) {
-            setQueryParam( name, value );
-        } );
+        for ( var name in arguments.queryParams ) {
+            setQueryParam( name, arguments.queryParams[ name ] );
+        }
         return this;
     }
 
@@ -247,9 +247,9 @@ component accessors="true" {
     * @returns The HyperRequest instance.
     */
     function withHeaders( headers = {} ) {
-        structEach( headers, function( name, value ) {
-            setHeader( name, value );
-        } );
+        for ( var name in arguments.headers ) {
+            setHeader( name, arguments.headers[ name ] );
+        }
         return this;
     }
 
