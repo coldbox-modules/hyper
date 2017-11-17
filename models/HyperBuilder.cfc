@@ -1,7 +1,7 @@
 /**
-* The HyperBuilder duplicates new a default request for subsequent requests
+* Creates new requests with optional defaults.
 */
-component singleton {
+component {
 
     /**
     * The default request object.
