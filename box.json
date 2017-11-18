@@ -1,8 +1,8 @@
 {
     "name":"hyper",
-    "version":"0.0.0-semantic-released",
+    "version":"1.0.0",
     "author":"",
-    "location":"elpete/hyper#v0.0.0",
+    "location":"elpete/hyper#v1.0.0",
     "homepage":"https://github.com/elpete/hyper",
     "documentation":"https://github.com/elpete/hyper",
     "repository":{
@@ -17,7 +17,7 @@
     "dependencies":{},
     "devDependencies":{
         "testbox":"^2.4.0+80",
-        "coldbox": "^4.3.0"
+        "coldbox":"^4.3.0"
     },
     "installPaths":{
         "testbox":"testbox",
