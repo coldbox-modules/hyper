@@ -1,15 +1,15 @@
 {
     "name":"hyper",
-    "version":"1.3.0",
+    "version":"1.4.1",
     "author":"",
-    "location":"elpete/hyper#v1.3.0",
-    "homepage":"https://github.com/elpete/hyper",
-    "documentation":"https://github.com/elpete/hyper",
+    "location":"coldbox-modules/hyper#v1.4.1",
+    "homepage":"https://github.com/coldbox-modules/hyper",
+    "documentation":"https://github.com/coldbox-modules/hyper",
     "repository":{
         "type":"git",
-        "URL":"https://github.com/elpete/hyper"
+        "URL":"https://github.com/coldbox-modules/hyper"
     },
-    "bugs":"https://github.com/elpete/hyper/issues",
+    "bugs":"https://github.com/coldbox-modules/hyper/issues",
     "slug":"hyper",
     "shortDescription":"A CFML HTTP Builder",
     "description":"A CFML HTTP Builder",
@@ -24,7 +24,7 @@
         "coldbox":"tests/resources/app/coldbox"
     },
     "scripts":{
-        "postVersion":"package set location='elpete/hyper#v`package version`'"
+        "postVersion":"package set location='coldbox-modules/hyper#v`package version`'"
     },
     "ignore":[
         "**/.*",
