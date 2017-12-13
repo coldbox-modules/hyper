@@ -210,7 +210,7 @@ component accessors="true" {
     * @returns The HyperRequest instance.
     */
     function setQueryParam( name, value ) {
-        variables.queryParams[ lcase( name ) ] = value;
+        variables.queryParams[ name ] = value;
         return this;
     }
 
