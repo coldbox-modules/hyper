@@ -34,6 +34,15 @@ component extends="testbox.system.BaseSpec" {
                 expect( req.getHeader( "X-Requested-With" ) ).toBe( "XMLHTTPRequest" );
             } );
 
+            it( "preserves case in header names", function() {
+                expect( req.getHeader( "Accept" ) ).toBe( "" );
+                req.withHeaders( { "accept" = "application/xml" } );
+                expect( req.getHeader( "Accept" ) ).toBe( "" );
+                expect( req.getHeader( "accept" ) ).toBe( "application/xml" );
+                req.withHeaders( { "Accept" = "application/xml" } );
+                expect( req.getHeader( "Accept" ) ).toBe( "application/xml" );
+            } );
+
             it( "throws an exception if the url is empty when trying to make a request", function() {
                 expect( function() {
                     req.get();

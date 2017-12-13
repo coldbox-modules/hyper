@@ -77,10 +77,9 @@ component accessors="true" {
     * @returns The HyperRequest instance.
     */
     function init() {
-        variables.queryParams = {};
-        variables.headers = {
-            "content-type" = "application/json"
-        };
+        variables.queryParams = createObject( "java", "java.util.LinkedHashMap" ).init();
+        variables.headers = createObject( "java", "java.util.LinkedHashMap" ).init();
+        variables.headers.put( "Content-Type", "application/json" );
         return this;
     }
 
@@ -210,7 +209,7 @@ component accessors="true" {
     * @returns The HyperRequest instance.
     */
     function setQueryParam( name, value ) {
-        variables.queryParams[ name ] = value;
+        variables.queryParams.put( name, value );
         return this;
     }
 
@@ -222,7 +221,7 @@ component accessors="true" {
     * @returns True if the query parameter exists.
     */
     function hasQueryParam( name ) {
-        return variables.queryParams.keyExists( lcase( name ) );
+        return variables.queryParams.containsKey( name );
     }
 
     /**
@@ -235,7 +234,7 @@ component accessors="true" {
     */
     function getQueryParam( name ) {
         return hasQueryParam( name ) ?
-            variables.queryParams[ lcase( name ) ] :
+            variables.queryParams.get( name ) :
             "";
     }
 
@@ -262,7 +261,7 @@ component accessors="true" {
     * @returns The HyperRequest instance.
     */
     function setHeader( name, value ) {
-        variables.headers[ lcase( name ) ] = value;
+        variables.headers.put( name, value );
         return this;
     }
 
@@ -274,7 +273,7 @@ component accessors="true" {
     * @returns True if the header exists.
     */
     function hasHeader( name ) {
-        return variables.headers.keyExists( lcase( name ) );
+        return variables.headers.containsKey( name );
     }
 
     /**
@@ -287,7 +286,7 @@ component accessors="true" {
     */
     function getHeader( name ) {
         return hasHeader( name ) ?
-            variables.headers[ lcase( name ) ] :
+            variables.headers.get( name ) :
             "";
     }
 
