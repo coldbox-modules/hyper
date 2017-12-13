@@ -466,6 +466,15 @@ component accessors="true" {
         }
         return this;
     }
+
+    /**
+     * Adds any query params to the HyperRequest and
+     * returns the url without the query string.
+     *
+     * @url The url with or without a query string.
+     *
+     * @returns The url without a query string.
+     */
     private function parseOutQueryString( url ) {
         var queryString = listRest( arguments.url, "?" );
         var queryParams = listToArray( queryString, "&" );
