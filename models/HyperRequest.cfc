@@ -495,7 +495,10 @@ component accessors="true" {
         if ( variables.queryParams.isEmpty() ) {
             return "";
         }
-        var queryParamNames = variables.queryParams.keyArray();
+        var queryParamNames = []
+        for ( var name in variables.queryParams ) {
+            queryParamNames.append( name );
+        }
         queryParamNames.sort( "textnocase" );
         return "?" & queryParamNames.map( function( name ) {
             return "#encodeForURL( name )#=#encodeForURL( variables.queryParams[ name ] )#";
