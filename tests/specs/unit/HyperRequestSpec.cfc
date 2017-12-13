@@ -65,6 +65,40 @@ component extends="testbox.system.BaseSpec" {
                 expect( req.getMethod() ).toBe( "GET" );
                 expect( req.getHeader( "Accept" ) ).toBe( "" );
             } );
+
+            it( "can chain conditional request methods with when", function() {
+                req.when(
+                    true,
+                    function( r ) {
+                        r.withHeaders( { "Accept" = "application/xml" } );
+                    }, function( r ) {
+                        r.withHeaders( { "Accept" = "application/json" } );
+                    } );
+
+                expect( req.getHeader( "Accept" ) ).toBe( "application/xml" );
+
+                req.clear();
+
+                req.when(
+                    false,
+                    function( r ) {
+                        r.withHeaders( { "Accept" = "application/xml" } );
+                    }, function( r ) {
+                        r.withHeaders( { "Accept" = "application/json" } );
+                    } );
+
+                expect( req.getHeader( "Accept" ) ).toBe( "application/json" );
+
+                req.clear();
+
+                req.when(
+                    false,
+                    function( r ) {
+                        r.withHeaders( { "Accept" = "application/xml" } );
+                    } );
+
+                expect( req.getHeader( "Accept" ) ).toBe( "" );
+            } );
         } );
     }
 

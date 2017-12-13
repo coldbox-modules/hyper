@@ -442,6 +442,30 @@ component accessors="true" {
         variables.headers.put( "Content-Type", "application/json" );
         return this;
     }
+
+    /**
+     * Helper to conditionally execute a callback for the HyperRequest.
+     * This method lets you use conditionals without breaking chaining.
+     *
+     * @condition       The condition to check
+     * @successCallback The callback to execute if the condition is true.
+     *                  The callback is passed the HyperRequest instance.
+     * @failureCallback The callback to execute if the condition is false.
+     *                  The callback is passed the HyperRequest instance.
+     *
+     * @returns         The HyperRequest instance.
+     */
+    function when( condition, successCallback, failureCallback ) {
+        if ( condition ) {
+            successCallback( this );
+            return this;
+        }
+
+        if ( ! isNull( failureCallback ) ) {
+            failureCallback( this );
+        }
+        return this;
+    }
     private function parseOutQueryString( url ) {
         var queryString = listRest( arguments.url, "?" );
         var queryParams = listToArray( queryString, "&" );
