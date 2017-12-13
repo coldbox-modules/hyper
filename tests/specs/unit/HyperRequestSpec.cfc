@@ -48,6 +48,23 @@ component extends="testbox.system.BaseSpec" {
                     req.get();
                 } ).toThrow( "NoUrlException" );
             } );
+
+            it( "can clear out all values", function() {
+                req
+                    .setUrl( "https://jsonplaceholder.typicode.com/posts/1" )
+                    .setMethod( "PATCH" )
+                    .withHeaders( { "Accept" = "application/xml" } );
+
+                expect( req.getUrl() ).toBe( "https://jsonplaceholder.typicode.com/posts/1" );
+                expect( req.getMethod() ).toBe( "PATCH" );
+                expect( req.getHeader( "Accept" ) ).toBe( "application/xml" );
+
+                req.clear();
+
+                expect( req.getUrl() ).toBe( "" );
+                expect( req.getMethod() ).toBe( "GET" );
+                expect( req.getHeader( "Accept" ) ).toBe( "" );
+            } );
         } );
     }
 

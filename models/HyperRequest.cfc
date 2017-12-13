@@ -420,6 +420,28 @@ component accessors="true" {
         return res;
     }
 
+    /**
+     * Clears the request of any set values, including
+     * defaults passed by the builder.
+     *
+     * @returns The HyperRequest instance.
+     */
+    function clear() {
+        setBaseUrl( "" );
+        setUrl( "" );
+        setMethod( "GET" );
+        setUsername( "" );
+        setPassword( "" );
+        setTimeout( 10 );
+        setMaximumRedirects( "*" );
+        setBody( "" );
+        setBodyFormat( "json" );
+        setReferrer( javacast( "null", "" ) );
+        variables.queryParams = createObject( "java", "java.util.LinkedHashMap" ).init();
+        variables.headers = createObject( "java", "java.util.LinkedHashMap" ).init();
+        variables.headers.put( "Content-Type", "application/json" );
+        return this;
+    }
     private function parseOutQueryString( url ) {
         var queryString = listRest( arguments.url, "?" );
         var queryParams = listToArray( queryString, "&" );
