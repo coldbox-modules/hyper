@@ -48,6 +48,17 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
                 expect( res.getRequest().getFullUrl() ).toBe( "https://jsonplaceholder.typicode.com/posts?userId=1" );
             } );
 
+            it( "combines both query params and the query string in the url", function() {
+                var res = hyper
+                    .setBaseUrl( "https://jsonplaceholder.typicode.com" )
+                    .setUrl( "/posts?userId=1&fwreinit=true" )
+                    .withQueryParams( {
+                        "force" = true
+                    } )
+                    .get();
+                expect( res.getRequest().getFullUrl() ).toBe( "https://jsonplaceholder.typicode.com/posts?force=true&fwreinit=true&userId=1" );
+            } );
+
             it( "has access to the original HyperRequest in the HyperResponse", function() {
                 var res = hyper.get( "https://jsonplaceholder.typicode.com/posts/1" );
                 expect( res ).toBeInstanceOf(

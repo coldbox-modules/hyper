@@ -380,6 +380,19 @@ component accessors="true" {
     }
 
     /**
+     * Sets the URL for the request.
+     * Also parses out the query string (if any).
+     *
+     * @url The url for the request.
+     *
+     * @returns The HyperRequest instance.
+     */
+    function setUrl( url ) {
+        variables.url = parseOutQueryString( arguments.url );
+        return this;
+    }
+
+    /**
     * Returns the full url for the request.
     * Combines the baseURL, the URL, and the serialized queryParams.
     *
@@ -408,6 +421,17 @@ component accessors="true" {
         return res;
     }
 
+    private function parseOutQueryString( url ) {
+        var queryString = listRest( arguments.url, "?" );
+        var queryParams = listToArray( queryString, "&" );
+        for ( var paramString in queryParams ) {
+            var name = listFirst( paramString, "=" );
+            var value = listLast( paramString, "=" );
+            setQueryParam( name, value );
+        }
+        return listFirst( arguments.url, "?" );
+    }
+
     /**
     * Serialize the query parameters.
     *
@@ -417,10 +441,11 @@ component accessors="true" {
         if ( variables.queryParams.isEmpty() ) {
             return "";
         }
-        return "?" & variables.queryParams.reduce( function( pairs, name, value ) {
-            pairs.append( "#encodeForURL( name )#=#encodeForURL( value )#" );
-            return pairs;
-        }, [] ).toList( "&" );
+        var queryParamNames = variables.queryParams.keyArray();
+        queryParamNames.sort( "textnocase" );
+        return "?" & queryParamNames.map( function( name ) {
+            return "#encodeForURL( name )#=#encodeForURL( variables.queryParams[ name ] )#";
+        } ).toList( "&" );
     }
 
     /**
