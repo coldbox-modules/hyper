@@ -495,7 +495,7 @@ component accessors="true" {
         if ( variables.queryParams.isEmpty() ) {
             return "";
         }
-        var queryParamNames = []
+        var queryParamNames = [];
         for ( var name in variables.queryParams ) {
             queryParamNames.append( name );
         }
