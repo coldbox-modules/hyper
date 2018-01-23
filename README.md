@@ -11,10 +11,8 @@
     <img height="30" src="https://cfmlbadges.monkehworks.com/images/badges/compatibility-lucee-5.svg" alt="Compatible with Lucee 5" />
 </p>
 <p style="text-align: center;">
-    <a href="https://travis-ci.org/elpete/hyper"><img src="https://img.shields.io/travis/elpete/hyper/master.svg?style=flat-square&label=master" alt="Master Branch Build Status"></a>
+    <a href="https://travis-ci.org/coldbox-modules/hyper"><img src="https://img.shields.io/travis/coldbox-modules/hyper/master.svg?style=flat-square&label=master" alt="Master Branch Build Status"></a>
 </p>
-
-
 
 ## A CFML HTTP Builder
 
@@ -33,7 +31,7 @@ for a module.
 
 ### The problem it solves
 
-Hyper exists to provide a fluent builder experience for HTTP requests and responses.  It also provides a powerful way to create clients, Bulider objects with pre-configured defaults like a base URL or certain headers.
+Hyper exists to provide a fluent builder experience for HTTP requests and responses. It also provides a powerful way to create clients, Bulider objects with pre-configured defaults like a base URL or certain headers.
 
 ### Requirements
 
@@ -55,9 +53,9 @@ component {
 The `HyperBuilder` creates new requests. This can be done in one of two ways:
 
 1. Calling the `new` method will create a new request with the configured
-	defaults.
+   defaults.
 2. Calling any method on `HyperRequest` on the `HyperBuilder` instance will
-	create a new request and forward on the method call.
+   create a new request and forward on the method call.
 
 Using the `HyperBuilder` lets you easily create requests with defaults while
 also avoiding having to deal with providers directly.
@@ -240,9 +238,9 @@ Gets the timeout for the request.
 
 Sets the timeout for the request.
 
-| Name  | Type   | Required | Default | Description                   |
-| ----- | ------ | -------- | ------- | ----------------------------- |
-| value | string | true     |         | The timeout for the request.  |
+| Name  | Type   | Required | Default | Description                  |
+| ----- | ------ | -------- | ------- | ---------------------------- |
+| value | string | true     |         | The timeout for the request. |
 
 ##### `withoutRedirecting`
 
@@ -379,8 +377,8 @@ A convenience method to set the Content-Type header.
 
 A convenience method to set the Accept header.
 
-| Name | Type   | Required | Default | Description                            |
-| ---- | ------ | -------- | ------- | -------------------------------------- |
+| Name | Type   | Required | Default | Description                      |
+| ---- | ------ | -------- | ------- | -------------------------------- |
 | type | string | true     |         | The Accept value for the request |
 
 ##### `getQueryParams`
@@ -528,9 +526,9 @@ Returns true if the request status code is considered a server error.
 
 ### Request Defaults
 
-Hyper allows you to configure defaults for your requests.  This is particularly useful for reducing boilerplate in your application.
+Hyper allows you to configure defaults for your requests. This is particularly useful for reducing boilerplate in your application.
 
-Defaults are set on the `HyperBuilder` instance.  The easiest way to do this is to configure it in WireBox:
+Defaults are set on the `HyperBuilder` instance. The easiest way to do this is to configure it in WireBox:
 
 ```js
 // config/WireBox.cfc
