@@ -2,6 +2,13 @@
 
 ### other
 
++ __\*:__ Merge tag 'v1.14.2' ([f01681b](https://github.com/coldbox-modules/hyper/commit/f01681bcb8ea081b20345278cffd847701b1403b))
+
+
+# 24 Jan 2018
+
+### other
+
 + __\*:__ Merge tag 'v1.14.1' ([33165c2](https://github.com/coldbox-modules/hyper/commit/33165c255010c4edbf345263817142323acdefb0))
 
 
