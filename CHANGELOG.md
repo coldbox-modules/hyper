@@ -1,3 +1,11 @@
+# v1.14.4
+## 20 Apr 2018 — 22:38:10 UTC
+
+### fix
+
++ __HyperRequest:__ Include equal signs in query param values ([abc36be](https://github.com/coldbox-modules/hyper/commit/abc36be58f725ba24bfe4d99f1e3b17c071ba868))
+
+
 # 24 Jan 2018
 
 ### other
