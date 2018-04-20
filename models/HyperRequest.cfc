@@ -480,7 +480,7 @@ component accessors="true" {
         var queryParams = listToArray( queryString, "&" );
         for ( var paramString in queryParams ) {
             var name = listFirst( paramString, "=" );
-            var value = listLast( paramString, "=" );
+            var value = listRest( paramString, "=" );
             setQueryParam( name, value );
         }
         return listFirst( arguments.url, "?" );
