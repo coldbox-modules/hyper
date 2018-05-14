@@ -1,3 +1,11 @@
+# v1.14.5
+## 14 May 2018 — 18:35:29 UTC
+
+### fix
+
++ __HyperResponse:__ Use 504 status code for incomplete responses. ([589a6c6](https://github.com/coldbox-modules/hyper/commit/589a6c6f60e00c628fbf0952e4d16f5bc6281866))
+
+
 # v1.14.4
 ## 20 Apr 2018 — 22:38:10 UTC
 

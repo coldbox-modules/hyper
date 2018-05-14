@@ -1,8 +1,8 @@
 {
     "name":"hyper",
-    "version":"1.14.4",
+    "version":"1.14.5",
     "author":"",
-    "location":"coldbox-modules/hyper#v1.14.4",
+    "location":"coldbox-modules/hyper#v1.14.5",
     "homepage":"https://github.com/coldbox-modules/hyper",
     "documentation":"https://github.com/coldbox-modules/hyper",
     "repository":{
