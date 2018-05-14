@@ -29,6 +29,11 @@ component accessors="true" {
     property name="timestamp" setter="false";
 
     /**
+     * The timestamp for when this response was received.
+     */
+    property name="logger" inject="logbox:logger:{this}";
+
+    /**
      * Create a new HyperResponse.
      *
      * @req            The HyperRequest associated with this response.
@@ -102,8 +107,8 @@ component accessors="true" {
      * @res The CFHTTP struct.
      */
     private function populateFromCFHTTP( res ) {
-        variables.charset =  res.keyExists( "charset" ) ? res.charset : "UTF-8";
-        variables.statusCode = res.responseheader.status_code;
+        variables.charset =  res.charset ?: "UTF-8";
+        variables.statusCode = res.responseheader.status_code ?: 504;
         res.responseheader.each( function( name, value ) {
             variables.headers[ lcase( name ) ] = value;
         } );
