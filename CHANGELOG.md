@@ -1,3 +1,11 @@
+# v1.15.0
+## 19 Jul 2018 — 03:24:45 UTC
+
+### feat
+
++ __HyperRequest:__ Add throw on error flag ([bf05152](https://github.com/coldbox-modules/hyper/commit/bf051520eb90f9b917cf1d705cc594f5342b1d5e))
+
+
 # v1.14.5
 ## 14 May 2018 — 18:35:29 UTC
 
