@@ -1,32 +1,32 @@
 language: java
 sudo: required
-jdk:
+jdk: 
 - oraclejdk8
-cache:
-  directories:
-  - "$HOME/.CommandBox"
-env:
-  matrix:
-  - ENGINE=adobe@2016
-  - ENGINE=adobe@11
-  - ENGINE=lucee@5
-  - ENGINE=lucee@4.5
-  global:
-    secure: ytBE5/0yTki2SDLwIwVtLmheTxzKKe5hX4dl3/dqK9/W4BfFvyFfUMQgL9729tXXSKpANguyDDAEfhtHiO72HSyggOg9Ys5nsV/N42UzgOKpefKWyEQDJ2b6vZt/bbQ7CvpgXsvz72YrBKoHdrgGbdO46iLEkSdRsAXOyOre84ie68vT66yDpsrgWe21B23y8hUyG0jud3Vb9yg1VFEzdlgj08thHvxpmcnuLyBwiCZ36SBmJZImXpR78o/WT/1c8AJW2+wqwg3FzYkT+Gp8Ncckv3Z4nPsxAePZiLm9O7QLEwrK0OJzYtyR+MSW3aJPP5KMLA8pFi73LyJv5tvGDy2ftgiAS88FTO3MXgwbomiRAnvpLDRYo7CV0cKW05Y5xYQ4ro5nhV98SwNhsMWd+juYd4+d64/VUdC3mt+VoQU5AZSpQ3vf/1dCFO4PKM25n1qT773M1hzyQNO0wXTn07AJ0+W2PE3dcOO/ZUiAbmF943Fs1e/pjnfVrAEPJl17M63csvlrFo2CDiNbKeMZDcv5oVA0logv6eo+k/D/WVMyZ1LYFkx8xPW3B6LaolxMhiLAjgvOgAu6tOB7cOOwjS8kgejUlKd5H39CsZzbNiq4+gDo0e8lxufRCWv6cl6f8UPNQN8SWHc/ruBsIrAJIW30n2+wjot3EhEp26Nwri0=
-before_install:
+cache: 
+   directories: 
+   - $HOME/.CommandBox
+env: 
+   matrix: 
+   - ENGINE=lucee@5
+   - ENGINE=lucee@4.5
+   - ENGINE=adobe@2018
+   - ENGINE=adobe@2016
+   - ENGINE=adobe@11
+   global: 
+      secure: ytBE5/0yTki2SDLwIwVtLmheTxzKKe5hX4dl3/dqK9/W4BfFvyFfUMQgL9729tXXSKpANguyDDAEfhtHiO72HSyggOg9Ys5nsV/N42UzgOKpefKWyEQDJ2b6vZt/bbQ7CvpgXsvz72YrBKoHdrgGbdO46iLEkSdRsAXOyOre84ie68vT66yDpsrgWe21B23y8hUyG0jud3Vb9yg1VFEzdlgj08thHvxpmcnuLyBwiCZ36SBmJZImXpR78o/WT/1c8AJW2+wqwg3FzYkT+Gp8Ncckv3Z4nPsxAePZiLm9O7QLEwrK0OJzYtyR+MSW3aJPP5KMLA8pFi73LyJv5tvGDy2ftgiAS88FTO3MXgwbomiRAnvpLDRYo7CV0cKW05Y5xYQ4ro5nhV98SwNhsMWd+juYd4+d64/VUdC3mt+VoQU5AZSpQ3vf/1dCFO4PKM25n1qT773M1hzyQNO0wXTn07AJ0+W2PE3dcOO/ZUiAbmF943Fs1e/pjnfVrAEPJl17M63csvlrFo2CDiNbKeMZDcv5oVA0logv6eo+k/D/WVMyZ1LYFkx8xPW3B6LaolxMhiLAjgvOgAu6tOB7cOOwjS8kgejUlKd5H39CsZzbNiq4+gDo0e8lxufRCWv6cl6f8UPNQN8SWHc/ruBsIrAJIW30n2+wjot3EhEp26Nwri0=
+before_install: 
 - sudo apt-key adv --keyserver keys.gnupg.net --recv 6DA70622
-- sudo echo "deb http://downloads.ortussolutions.com/debs/noarch /" | sudo tee -a
-  /etc/apt/sources.list.d/commandbox.list
-install:
+- sudo echo "deb http://downloads.ortussolutions.com/debs/noarch /" | sudo tee -a /etc/apt/sources.list.d/commandbox.list
+install: 
 - sudo apt-get update && sudo apt-get --assume-yes install commandbox
 - box install
-before_script:
+before_script: 
 - box server start cfengine=$ENGINE port=8500
-script:
+script: 
 - box testbox run runner='http://127.0.0.1:8500/tests/runner.cfm'
-after_success:
-  - box install commandbox-semantic-release
-  - box config set endpoints.forgebox.APIToken=${FORGEBOX_TOKEN}
-  - box semantic-release
-notifications:
-  email: false
+after_success: 
+- box install commandbox-semantic-release
+- box config set endpoints.forgebox.APIToken=${FORGEBOX_TOKEN}
+- box semantic-release
+notifications: 
+   email: false
