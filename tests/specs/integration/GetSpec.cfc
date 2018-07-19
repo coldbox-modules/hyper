@@ -53,7 +53,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
                     .setBaseUrl( "https://jsonplaceholder.typicode.com" )
                     .setUrl( "/posts?userId=1&fwreinit=true" )
                     .withQueryParams( {
-                        "force" = true
+                        "force" = "true"
                     } )
                     .get();
                 expect( res.getRequest().getFullUrl() ).toBeWithCase( "https://jsonplaceholder.typicode.com/posts?force=true&fwreinit=true&userId=1" );
