@@ -422,6 +422,31 @@ Check if the request has a query parameter with the given name.
 | ---- | ------ | -------- | ------- | ----------------------------------------- |
 | name | string | true     |         | The name of the query parameter to check. |
 
+##### `setThrowOnError`
+
+Sets the throw on error property for the request. If true, error codes and status
+will be turned in to exceptions.
+
+| Name | Type   | Required | Default | Description                               |
+| ---- | ------ | -------- | ------- | ----------------------------------------- |
+| value | boolean | true     |         | The value of the throw on error flag. |
+
+##### `throwErrors`
+
+A convenience method to throw on errors.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
+##### `allowErrors`
+
+A convenience method to not throw on errors.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
 ##### `setProperties`
 
 Quickly set many request properties using a struct. The key should be the name

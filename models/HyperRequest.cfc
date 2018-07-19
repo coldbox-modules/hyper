@@ -72,6 +72,11 @@ component accessors="true" {
     property name="queryParams";
 
     /**
+    * Flag to throw on a cfhttp error.
+    */
+    property name="throwOnError" default="false";
+
+    /**
     * Initialize a new HyperRequest.
     *
     * @returns The HyperRequest instance.
@@ -333,6 +338,26 @@ component accessors="true" {
     }
 
     /**
+    * A convenience method to not throw on errors.
+    *
+    * @returns The HyperRequest instance.
+    */
+    function allowErrors() {
+        setThrowOnError( false );
+        return this;
+    }
+
+    /**
+    * A convenience method to throw on errors.
+    *
+    * @returns The HyperRequest instance.
+    */
+    function throwErrors() {
+        setThrowOnError( true );
+        return this;
+    }
+
+    /**
     * A convenience method to set the body format and Content-Type to json.
     *
     * @returns The HyperRequest instance.
@@ -557,7 +582,8 @@ component accessors="true" {
             method = getMethod(),
             redirect = false,
             username = getUsername(),
-            password = getPassword()
+            password = getPassword(),
+            throwonerror = getThrowOnError()
         ) {
             for ( var name in variables.headers ) {
                 cfhttpparam(
