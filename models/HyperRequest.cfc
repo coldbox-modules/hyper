@@ -575,7 +575,7 @@ component accessors="true" {
     */
     private function makeCFHTTPRequest() {
         local.res = "";
-        var attrCollection =   {
+        var attrCollection = {
             result = "local.res",
             timeout = getTimeout(),
             url = getFullUrl(),
