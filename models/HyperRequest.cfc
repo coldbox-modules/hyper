@@ -591,9 +591,7 @@ component accessors="true" {
             attrCollection[ "password" ]= getPassword();
         }
 
-        cfhttp(
-            attributeCollection = attrCollection
-        ) {
+        cfhttp( attributeCollection = attrCollection ) {
             for ( var name in variables.headers ) {
                 cfhttpparam(
                     type = "header",
