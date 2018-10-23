@@ -1,4 +1,20 @@
 # v2.0.0
+## 23 Oct 2018 — 21:27:14 UTC
+
+### BREAKING
+
++ __HyperRequest:__ Do not include username & password unless they have values ([dcd2270](https://github.com/coldbox-modules/hyper/commit/dcd2270e6ddabfd83f22eeb76176f5194122aca4))
+
+### chore
+
++ __test:__ Add Adobe 2018 to Travis CI ([14506b6](https://github.com/coldbox-modules/hyper/commit/14506b6e76a81f4bf5f2f6d287d0068d3af04218))
+
+### fix
+
++ __CHANGELOG:__ Correct changelog for 2.0.0 ([a25648e](https://github.com/coldbox-modules/hyper/commit/a25648e1cdfb08b785ef0bcac3dd7d14d62b482b))
+
+
+# v2.0.0
 ## 23 Oct 2018 — 19:44:23 UTC
 
 ### chore
