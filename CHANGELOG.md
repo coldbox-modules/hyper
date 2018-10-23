@@ -1,3 +1,11 @@
+# v2.0.1
+## 23 Oct 2018 — 21:40:42 UTC
+
+### docs
+
++ __README:__ Remove Lucee 4.5 support from docs ([3abe4f8](https://github.com/coldbox-modules/hyper/commit/3abe4f847146b38b7c5ee81d1a05e63735791200))
+
+
 # v2.0.0
 ## 23 Oct 2018 — 21:27:14 UTC
 
