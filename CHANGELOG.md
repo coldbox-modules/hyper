@@ -1,3 +1,15 @@
+# v1.15.1
+## 23 Oct 2018 — 19:44:23 UTC
+
+### chore
+
++ __test:__ Add Adobe 2018 to Travis CI ([14506b6](https://github.com/coldbox-modules/hyper/commit/14506b6e76a81f4bf5f2f6d287d0068d3af04218))
+
+### fix
+
++ __HyperRequest:__ Do not include username & password unless they have values ([dcd2270](https://github.com/coldbox-modules/hyper/commit/dcd2270e6ddabfd83f22eeb76176f5194122aca4))
+
+
 # v1.15.0
 ## 19 Jul 2018 — 03:24:45 UTC
 
