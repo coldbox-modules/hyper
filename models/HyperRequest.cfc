@@ -575,16 +575,23 @@ component accessors="true" {
     */
     private function makeCFHTTPRequest() {
         local.res = "";
-        cfhttp(
+        var attrCollection = {
             result = "local.res",
             timeout = getTimeout(),
             url = getFullUrl(),
             method = getMethod(),
             redirect = false,
-            username = getUsername(),
-            password = getPassword(),
             throwonerror = getThrowOnError()
-        ) {
+        };
+
+        if ( len( getUsername() ) ) {
+            attrCollection[ "username" ] = getUsername();
+        }
+        if ( len( getPassword() ) ) {
+            attrCollection[ "password" ]= getPassword();
+        }
+
+        cfhttp( attributeCollection = attrCollection ) {
             for ( var name in variables.headers ) {
                 cfhttpparam(
                     type = "header",
