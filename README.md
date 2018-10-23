@@ -6,8 +6,6 @@
 <p style="text-align: center;">
     <img height="30" src="https://cfmlbadges.monkehworks.com/images/badges/compatibility-coldfusion-11.svg" alt="Compatible with ColdFusion 11" />
     <img height="30" src="https://cfmlbadges.monkehworks.com/images/badges/compatibility-coldfusion-2016.svg" alt="Compatible with ColdFusion 2016" />
-    <br />
-    <img height="30" src="https://cfmlbadges.monkehworks.com/images/badges/compatibility-lucee-45.svg" alt="Compatible with Lucee 4.5" />
     <img height="30" src="https://cfmlbadges.monkehworks.com/images/badges/compatibility-lucee-5.svg" alt="Compatible with Lucee 5" />
 </p>
 <p style="text-align: center;">
@@ -35,7 +33,7 @@ Hyper exists to provide a fluent builder experience for HTTP requests and respon
 
 ### Requirements
 
-Hyper runs on Adobe ColdFusion 11+ and Lucee 4.5+.
+Hyper runs on Adobe ColdFusion 11+ and Lucee 5+.
 
 ColdBox is not required, but mappings are provided for ColdBox users automatically.
 
