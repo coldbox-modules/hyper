@@ -34,7 +34,8 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
                 var res = hyper.get( "https://jsonplaceholder.typicode.com/posts", {
                     "userId" = 1
                 } );
-                expect( res.getRequest().getFullUrl() ).toBeWithCase( "https://jsonplaceholder.typicode.com/posts?userId=1" );
+                expect( res.getRequest().getFullUrl( withQueryString = true ) )
+                    .toBeWithCase( "https://jsonplaceholder.typicode.com/posts?userId=1" );
             } );
 
             it( "serializes query string params in the long hand", function() {
@@ -45,7 +46,26 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
                         "userId" = 1
                     } )
                     .get();
-                expect( res.getRequest().getFullUrl() ).toBeWithCase( "https://jsonplaceholder.typicode.com/posts?userId=1" );
+                expect( res.getRequest().getFullUrl( withQueryString = true) )
+                    .toBeWithCase( "https://jsonplaceholder.typicode.com/posts?userId=1" );
+            } );
+
+            it( "deserializes query string parameters in the url (to reserialize later)", function() {
+                var res = hyper
+                    .setBaseUrl( "https://jsonplaceholder.typicode.com" )
+                    .setUrl( "/posts?param=with+spaces" )
+                    .get();
+                expect( res.getRequest().getFullUrl( withQueryString = true ) )
+                    .toBeWithCase( "https://jsonplaceholder.typicode.com/posts?param=with+spaces" );
+            } );
+
+            it( "can handle params with no value in the url", function() {
+                var res = hyper
+                    .setBaseUrl( "https://jsonplaceholder.typicode.com" )
+                    .setUrl( "/posts?flag" )
+                    .get();
+                expect( res.getRequest().getFullUrl( withQueryString = true ) )
+                    .toBeWithCase( "https://jsonplaceholder.typicode.com/posts?flag" );
             } );
 
             it( "combines both query params and the query string in the url", function() {
@@ -56,7 +76,8 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
                         "force" = "true"
                     } )
                     .get();
-                expect( res.getRequest().getFullUrl() ).toBeWithCase( "https://jsonplaceholder.typicode.com/posts?force=true&fwreinit=true&userId=1" );
+                expect( res.getRequest().getFullUrl( withQueryString = true ) )
+                    .toBeWithCase( "https://jsonplaceholder.typicode.com/posts?force=true&fwreinit=true&userId=1" );
             } );
 
             it( "has access to the original HyperRequest in the HyperResponse", function() {

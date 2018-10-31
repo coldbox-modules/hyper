@@ -422,8 +422,9 @@ component accessors="true" {
     *
     * @returns The full url for the request.
     */
-    function getFullUrl() {
-        return getBaseUrl() & getUrl() & serializeQueryParams();
+    function getFullUrl( withQueryString = false) {
+        return getBaseUrl() & getUrl() &
+            ( arguments.withQueryString ? serializeQueryParams() : "" );
     }
 
     /**
@@ -504,8 +505,8 @@ component accessors="true" {
         var queryString = listRest( arguments.url, "?" );
         var queryParams = listToArray( queryString, "&" );
         for ( var paramString in queryParams ) {
-            var name = listFirst( paramString, "=" );
-            var value = listRest( paramString, "=" );
+            var name = decodeFromUrl( listFirst( paramString, "=" ) );
+            var value = decodeFromUrl( listRest( paramString, "=" ) );
             setQueryParam( name, value );
         }
         return listFirst( arguments.url, "?" );
@@ -526,7 +527,9 @@ component accessors="true" {
         }
         queryParamNames.sort( "textnocase" );
         return "?" & queryParamNames.map( function( name ) {
-            return "#encodeForURL( name )#=#encodeForURL( variables.queryParams[ name ] )#";
+            return len( variables.queryParams[ name ] ) ?
+                "#encodeForURL( name )#=#encodeForURL( variables.queryParams[ name ] )#" :
+                "#encodeForURL( name )#";
         } ).toList( "&" );
     }
 
@@ -597,6 +600,14 @@ component accessors="true" {
                     type = "header",
                     name = name,
                     value = variables.headers[ name ]
+                );
+            }
+
+            for ( var name in variables.queryParams ) {
+                cfhttpparam(
+                    type = "url",
+                    name = name,
+                    value = variables.queryParams[ name ]
                 );
             }
 
