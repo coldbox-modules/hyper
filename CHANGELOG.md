@@ -1,3 +1,11 @@
+# v2.0.2
+## 31 Oct 2018 — 18:20:32 UTC
+
+### fix
+
++ __HyperRequest:__  Avoid double encoding using cfhttpparam ([f25bc86](https://github.com/coldbox-modules/hyper/commit/f25bc86fef6f265e33d23912e13722e897bd1d5d))
+
+
 # v2.0.1
 ## 23 Oct 2018 — 21:40:42 UTC
 
