@@ -21,7 +21,12 @@ component accessors="true" {
     /**
      * The charset value for the response.
      */
-    property name="charset" setter="false";
+    property name="charset" default="UTF-8" setter="false";
+
+    /**
+     * The charset value for the response.
+     */
+    property name="headers" type="struct" setter="false";
 
     /**
      * The timestamp for when this response was received.
@@ -36,16 +41,28 @@ component accessors="true" {
     /**
      * Create a new HyperResponse.
      *
-     * @req            The HyperRequest associated with this response.
-     * @cfhttpResponse The CFHTTP response struct.
-     * @timestamp      The timestamp for when this response was received.
-     *                 Default: `now()`.
+     * @originalRequest The HyperRequest associated with this response.
+     * @charset         The response charset. Default: UTF-8
+     * @statusCode      The response status code. Default: 200.
+     * @headers         The response headers. Default: {}.
+     * @data            The response data. Default: "".
+     * @timestamp       The timestamp for when this response was received. Default: `now()`.
      *
-     * @returns        A new HyperResponse instance.
+     * @returns         A new HyperResponse instance.
      */
-    function init( req, cfhttpResponse, timestamp = now() ) {
-        variables.request = req;
-        populateFromCFHTTP( cfhttpResponse );
+    public HyperResponse function init(
+        required HyperRequest originalRequest,
+        string charset = "UTF-8",
+        any statusCode = 200,
+        struct headers = {},
+        any data = "",
+        timestamp = now()
+    ) {
+        variables.request = arguments.originalRequest;
+        variables.charset = arguments.charset;
+        variables.statusCode = arguments.statusCode;
+        variables.headers = arguments.headers;
+        variables.data = arguments.data;
         variables.timestamp = arguments.timestamp;
         return this;
     }
@@ -99,22 +116,6 @@ component accessors="true" {
      */
     function isServerError() {
         return left( getStatusCode(), 1 ) == "5";
-    }
-
-    /**
-     * Populates the HyperResponse values from a CFHTTP struct.
-     *
-     * @res The CFHTTP struct.
-     */
-    private function populateFromCFHTTP( res ) {
-        variables.charset =  res.charset ?: "UTF-8";
-        variables.statusCode = res.responseheader.status_code ?: 504;
-        res.responseheader.each( function( name, value ) {
-            variables.headers[ lcase( name ) ] = value;
-        } );
-        variables.data = res.filecontent;
-
-        return this;
     }
 
     /**

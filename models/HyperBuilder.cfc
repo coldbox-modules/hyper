@@ -1,7 +1,7 @@
 /**
 * Creates new requests with optional defaults.
 */
-component {
+component singleton {
 
     /**
     * The default request object.

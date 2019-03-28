@@ -4,6 +4,11 @@
 component accessors="true" {
 
     /**
+     * The httpClient to use for the request
+     */
+    property name="httpClient";
+
+    /**
     * The baseURL for the request.
     * e.g. https://api.github.com/
     */
@@ -81,7 +86,8 @@ component accessors="true" {
     *
     * @returns The HyperRequest instance.
     */
-    function init() {
+    function init( httpClient = new CfhttpHttpClient() ) {
+        variables.httpClient = arguments.httpClient;
         variables.queryParams = createObject( "java", "java.util.LinkedHashMap" ).init();
         variables.headers = createObject( "java", "java.util.LinkedHashMap" ).init();
         variables.headers.put( "Content-Type", "application/json" );
@@ -437,7 +443,7 @@ component accessors="true" {
             throw( type = "NoUrlException" );
         }
 
-        var res = new Hyper.models.HyperResponse( this, makeCFHTTPRequest() );
+        var res = httpClient.send( this );
 
         if ( res.isRedirect() && shouldFollowRedirect() ) {
             return followRedirect( res );
@@ -572,73 +578,11 @@ component accessors="true" {
     }
 
     /**
-    * Wrapper around CFHTTP for actually sending the requests.
-    *
-    * @returns The CFHTTP response struct.
-    */
-    private function makeCFHTTPRequest() {
-        local.res = "";
-        var attrCollection = {
-            result = "local.res",
-            timeout = getTimeout(),
-            url = getFullUrl(),
-            method = getMethod(),
-            redirect = false,
-            throwonerror = getThrowOnError()
-        };
-
-        if ( len( getUsername() ) ) {
-            attrCollection[ "username" ] = getUsername();
-        }
-        if ( len( getPassword() ) ) {
-            attrCollection[ "password" ]= getPassword();
-        }
-
-        cfhttp( attributeCollection = attrCollection ) {
-            for ( var name in variables.headers ) {
-                cfhttpparam(
-                    type = "header",
-                    name = name,
-                    value = variables.headers[ name ]
-                );
-            }
-
-            for ( var name in variables.queryParams ) {
-                cfhttpparam(
-                    type = "url",
-                    name = name,
-                    value = variables.queryParams[ name ]
-                );
-            }
-
-            if ( hasBody() ) {
-                if ( getBodyFormat() == "json" ) {
-                    cfhttpparam( type = "body", value = prepareBody() );
-                }
-                else if ( getBodyFormat() == "formFields" ) {
-                    var body = getBody();
-                    for ( var fieldName in body ) {
-                        cfhttpparam(
-                            type  = "formfield",
-                            name  = fieldName,
-                            value = body[ fieldName ]
-                        );
-                    }
-                }
-                else {
-                    cfhttpparam( type = "body", value = prepareBody() );
-                }
-            }
-        }
-        return local.res;
-    }
-
-    /**
     * Checks if the request has a body.
     *
     * @returns True if the request has a body.
     */
-    private function hasBody() {
+    public boolean function hasBody() {
         return ! isSimpleValue( getBody() ) || getBody() != "";
     }
 
@@ -647,7 +591,7 @@ component accessors="true" {
     *
     * @returns A simple value representing the body.
     */
-    private function prepareBody() {
+    public string function prepareBody() {
         if ( isSimpleValue( getBody() ) ) {
             return getBody();
         }
