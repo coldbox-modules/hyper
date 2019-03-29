@@ -1,3 +1,16 @@
+# v2.1.0
+## 29 Mar 2019 — 08:04:09 UTC
+
+### chore
+
++ __build:__ Replace periodic failing GPG key
+ ([f3baea9](https://github.com/coldbox-modules/hyper/commit/f3baea9bd7adc7b79b97cbdc904e1beecb48f441))
+
+### feat
+
++ __HttpClient:__ Allow for pluggable HTTP Clients ([ad833b9](https://github.com/coldbox-modules/hyper/commit/ad833b96f0624d9d2bb997616dd87aa2cf5d9803))
+
+
 # v2.0.2
 ## 31 Oct 2018 — 18:20:32 UTC
 
