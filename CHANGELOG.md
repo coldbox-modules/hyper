@@ -1,3 +1,12 @@
+# v2.1.1
+## 13 Feb 2020 — 18:25:16 UTC
+
+### other
+
++ __\*:__ chore: Use OpenJDK instead of OracleJDK ([ce9f558](https://github.com/coldbox-modules/hyper/commit/ce9f5581fa4fd8a1e467a28ae9ab2e8c97954920))
++ __\*:__ chore: Use forgeboxStorage ([1d32c19](https://github.com/coldbox-modules/hyper/commit/1d32c19e249585b933c37ac4c7c6924ec8662159))
+
+
 # v2.1.0
 ## 29 Mar 2019 — 08:04:09 UTC
 
