@@ -2,7 +2,7 @@
     "name":"hyper",
     "version":"2.1.0",
     "author":"",
-    "location":"coldbox-modules/hyper#v2.1.0",
+    "location":"forgeboxStorage",
     "homepage":"https://github.com/coldbox-modules/hyper",
     "documentation":"https://github.com/coldbox-modules/hyper",
     "repository":{
@@ -23,9 +23,7 @@
         "testbox":"testbox/",
         "coldbox":"tests/resources/app/coldbox/"
     },
-    "scripts":{
-        "postVersion":"package set location='coldbox-modules/hyper#v`package version`'"
-    },
+    "scripts":{},
     "ignore":[
         "**/.*",
         "test",
