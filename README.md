@@ -167,6 +167,14 @@ Sets the URL for the request.
 | ----- | ------ | -------- | ------- | --------------------------------------------------------------------------------------------------------------- |
 | value | string | true     |         | The URL for the request. It can either be a full url or a URI resource for use with the baseURL. e.g. `/repos`. |
 
+##### `setResolveURL`
+
+Sets the resolveURL parameter for the request.
+
+| Name  | Type    | Required | Default | Description                                                                    |
+| ----- | ------- | -------- | ------- | ------------------------------------------------------------------------------ |
+| value | boolean | false    | false   | Resolves URLs in the response body to absolute URLs, including the port number |
+
 ##### `getMethod`
 
 Gets the HTTP method for the request.

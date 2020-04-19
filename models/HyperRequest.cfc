@@ -23,6 +23,11 @@ component accessors="true" {
     property name="url" default="";
 
     /**
+    * Setting this to true will change all relative urls in the document to absolute.
+    */
+    property name="resolveurl" default="false";
+
+    /**
     * The HTTP method for the request.
     */
     property name="method" default="GET";
