@@ -36,7 +36,8 @@ component implements="HyperHttpClientInterface" {
             url = req.getFullUrl(),
             method = req.getMethod(),
             redirect = false,
-            throwonerror = req.getThrowOnError()
+            throwonerror = req.getThrowOnError(),
+            resolveURL = req.getResolveUrls()
         };
 
         if ( len( req.getUsername() ) ) {

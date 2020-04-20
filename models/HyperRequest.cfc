@@ -23,6 +23,11 @@ component accessors="true" {
     property name="url" default="";
 
     /**
+    * Setting this to true will change all relative urls in the document to absolute.
+    */
+    property name="resolveUrls" default="false";
+
+    /**
     * The HTTP method for the request.
     */
     property name="method" default="GET";
@@ -431,6 +436,16 @@ component accessors="true" {
     function getFullUrl( withQueryString = false) {
         return getBaseUrl() & getUrl() &
             ( arguments.withQueryString ? serializeQueryParams() : "" );
+    }
+
+    /**
+     * Sets the cfhttp call to resolve urls.
+     *
+     * @returns The HyperRequest instance.
+     */
+    function resolveUrls() {
+        setResolveUrls( true );
+        return this;
     }
 
     /**
