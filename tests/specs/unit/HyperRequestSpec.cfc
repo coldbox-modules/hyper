@@ -99,6 +99,12 @@ component extends="testbox.system.BaseSpec" {
 
                 expect( req.getHeader( "Accept" ) ).toBe( "" );
             } );
+
+            it( "can set the resolvesUrls functionality of cfhttp", function() {
+                expect( req.getResolveUrls() ).toBeFalse();
+                req.resolveUrls();
+                expect( req.getResolveUrls() ).toBeTrue();
+            } );
         } );
     }
 
