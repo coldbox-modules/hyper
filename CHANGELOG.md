@@ -1,3 +1,11 @@
+# v2.2.0
+## 20 Apr 2020 — 15:58:35 UTC
+
+### feat
+
++ __HyperRequest:__ Add resolveUrls option ([e270d98](https://github.com/coldbox-modules/hyper/commit/e270d98fd076349dc57ad31e64647a125ef13612))
+
+
 # v2.1.1
 ## 13 Feb 2020 — 18:25:16 UTC
 
