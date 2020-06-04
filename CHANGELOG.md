@@ -1,3 +1,14 @@
+# v2.2.1
+## 04 Jun 2020 — 19:42:40 UTC
+
+### other
+
++ __\*:__ chore: format with cfformat
+ ([a887d01](https://github.com/coldbox-modules/hyper/commit/a887d0197f4d5422a4d0332d4ee2663740e729fa))
++ __\*:__ fix: Use previous host for redirect if redirect does not include a full URL
+ ([66c2570](https://github.com/coldbox-modules/hyper/commit/66c25703b7c59b0f10cb31d966610dfb3e0698de))
+
+
 # v2.2.0
 ## 20 Apr 2020 — 15:58:35 UTC
 
