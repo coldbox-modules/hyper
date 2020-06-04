@@ -7,8 +7,8 @@ component extends="testbox.system.BaseSpec" {
             } );
 
             afterEach( function() {
-                if ( variables.keyExists( "hyper" ) ) {
-                    variables.delete( "hyper" );
+                if ( structKeyExists( variables, "hyper" ) ) {
+                    structDelete( variables, "hyper" );
                 }
             } );
 

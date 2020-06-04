@@ -9,8 +9,8 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
             } );
 
             afterEach( function() {
-                if ( variables.keyExists( "hyper" ) ) {
-                    variables.delete( "hyper" );
+                if ( structKeyExists( variables, "hyper" ) ) {
+                    structDelete( variables, "hyper" );
                 }
             } );
 

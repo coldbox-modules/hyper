@@ -9,8 +9,8 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
             } );
 
             afterEach( function() {
-                if ( variables.keyExists( "hyper" ) ) {
-                    variables.delete( "hyper" );
+                if ( structKeyExists( variables, "hyper" ) ) {
+                    structDelete( variables, "hyper" );
                 }
             } );
 
@@ -22,6 +22,16 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
                 expect( referrer ).notToBeNull();
                 expect( referrer.getStatusCode() ).toBe( 302 );
                 expect( referrer.getRequest().getUrl() ).toBe( localEndpoint & "/redirect" );
+            } );
+
+            it( "appends the base url of the previous request if the redirect is a partial url", function() {
+                var res = hyper.get( localEndpoint & "/redirectPartial" );
+                expect( res.getStatusCode() ).toBe( 200 );
+                expect( res.json() ).toBe( { "message" = "Hello, world!" } );
+                var referrer = res.getRequest().getReferrer();
+                expect( referrer ).notToBeNull();
+                expect( referrer.getStatusCode() ).toBe( 302 );
+                expect( referrer.getRequest().getUrl() ).toBe( localEndpoint & "/redirectPartial" );
             } );
 
             it( "can set the maximum number of redirects to follow", function() {

@@ -12,11 +12,15 @@ component {
     function redirect( event, rc, prc ) {
         param rc.times = 0;
         if ( rc.times == 0 ) {
-            setNextEvent( "api.index" );
+            relocate( "api.index" );
         }
         else {
-            setNextEvent( event = "api.redirect", queryString = "times=#rc.times-1#" );
+            relocate( event = "api.redirect", queryString = "times=#rc.times-1#" );
         }
+    }
+
+    function redirectPartial( event, rc, prc ) {
+        relocate( url = "/tests/resources/app/index.cfm/api/index" );
     }
 
     function create( event, rc, prc ) {

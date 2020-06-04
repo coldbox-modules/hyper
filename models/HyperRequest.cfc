@@ -574,7 +574,11 @@ component accessors="true" {
     private function followRedirect( res ) {
         var redirectReq = new Hyper.models.HyperRequest();
         redirectReq.setReferrer( res );
-        redirectReq.setUrl( res.getHeader( "Location" ) );
+        redirectReq.setUrl(
+            createObject( "java", "java.net.URI" )
+                .init( res.getRequest().getFullUrl() )
+                .resolve( res.getHeader( "Location" ) )
+        );
         redirectReq.setMaximumRedirects( decrementRedirects() );
         return redirectReq.send();
     }
