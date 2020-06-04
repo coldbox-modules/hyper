@@ -3,13 +3,13 @@
  */
 interface displayname="HyperHttpClientInterface" {
 
-    /**
-     * Execute the HyperRequest and map it to a HyperResponse.
-     *
-     * @req     The HyperRequest to execute.
-     *
-     * @returns A HyperResponse of the executed request.
-     */
-    public HyperResponse function send( required HyperRequest req );
+	/**
+	 * Execute the HyperRequest and map it to a HyperResponse.
+	 *
+	 * @req     The HyperRequest to execute.
+	 *
+	 * @returns A HyperResponse of the executed request.
+	 */
+	public HyperResponse function send( required HyperRequest req );
 
 }
