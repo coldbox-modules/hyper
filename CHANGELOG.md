@@ -1,3 +1,11 @@
+# v2.3.0
+## 19 Jun 2020 — 20:57:46 UTC
+
+### feat
+
++ __HyperRequest:__ Add certificate auth ([6e3d335](https://github.com/coldbox-modules/hyper/commit/6e3d3357bf8ee3bd1c14d79a03806d54e299a335))
+
+
 # v2.2.1
 ## 04 Jun 2020 — 19:42:40 UTC
 
