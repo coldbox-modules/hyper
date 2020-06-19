@@ -31,55 +31,64 @@ component implements="HyperHttpClientInterface" {
 	private struct function makeCFHTTPRequest( required HyperRequest req ) {
 		local.res          = "";
 		var attrCollection = {
-			result       : "local.res",
-			timeout      : req.getTimeout(),
-			url          : req.getFullUrl(),
-			method       : req.getMethod(),
-			redirect     : false,
-			throwonerror : req.getThrowOnError(),
-			resolveURL   : req.getResolveUrls()
+			"result"       : "local.res",
+			"timeout"      : req.getTimeout(),
+			"url"          : req.getFullUrl(),
+			"method"       : req.getMethod(),
+			"redirect"     : false,
+			"throwonerror" : req.getThrowOnError(),
+			"resolveURL"   : req.getResolveUrls()
 		};
 
 		if ( len( req.getUsername() ) ) {
 			attrCollection[ "username" ] = req.getUsername();
 		}
+
 		if ( len( req.getPassword() ) ) {
 			attrCollection[ "password" ] = req.getPassword();
 		}
 
-		cfhttp( attributeCollection=attrCollection ) {
+		if ( !isNull( req.getClientCert() ) ) {
+			attrCollection[ "clientCert" ] = req.getClientCert();
+		}
+
+		if ( !isNull( req.getClientCertPassword() ) ) {
+			attrCollection[ "clientCertPassword" ] = req.getClientCertPassword();
+		}
+
+		cfhttp( attributeCollection = attrCollection ) {
 			var headers = req.getHeaders();
 			for ( var name in headers ) {
 				cfhttpparam(
-					type ="header",
-					name =name,
-					value=headers[ name ]
+					type  = "header",
+					name  = name,
+					value = headers[ name ]
 				);
 			}
 
 			var queryParams = req.getQueryParams();
 			for ( var name in queryParams ) {
 				cfhttpparam(
-					type ="url",
-					name =name,
-					value=queryParams[ name ]
+					type  = "url",
+					name  = name,
+					value = queryParams[ name ]
 				);
 			}
 
 			if ( req.hasBody() ) {
 				if ( req.getBodyFormat() == "json" ) {
-					cfhttpparam( type="body", value=req.prepareBody() );
+					cfhttpparam( type = "body", value = req.prepareBody() );
 				} else if ( req.getBodyFormat() == "formFields" ) {
 					var body = req.getBody();
 					for ( var fieldName in body ) {
 						cfhttpparam(
-							type ="formfield",
-							name =fieldName,
-							value=body[ fieldName ]
+							type  = "formfield",
+							name  = fieldName,
+							value = body[ fieldName ]
 						);
 					}
 				} else {
-					cfhttpparam( type="body", value=req.prepareBody() );
+					cfhttpparam( type = "body", value = req.prepareBody() );
 				}
 			}
 		}

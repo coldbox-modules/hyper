@@ -106,6 +106,20 @@ component extends="testbox.system.BaseSpec" {
 				req.resolveUrls();
 				expect( req.getResolveUrls() ).toBeTrue();
 			} );
+
+			it( "can set the client certificate path", function() {
+				expect( req.getClientCert() ).toBeNull();
+				req.withCertificateAuth( "/some/absolute/path" );
+				expect( req.getClientCert() ).toBe( "/some/absolute/path" );
+			} );
+
+			it( "can include a password when setting the certificate authentication", function() {
+				expect( req.getClientCert() ).toBeNull();
+				expect( req.getClientCertPassword() ).toBeNull();
+				req.withCertificateAuth( "/some/absolute/path", "mypassword" );
+				expect( req.getClientCert() ).toBe( "/some/absolute/path" );
+				expect( req.getClientCertPassword() ).toBe( "mypassword" );
+			} );
 		} );
 	}
 

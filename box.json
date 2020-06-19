@@ -1,34 +1,40 @@
 {
-    "name":"hyper",
-    "version":"2.2.1",
-    "author":"Eric Peterson <eric@elpete.com>",
-    "location":"forgeboxStorage",
-    "homepage":"https://github.com/coldbox-modules/hyper",
-    "documentation":"https://github.com/coldbox-modules/hyper",
-    "repository":{
-        "type":"git",
-        "URL":"https://github.com/coldbox-modules/hyper"
+    "name": "hyper",
+    "version": "2.2.1",
+    "author": "Eric Peterson <eric@elpete.com>",
+    "location": "forgeboxStorage",
+    "homepage": "https://github.com/coldbox-modules/hyper",
+    "documentation": "https://github.com/coldbox-modules/hyper",
+    "repository": {
+        "type": "git",
+        "URL": "https://github.com/coldbox-modules/hyper"
     },
-    "bugs":"https://github.com/coldbox-modules/hyper/issues",
-    "slug":"hyper",
-    "shortDescription":"A CFML HTTP Builder",
-    "description":"A CFML HTTP Builder",
-    "type":"modules",
-    "dependencies":{},
-    "devDependencies":{
-        "testbox":"^4.1.0+384",
-        "coldbox":"^5.6.2+1148"
+    "bugs": "https://github.com/coldbox-modules/hyper/issues",
+    "slug": "hyper",
+    "shortDescription": "A CFML HTTP Builder",
+    "description": "A CFML HTTP Builder",
+    "type": "modules",
+    "dependencies": {},
+    "devDependencies": {
+        "testbox": "^4.1.0+384",
+        "coldbox": "^5.6.2+1148"
     },
-    "installPaths":{
-        "testbox":"testbox/",
-        "coldbox":"tests/resources/app/coldbox/"
+    "installPaths": {
+        "testbox": "testbox/",
+        "coldbox": "tests/resources/app/coldbox/"
     },
-    "scripts":{
-        "format":"cfformat run ModuleConfig.cfc,models/**/*.cfc,tests/specs/**/*.cfc,tests/resources/app/handlers/**/*.cfc,tests/resources/app/config/**/*.cfc --overwrite",
-        "format:check":"cfformat check ModuleConfig.cfc,models/**/*.cfc,tests/specs/**/*.cfc,tests/resources/app/handlers/**/*.cfc,tests/resources/app/config/**/*.cfc --verbose",
-        "format:watch":"cfformat watch ModuleConfig.cfc,models/**/*.cfc,tests/specs/**/*.cfc,tests/resources/app/handlers/**/*.cfc,tests/resources/app/config/**/*.cfc"
+    "scripts": {
+        "format": "cfformat run ModuleConfig.cfc,models/**/*.cfc,tests/specs/**/*.cfc,tests/resources/app/handlers/**/*.cfc,tests/resources/app/config/**/*.cfc --overwrite",
+        "format:check": "cfformat check ModuleConfig.cfc,models/**/*.cfc,tests/specs/**/*.cfc,tests/resources/app/handlers/**/*.cfc,tests/resources/app/config/**/*.cfc --verbose",
+        "format:watch": "cfformat watch ModuleConfig.cfc,models/**/*.cfc,tests/specs/**/*.cfc,tests/resources/app/handlers/**/*.cfc,tests/resources/app/config/**/*.cfc"
     },
-    "ignore":[
+    "githooks": {
+        "preCommit": [
+            "cfformat run `!git diff --name-only --staged` --overwrite",
+            "!git add `git diff --name-only --staged`"
+        ]
+    },
+    "ignore": [
         "**/.*",
         "test",
         "tests"

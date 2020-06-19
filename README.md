@@ -200,6 +200,15 @@ Sets the username and password for HTTP Basic Auth.
 | username | string | true     |         | The username for the basic auth. |
 | password | string | true     |         | The password for the basic auth. |
 
+##### `withCertificateAuth`
+
+Sets the username and password for HTTP Basic Auth.
+
+| Name            | Type   | Required | Default | Description                                              |
+| --------------- | ------ | -------- | ------- | -------------------------------------------------------- |
+| certificatePath | string | true     |         | The mapped path to the certificate used to authenticate. |
+| password        | string | false    |         | The optional password used to decrypt the certificate.   |
+
 ##### `getUsername`
 
 Gets the username for the request.
@@ -433,8 +442,8 @@ Check if the request has a query parameter with the given name.
 Sets the throw on error property for the request. If true, error codes and status
 will be turned in to exceptions.
 
-| Name | Type   | Required | Default | Description                               |
-| ---- | ------ | -------- | ------- | ----------------------------------------- |
+| Name  | Type    | Required | Default | Description                           |
+| ----- | ------- | -------- | ------- | ------------------------------------- |
 | value | boolean | true     |         | The value of the throw on error flag. |
 
 ##### `throwErrors`
@@ -626,4 +635,101 @@ var hyper = new Hyper.models.HyperBuilder(
     baseUrl = "https://api.github.com"
 );
 hyper.defaults.withHeaders( { "Authorization" = token } );
+```
+
+The defaults set here need to match the property names on the `HyperRequest`. These are:
+
+```
+/**
+* The httpClient to use for the request
+*/
+property name="httpClient";
+
+/**
+* The baseURL for the request.
+* e.g. https://api.github.com/
+*/
+property name="baseUrl" default="";
+
+/**
+* The URL for the request.
+* It can either be a full url
+* or a URI resource for use with the baseURL.
+* e.g. /repos
+*/
+property name="url" default="";
+
+/**
+* Setting this to true will change all relative urls in the document to absolute.
+*/
+property name="resolveUrls" default="false";
+
+/**
+* The HTTP method for the request.
+*/
+property name="method" default="GET";
+
+/**
+* The username for the request for basic auth.
+*/
+property name="username" default="";
+
+/**
+* The password for the request for basic auth.
+*/
+property name="password" default="";
+
+/**
+* Timeout, in seconds, for the request.
+*/
+property name="timeout" default="10";
+
+/**
+* The maximum number of redirects to follow.
+* A value of `*` will follow redirects infinitely.
+*/
+property name="maximumRedirects" default="*";
+
+/**
+* The body to send with the request.
+* How the body is serialized is
+* determined by the bodyFormat.
+*/
+property name="body" default="";
+
+/**
+* The format to serialize the body.
+* e.g. `json` or `formFields`
+*/
+property name="bodyFormat" default="json";
+
+/**
+* The referring response in the case of redirects.
+*/
+property name="referrer";
+
+/**
+* A struct of headers for the request.
+*/
+property name="headers";
+
+/**
+* A struct of query parameters for the request.
+*/
+property name="queryParams";
+
+/**
+* Flag to throw on a cfhttp error.
+*/
+property name="throwOnError" default="false";
+
+/**
+* The full path to a PKCS12 format file that contains the client certificate for the request.
+*/
+property name="clientCert";
+
+/**
+* 	Password used to decrypt the client certificate.
+*/
+property name="clientCertPassword";
 ```

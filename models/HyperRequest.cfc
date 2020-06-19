@@ -87,6 +87,16 @@ component accessors="true" {
 	property name="throwOnError" default="false";
 
 	/**
+	 * The full path to a PKCS12 format file that contains the client certificate for the request.
+	 */
+	property name="clientCert";
+
+	/**
+	 * 	Password used to decrypt the client certificate.
+	 */
+	property name="clientCertPassword";
+
+	/**
 	 * Initialize a new HyperRequest.
 	 *
 	 * @returns The HyperRequest instance.
@@ -313,6 +323,22 @@ component accessors="true" {
 	function withBasicAuth( username, password ) {
 		setUsername( username );
 		setPassword( password );
+		return this;
+	}
+
+	/**
+	 * Sets the certificate path and optional decrypting password for the request.
+	 *
+	 * @certificatePath The mapped path to the certificate used to authenticate.
+	 * @password        The optional password used to decrypt the certificate.
+	 *
+	 * @returns         The HyperRequest instance.
+	 */
+	function withCertificateAuth( required string certificatePath, string password ) {
+		setClientCert( arguments.certificatePath );
+		if ( !isNull( arguments.password ) ) {
+			setClientCertPassword( arguments.password );
+		}
 		return this;
 	}
 
