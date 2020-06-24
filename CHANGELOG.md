@@ -1,3 +1,11 @@
+# v2.3.1
+## 24 Jun 2020 — 20:15:36 UTC
+
+### fix
+
++ __HyperRequest:__ Bug Workaround for Booleans in Query Strings ([b48e629](https://github.com/coldbox-modules/hyper/commit/b48e62947ae8a67d5f7c7010418db140714816ef))
+
+
 # v2.3.0
 ## 19 Jun 2020 — 20:57:46 UTC
 
