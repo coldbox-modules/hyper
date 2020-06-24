@@ -235,7 +235,7 @@ component accessors="true" {
 	 * @returns The HyperRequest instance.
 	 */
 	function setQueryParam( name, value ) {
-		variables.queryParams.put( name, value );
+		variables.queryParams[ name ] = value;
 		return this;
 	}
 
@@ -285,7 +285,7 @@ component accessors="true" {
 	 * @returns The HyperRequest instance.
 	 */
 	function setHeader( name, value ) {
-		variables.headers.put( name, value );
+		variables.headers[ name ] = value;
 		return this;
 	}
 
