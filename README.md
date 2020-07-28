@@ -133,7 +133,16 @@ Send the HTTP request and return a HyperResponse.
 | ------------ | ---- | -------- | ------- | ----------- |
 | No arguments |      |          |         |             |
 
+
 #### Request Properties
+
+##### `getFullURL`
+
+Gets the full URL for the request.
+
+| Name            | Type    | Required | Default | Description                                            |
+| --------------- | ------- | -------- | ------- | ------------------------------------------------------ |
+| withQueryString | boolean | false    | false   | Includes the configured query string with the full URL |
 
 ##### `getBaseURL`
 
