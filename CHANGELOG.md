@@ -1,3 +1,12 @@
+# v2.3.4
+## 02 Nov 2020 — 21:13:30 UTC
+
+### chore
+
++ __CI:__ Use better GitHub token
+ ([fba0ffa](https://github.com/coldbox-modules/hyper/commit/fba0ffa72af5c9c86b87c9a2b4d0616d3a797ade))
+
+
 # v2.3.1
 ## 24 Jun 2020 — 20:15:36 UTC
 
