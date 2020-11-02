@@ -57,7 +57,5 @@ jobs:
       
       - name: Run Semantic Release
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          box echo ${GH_TOKEN}
-          box semantic-release
+          GH_TOKEN: ${{ secrets.CSR_GITHUB_TOKEN }}
+        run: box semantic-release
