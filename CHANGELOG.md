@@ -1,3 +1,12 @@
+# v2.3.5
+## 02 Nov 2020 — 21:55:39 UTC
+
+### chore
+
++ __CI:__ Add matrix and cron testing
+ ([fcf35a0](https://github.com/coldbox-modules/hyper/commit/fcf35a07765e211dc2ef813c3a0bc6889c45526c))
+
+
 # v2.3.4
 ## 02 Nov 2020 — 21:13:30 UTC
 
