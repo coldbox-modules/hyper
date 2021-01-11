@@ -26,7 +26,7 @@ component accessors="true" {
 	 * Setting this to true will change all relative urls in the document to absolute.
 	 */
 	property name="resolveUrls" default="false";
-	
+
 	/**
 	 * Setting this to false will not automatically encode the url passed.
 	 * WARNING: Setting this to false is not supported on Adobe engines.
