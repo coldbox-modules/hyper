@@ -40,6 +40,10 @@ component implements="HyperHttpClientInterface" {
 			"resolveURL"   : req.getResolveUrls()
 		};
 
+		if ( !req.getEncodeUrl() ) {
+			attrCollection[ "encodeurl" ] = false;
+		}
+
 		if ( len( req.getUsername() ) ) {
 			attrCollection[ "username" ] = req.getUsername();
 		}

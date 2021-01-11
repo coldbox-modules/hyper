@@ -28,6 +28,12 @@ component accessors="true" {
 	property name="resolveUrls" default="false";
 
 	/**
+	 * Setting this to false will not automatically encode the url passed.
+	 * WARNING: Setting this to false is not supported on Adobe engines.
+	 */
+	property name="encodeUrl" default="true";
+
+	/**
 	 * The HTTP method for the request.
 	 */
 	property name="method" default="GET";
@@ -367,6 +373,16 @@ component accessors="true" {
 	 */
 	function withoutRedirecting() {
 		setMaximumRedirects( 0 );
+		return this;
+	}
+
+	/**
+	 * A convenience method to not encode the url.
+	 *
+	 * @returns The HyperRequest instance.
+	 */
+	function withoutEncodingUrl() {
+		setEncodeUrl( false );
 		return this;
 	}
 
