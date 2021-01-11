@@ -265,6 +265,15 @@ A convenience method to not follow any redirects.
 | ------------ | ---- | -------- | ------- | ----------- |
 | No arguments |      |          |         |             |
 
+##### `withoutEncodingUrl`
+
+A convenience method to not encode the url.
+WARNING: Not supported on Adobe engines.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
 ##### `getMaximumRedirects`
 
 Gets the maximum number of redirects to follow.
