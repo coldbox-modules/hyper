@@ -29,7 +29,7 @@ for a module.
 
 ### The problem it solves
 
-Hyper exists to provide a fluent builder experience for HTTP requests and responses. It also provides a powerful way to create clients, Bulider objects with pre-configured defaults like a base URL or certain headers.
+Hyper exists to provide a fluent builder experience for HTTP requests and responses. It also provides a powerful way to create clients, i.e. Builder objects with pre-configured defaults like a base URL or certain headers.
 
 ### Requirements
 
