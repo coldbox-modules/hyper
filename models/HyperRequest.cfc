@@ -102,7 +102,7 @@ component accessors="true" {
 	 */
 	property name="clientCertPassword";
     
-    /**
+        /**
 	 * The domain for the request for NTLM auth.
 	 */
 	property name="domain" default="";
@@ -112,7 +112,7 @@ component accessors="true" {
 	 */
 	property name="workstation" default="";
 
-    /**
+        /**
 	 * The authType for the request
 	 */
 	property name="authType" default="BASIC";
@@ -363,7 +363,7 @@ component accessors="true" {
 		return this;
 	}
 
-    /**
+        /**
 	 * Sets the username, password, domain and workstation for NTLM Auth.
 	 *
 	 * @username The username for the NTLM auth.
@@ -373,8 +373,13 @@ component accessors="true" {
 	 *
 	 * @returns  The HyperRequest instance.
 	 */
-	function withNTLMAuth( username, password, domain, workstation ) {
-        setAuthType( "NTLM" );
+	function withNTLMAuth(
+	    required string username,
+	    required string password,
+	    required string domain,
+	    required string workstation
+	) {
+                setAuthType( "NTLM" );
 		setUsername( arguments.username );
 		setPassword( arguments.password );
 		setDomain( arguments.domain );
