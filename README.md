@@ -209,6 +209,19 @@ Sets the username and password for HTTP Basic Auth.
 | certificatePath | string | true     |         | The mapped path to the certificate used to authenticate. |
 | password        | string | false    |         | The optional password used to decrypt the certificate.   |
 
+##### `withNTLMAuth`
+
+Sets the username, password, domain and workstation  for NTLM Auth.
+
+| Name        | Type   | Required | Default | Description                        |
+| ----------- | ------ | -------- | ------- | ---------------------------------- |
+| username    | string | true     |         | The username for the NTLM auth.    |
+| password    | string | true     |         | The password for the NTLM auth.    |
+| domain      | string | true     |         | The domain for the NTLM auth.      |
+| workstation | string | true     |         | The workstation for the NTLM auth. |
+
+Workstation can be obtained with `createObject('java','java.net.InetAddress').getLocalHost().getHostName()`
+
 ##### `getUsername`
 
 Gets the username for the request.

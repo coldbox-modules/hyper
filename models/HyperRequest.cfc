@@ -101,6 +101,21 @@ component accessors="true" {
 	 * 	Password used to decrypt the client certificate.
 	 */
 	property name="clientCertPassword";
+    
+        /**
+	 * The domain for the request for NTLM auth.
+	 */
+	property name="domain" default="";
+
+	/**
+	 * The workstation for the request for NTLM auth.
+	 */
+	property name="workstation" default="";
+
+        /**
+	 * The authType for the request
+	 */
+	property name="authType" default="BASIC";
 
 	/**
 	 * Initialize a new HyperRequest.
@@ -345,6 +360,30 @@ component accessors="true" {
 		if ( !isNull( arguments.password ) ) {
 			setClientCertPassword( arguments.password );
 		}
+		return this;
+	}
+
+        /**
+	 * Sets the username, password, domain and workstation for NTLM Auth.
+	 *
+	 * @username The username for the NTLM auth.
+	 * @password The password for the NTLM auth.
+	 * @domain The domain for the NTLM auth.
+	 * @workstation The workstation for the NTLM auth.
+	 *
+	 * @returns  The HyperRequest instance.
+	 */
+	function withNTLMAuth(
+	    required string username,
+	    required string password,
+	    required string domain,
+	    required string workstation
+	) {
+                setAuthType( "NTLM" );
+		setUsername( arguments.username );
+		setPassword( arguments.password );
+		setDomain( arguments.domain );
+		setWorkstation( arguments.workstation );
 		return this;
 	}
 
