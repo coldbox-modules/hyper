@@ -52,16 +52,16 @@ component implements="HyperHttpClientInterface" {
 			attrCollection[ "password" ] = req.getPassword();
 		}
 
-        if ( len( req.getDomain() ) ) {
+		if ( len( req.getDomain() ) ) {
 			attrCollection[ "domain" ] = req.getDomain();
 		}
 
-        if ( len( req.getWorkStation() ) ) {
+		if ( len( req.getWorkStation() ) ) {
 			attrCollection[ "workstation" ] = req.getWorkStation();
 		}
 
-        // this is only necessarry for NTLM authType, BASIC is the default
-        if ( len( req.getAuthType() ) ) {
+		// this is only necessarry for NTLM authType, BASIC is the default
+		if ( len( req.getAuthType() ) ) {
 			attrCollection[ "authType" ] = req.getAuthType();
 		}
 
