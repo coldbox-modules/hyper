@@ -219,6 +219,7 @@ Sets the username, password, domain and workstation  for NTLM Auth.
 | password    | string | true     |         | The password for the NTLM auth.    |
 | domain      | string | true     |         | The domain for the NTLM auth.      |
 | workstation | string | true     |         | The workstation for the NTLM auth. |
+
 Workstation can be obtained with `createObject('java','java.net.InetAddress').getLocalHost().getHostName()`
 
 ##### `getUsername`
