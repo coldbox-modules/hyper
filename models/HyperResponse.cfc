@@ -43,9 +43,9 @@ component accessors="true" {
 	property name="timestamp" setter="false";
 
 	/**
-	 * The timestamp for when this response was received.
+	 * The execution time of the request.
 	 */
-	property name="logger" inject="logbox:logger:{this}";
+	property name="executionTime" setter="false";
 
 	/**
 	 * Create a new HyperResponse.
@@ -61,18 +61,20 @@ component accessors="true" {
 	 */
 	public HyperResponse function init(
 		required HyperRequest originalRequest,
+		required numeric executionTime,
 		string charset = "UTF-8",
 		any statusCode = 200,
 		struct headers = {},
 		any data       = "",
 		timestamp      = now()
 	) {
-		variables.request    = arguments.originalRequest;
-		variables.charset    = arguments.charset;
-		variables.statusCode = arguments.statusCode;
-		variables.headers    = arguments.headers;
-		variables.data       = arguments.data;
-		variables.timestamp  = arguments.timestamp;
+		variables.request       = arguments.originalRequest;
+		variables.charset       = arguments.charset;
+		variables.statusCode    = arguments.statusCode;
+		variables.headers       = arguments.headers;
+		variables.data          = arguments.data;
+		variables.timestamp     = arguments.timestamp;
+		variables.executionTime = arguments.executionTime;
 		return this;
 	}
 

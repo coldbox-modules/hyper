@@ -11,9 +11,11 @@ component implements="HyperHttpClientInterface" {
 	 * @returns A HyperResponse of the executed request.
 	 */
 	public HyperResponse function send( required HyperRequest req ) {
+		var startTick      = getTickCount();
 		var cfhttpResponse = makeCFHTTPRequest( req );
 		return new Hyper.models.HyperResponse(
 			originalRequest = req,
+			executionTime   = getTickCount() - startTick,
 			charset         = cfhttpResponse.charset ?: "UTF-8",
 			statusCode      = cfhttpResponse.responseheader.status_code ?: 504,
 			headers         = normalizeHeaders( cfhttpResponse ),

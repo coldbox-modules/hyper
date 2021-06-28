@@ -8,7 +8,8 @@ component extends="testbox.system.BaseSpec" {
 					charset         = "UTF-8",
 					statusCode      = 200,
 					headers         = { "status_code" : "200" },
-					data            = "definitely not json"
+					data            = "definitely not json",
+					executionTime   = 100
 				);
 				expect( function() {
 					var json = res.json();
@@ -19,7 +20,8 @@ component extends="testbox.system.BaseSpec" {
 				it( "can tell if a request is a success", function() {
 					var res = new Hyper.models.HyperResponse(
 						originalRequest = createStub( extends = "models.HyperRequest" ),
-						statusCode      = 200
+						statusCode      = 200,
+						executionTime   = 100
 					);
 					expect( res.isSuccess() ).toBeTrue();
 					expect( res.isRedirect() ).toBeFalse();
@@ -31,7 +33,8 @@ component extends="testbox.system.BaseSpec" {
 				it( "can tell if a request is a redirect", function() {
 					var res = new Hyper.models.HyperResponse(
 						originalRequest = createStub( extends = "models.HyperRequest" ),
-						statusCode      = 302
+						statusCode      = 302,
+						executionTime   = 100
 					);
 					expect( res.isSuccess() ).toBeFalse();
 					expect( res.isRedirect() ).toBeTrue();
@@ -43,7 +46,8 @@ component extends="testbox.system.BaseSpec" {
 				it( "can tell if a request is a client error", function() {
 					var res = new Hyper.models.HyperResponse(
 						originalRequest = createStub( extends = "models.HyperRequest" ),
-						statusCode      = 422
+						statusCode      = 422,
+						executionTime   = 100
 					);
 					expect( res.isSuccess() ).toBeFalse();
 					expect( res.isRedirect() ).toBeFalse();
@@ -55,7 +59,8 @@ component extends="testbox.system.BaseSpec" {
 				it( "can tell if a request is a server error", function() {
 					var res = new Hyper.models.HyperResponse(
 						originalRequest = createStub( extends = "models.HyperRequest" ),
-						statusCode      = 500
+						statusCode      = 500,
+						executionTime   = 100
 					);
 					expect( res.isSuccess() ).toBeFalse();
 					expect( res.isRedirect() ).toBeFalse();

@@ -91,6 +91,18 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 				expect( req ).toBeInstanceOf( "Hyper.models.HyperRequest" );
 				expect( req.getUrl() ).toBeWithCase( "https://jsonplaceholder.typicode.com/posts/1" );
 			} );
+
+			it( "records the execution time of a request", function() {
+				var startTick   = getTickCount();
+				var res         = hyper.get( "https://jsonplaceholder.typicode.com/posts/1" );
+				var elapsedTime = getTickCount() - startTick;
+				expect( res.getExecutionTime() ).toBeNumeric();
+				expect( res.getExecutionTime() ).toBeGTE( 0, "Execution time should be positive." );
+				expect( res.getExecutionTime() ).toBeLTE(
+					elapsedTime,
+					"Execution time should be less than the total test execution time."
+				);
+			} );
 		} );
 	}
 
