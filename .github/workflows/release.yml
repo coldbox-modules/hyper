@@ -1,3 +1,5 @@
+name: Release
+
 on:
   push:
     branches:
@@ -62,27 +64,10 @@ jobs:
         run: |
           box install commandbox-semantic-release
           box config set endpoints.forgebox.APIToken=${{ secrets.FORGEBOX_TOKEN }}
+          box config set modules.commandbox-semantic-release.targetBranch=main
           box config set modules.commandbox-semantic-release.plugins='{ "VerifyConditions": "GitHubActionsConditionsVerifier@commandbox-semantic-release", "FetchLastRelease": "ForgeBoxReleaseFetcher@commandbox-semantic-release", "RetrieveCommits": "JGitCommitsRetriever@commandbox-semantic-release", "ParseCommit": "ConventionalChangelogParser@commandbox-semantic-release", "FilterCommits": "DefaultCommitFilterer@commandbox-semantic-release", "AnalyzeCommits": "DefaultCommitAnalyzer@commandbox-semantic-release", "VerifyRelease": "NullReleaseVerifier@commandbox-semantic-release", "GenerateNotes": "GitHubMarkdownNotesGenerator@commandbox-semantic-release", "UpdateChangelog": "FileAppendChangelogUpdater@commandbox-semantic-release", "CommitArtifacts": "NullArtifactsCommitter@commandbox-semantic-release", "PublishRelease": "ForgeBoxReleasePublisher@commandbox-semantic-release", "PublicizeRelease": "GitHubReleasePublicizer@commandbox-semantic-release" }'
       
       - name: Run Semantic Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: box semantic-release
-
-      # - name: Generate API Docs
-      #   run: box run-script generateAPIDocs
-
-      # - name: Get Current Version
-      #   id: current_version
-      #   run: echo "::set-output name=version::`cat $TRAVIS_BUILD_DIR/box.json | jq '.version' -r`"
-
-      # - name: Upload API Docs to S3
-      #   uses: jakejarvis/s3-sync-action@master
-      #   with:
-      #     args: --acl public-read
-      #   env:
-      #     AWS_S3_BUCKET: "apidocs.ortussolutions.com"
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     SOURCE_DIR: ".tmp/apidocs"
-      #     DEST_DIR: "coldbox-modules/hyper/${{ steps.current_version.version }}"
