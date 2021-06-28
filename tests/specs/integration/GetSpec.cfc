@@ -14,10 +14,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 
 			it( "can make a GET request", function() {
 				var res = hyper.get( "https://jsonplaceholder.typicode.com/posts/1" );
-				expect( res ).toBeInstanceOf(
-					"Hyper.models.HyperResponse",
-					"A HyperResponse object should have been returned."
-				);
+				expect( res ).toBeInstanceOf( "HyperResponse", "A HyperResponse object should have been returned." );
 				var data = res.json();
 				expect( data ).toBeStruct( "Expected to deserialize JSON data from the response." );
 				expect( data ).toBe(
@@ -83,12 +80,9 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 
 			it( "has access to the original HyperRequest in the HyperResponse", function() {
 				var res = hyper.get( "https://jsonplaceholder.typicode.com/posts/1" );
-				expect( res ).toBeInstanceOf(
-					"Hyper.models.HyperResponse",
-					"A HyperResponse object should have been returned."
-				);
+				expect( res ).toBeInstanceOf( "HyperResponse", "A HyperResponse object should have been returned." );
 				var req = res.getRequest();
-				expect( req ).toBeInstanceOf( "Hyper.models.HyperRequest" );
+				expect( req ).toBeInstanceOf( "HyperRequest" );
 				expect( req.getUrl() ).toBeWithCase( "https://jsonplaceholder.typicode.com/posts/1" );
 			} );
 

@@ -13,13 +13,13 @@ component extends="testbox.system.BaseSpec" {
 			} );
 
 			it( "can create a new request", function() {
-				expect( hyper.new() ).toBeInstanceOf( "Hyper.models.HyperRequest" );
+				expect( hyper.new() ).toBeInstanceOf( "HyperRequest" );
 			} );
 
 			it( "passes through all other methods to the HyperRequest", function() {
 				var req = hyper.setUrl( "https://jsonplaceholder.typicode.com/posts/1" );
 				expect( req ).toBeInstanceOf(
-					"Hyper.models.HyperRequest",
+					"HyperRequest",
 					"Expected a HyperRequest instance, since HyperBuilder does not have a `setUrl` method."
 				);
 				expect( req.getUrl() ).toBe( "https://jsonplaceholder.typicode.com/posts/1" );
