@@ -6,6 +6,7 @@ component {
 	this.cfmapping = "hyper";
 
 	function configure() {
+		interceptorSettings = { "customInterceptionPoints" : [ "onHyperRequest", "onHyperResponse" ] };
 	}
 
 }

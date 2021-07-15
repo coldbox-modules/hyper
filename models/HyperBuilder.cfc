@@ -3,11 +3,7 @@
  */
 component singleton {
 
-	/**
-	 * The default request object.
-	 * This object is duplicated for each new request.
-	 */
-	this.defaults = new Hyper.models.HyperRequest();
+	property name="interceptorService" inject="box:interceptorService";
 
 	/**
 	 * Create a new HyperBuilder.
@@ -16,6 +12,7 @@ component singleton {
 	 * @returns The new HyperBuilder instance.
 	 */
 	function init() {
+		this.defaults = new Hyper.models.HyperRequest();
 		for ( var key in arguments ) {
 			invoke(
 				this.defaults,
@@ -26,13 +23,17 @@ component singleton {
 		return this;
 	}
 
+	function onDIComplete() {
+		this.defaults.setInterceptorService( variables.interceptorService );
+	}
+
 	/**
 	 * Create a new request from the default request.
 	 *
 	 * @returns A new HyperRequest instance from the default request.
 	 */
 	function new() {
-		return duplicate( this.defaults );
+		return this.defaults.clone();
 	}
 
 	/**

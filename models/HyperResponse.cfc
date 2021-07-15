@@ -4,6 +4,11 @@
 component accessors="true" {
 
 	/**
+	 * Unique response ID representing this response.
+	 */
+	property name="responseID";
+
+	/**
 	 * The status code for the response.
 	 */
 	property
@@ -68,6 +73,7 @@ component accessors="true" {
 		any data       = "",
 		timestamp      = now()
 	) {
+		variables.responseID    = createUUID();
 		variables.request       = arguments.originalRequest;
 		variables.charset       = arguments.charset;
 		variables.statusCode    = arguments.statusCode;
