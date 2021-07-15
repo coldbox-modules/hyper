@@ -629,8 +629,8 @@ component accessors="true" {
 		variables.queryParams = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.headers     = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.headers.put( "Content-Type", "application/json" );
-        variables.requestCallbacks = [];
-        variables.responseCallbacks = [];
+		variables.requestCallbacks  = [];
+		variables.responseCallbacks = [];
 		return this;
 	}
 
