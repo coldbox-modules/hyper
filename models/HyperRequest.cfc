@@ -4,7 +4,17 @@
 component accessors="true" {
 
 	/**
-	 * The httpClient to use for the request
+	 * Unique request ID representing this request.
+	 */
+	property name="requestID";
+
+	/**
+	 * ColdBox Interceptor Service to announce request and response interception points.
+	 */
+	property name="interceptorService";
+
+	/**
+	 * The httpClient to use for the request.
 	 */
 	property name="httpClient";
 
@@ -118,15 +128,35 @@ component accessors="true" {
 	property name="authType" default="BASIC";
 
 	/**
+	 * An array of callback functions to call
+	 * before firing off a request.
+	 */
+	property name="requestCallbacks" type="array";
+
+	/**
+	 * An array of callback functions to call
+	 * after receiving a response.
+	 */
+	property name="responseCallbacks" type="array";
+
+	/**
 	 * Initialize a new HyperRequest.
 	 *
 	 * @returns The HyperRequest instance.
 	 */
 	function init( httpClient = new CfhttpHttpClient() ) {
+		variables.requestID   = createUUID();
 		variables.httpClient  = arguments.httpClient;
 		variables.queryParams = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.headers     = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.headers.put( "Content-Type", "application/json" );
+		variables.requestCallbacks   = [];
+		variables.responseCallbacks  = [];
+		// This is overwritten by the HyperBuilder if WireBox exists.
+		variables.interceptorService = {
+			"announce" : function() {
+			}
+		};
 		return this;
 	}
 
@@ -388,6 +418,30 @@ component accessors="true" {
 	}
 
 	/**
+	 * Schedules a callback to be ran when executing the request.
+	 *
+	 * @callback The callback to run when executing the request.
+	 *
+	 * @returns  The HyperRequest instance.
+	 */
+	public HyperRequest function withRequestCallback( required function callback ) {
+		arrayAppend( variables.requestCallbacks, arguments.callback );
+		return this;
+	}
+
+	/**
+	 * Schedules a callback to be ran when receiving the response.
+	 *
+	 * @callback The callback to run when receiving the response.
+	 *
+	 * @returns  The HyperRequest instance.
+	 */
+	public HyperRequest function withResponseCallback( required function callback ) {
+		arrayAppend( variables.responseCallbacks, arguments.callback );
+		return this;
+	}
+
+	/**
 	 * Quickly set many request properties using a struct.
 	 * The key should be the name of one of the properties on the request.
 	 * e.g. `url`, `headers`, `method`, `body`
@@ -535,7 +589,18 @@ component accessors="true" {
 			throw( type = "NoUrlException" );
 		}
 
+		for ( var callback in variables.requestCallbacks ) {
+			callback( this );
+		}
+		variables.interceptorService.announce( "onHyperRequest", { "request" : this } );
+
 		var res = httpClient.send( this );
+
+		for ( var callback in variables.responseCallbacks ) {
+			callback( res );
+		}
+		variables.interceptorService.announce( "onHyperResponse", { "response" : res } );
+
 
 		if ( res.isRedirect() && shouldFollowRedirect() ) {
 			return followRedirect( res );
@@ -564,6 +629,8 @@ component accessors="true" {
 		variables.queryParams = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.headers     = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.headers.put( "Content-Type", "application/json" );
+		variables.requestCallbacks  = [];
+		variables.responseCallbacks = [];
 		return this;
 	}
 
@@ -593,6 +660,36 @@ component accessors="true" {
 			failureCallback( this );
 		}
 		return this;
+	}
+
+	public HyperRequest function clone() {
+		var req = new HyperRequest();
+		req.setInterceptorService( variables.interceptorService );
+		req.setHttpClient( variables.httpClient );
+		req.setBaseUrl( variables.baseUrl );
+		req.setUrl( variables.url );
+		req.setResolveUrls( variables.resolveUrls );
+		req.setMethod( variables.method );
+		req.setUsername( variables.username );
+		req.setPassword( variables.password );
+		req.setTimeout( variables.timeout );
+		req.setMaximumRedirects( variables.maximumRedirects );
+		req.setBody( duplicate( variables.body ) );
+		req.setBodyFormat( variables.bodyFormat );
+		req.setReferrer( isNull( variables.referrer ) ? javacast( "null", "" ) : variables.referrer );
+		req.setHeaders( variables.headers.clone() );
+		req.setQueryParams( variables.queryParams.clone() );
+		req.setThrowOnError( variables.throwOnError );
+		req.setClientCert( isNull( variables.clientCert ) ? javacast( "null", "" ) : variables.clientCert );
+		req.setClientCertPassword(
+			isNull( variables.clientCertPassword ) ? javacast( "null", "" ) : variables.clientCertPassword
+		);
+		req.setDomain( variables.domain );
+		req.setWorkstation( variables.workstation );
+		req.setAuthType( variables.authType );
+		req.setRequestCallbacks( duplicate( variables.requestCallbacks ) );
+		req.setResponseCallbacks( duplicate( variables.responseCallbacks ) );
+		return req;
 	}
 
 	/**
@@ -653,7 +750,7 @@ component accessors="true" {
 	 * @returns The HyperResponse corresponding to the redirect request.
 	 */
 	private function followRedirect( res ) {
-		var redirectReq = new Hyper.models.HyperRequest();
+		var redirectReq = this.clone();
 		redirectReq.setReferrer( res );
 		redirectReq.setUrl(
 			createObject( "java", "java.net.URI" )

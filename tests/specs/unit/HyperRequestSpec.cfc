@@ -120,6 +120,52 @@ component extends="testbox.system.BaseSpec" {
 				expect( req.getClientCert() ).toBe( "/some/absolute/path" );
 				expect( req.getClientCertPassword() ).toBe( "mypassword" );
 			} );
+
+			it( "can define onRequest callback hooks", function() {
+				var method  = "not set yet";
+				var headers = {};
+				req.setRequestCallbacks( [
+					function( req ) {
+						method = req.getMethod();
+					}
+				] );
+				req.withRequestCallback( function( req ) {
+					headers = req.getHeaders();
+				} );
+
+				req.withHeaders( { "Accept" : "application/xml" } )
+					.patch( "https://jsonplaceholder.typicode.com/posts/1" );
+				expect( method ).toBe( "PATCH" );
+				expect( headers ).toBe( {
+					"Accept"       : "application/xml",
+					"Content-Type" : "application/json"
+				} );
+			} );
+
+			it( "can define onResponse callback hooks", function() {
+				var responseId = "not set yet";
+				var statusCode = 0;
+				req.setResponseCallbacks( [
+					function( res ) {
+						responseId = res.getResponseId();
+					}
+				] );
+				req.withResponseCallback( function( res ) {
+					statusCode = res.getStatusCode();
+				} );
+
+				var res = req.post(
+					"https://jsonplaceholder.typicode.com/posts",
+					{
+						title  : "New title",
+						body   : "New body",
+						userId : 1
+					}
+				);
+				expect( responseId ).notToBe( "not set yet" );
+				expect( responseId ).toBe( res.getResponseId() );
+				expect( statusCode ).toBe( 201 );
+			} );
 		} );
 	}
 
