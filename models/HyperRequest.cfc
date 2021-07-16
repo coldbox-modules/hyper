@@ -662,6 +662,11 @@ component accessors="true" {
 		return this;
 	}
 
+    /**
+     * Clones the current request into a new HyperRequest.
+     * 
+     * @returns A new HyperRequest instance cloned from this one.
+     */
 	public HyperRequest function clone() {
 		var req = new HyperRequest();
 		req.setInterceptorService( variables.interceptorService );

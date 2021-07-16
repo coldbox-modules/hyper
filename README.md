@@ -521,6 +521,16 @@ A convenience method to not throw on errors.
 | ------------ | ---- | -------- | ------- | ----------- |
 | No arguments |      |          |         |             |
 
+##### `clone`
+
+Clones the current request into a new HyperRequest.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
+Returns: A new HyperRequest instance cloned from this one.
+
 ##### `setProperties`
 
 Quickly set many request properties using a struct. The key should be the name
