@@ -136,6 +136,14 @@ Send the HTTP request and return a HyperResponse.
 
 #### Request Properties
 
+##### `getRequestId`
+
+Gets the unique request ID representing this request.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
 ##### `getFullURL`
 
 Gets the full URL for the request.
@@ -220,7 +228,7 @@ Sets the username and password for HTTP Basic Auth.
 
 ##### `withNTLMAuth`
 
-Sets the username, password, domain and workstation  for NTLM Auth.
+Sets the username, password, domain and workstation for NTLM Auth.
 
 | Name        | Type   | Required | Default | Description                        |
 | ----------- | ------ | -------- | ------- | ---------------------------------- |
@@ -230,6 +238,26 @@ Sets the username, password, domain and workstation  for NTLM Auth.
 | workstation | string | true     |         | The workstation for the NTLM auth. |
 
 Workstation can be obtained with `createObject('java','java.net.InetAddress').getLocalHost().getHostName()`
+
+##### `withRequestCallback`
+
+Schedules a callback to be ran when executing the request.
+
+| Name        | Type     | Required | Default | Description                                     |
+| ----------- | -------- | -------- | ------- | ----------------------------------------------- |
+| callback    | function | true     |         | The callback to run when executing the request. |
+
+Returns: the `HyperRequest` instance
+
+##### `withResponseCallback`
+
+Schedules a callback to be ran when receiving the response.
+
+| Name        | Type     | Required | Default | Description                                      |
+| ----------- | -------- | -------- | ------- | ------------------------------------------------ |
+| callback    | function | true     |         | The callback to run when receiving the response. |
+
+Returns: the `HyperRequest` instance
 
 ##### `getUsername`
 
@@ -503,11 +531,38 @@ of one of the properties on the request, e.g. `url`, `headers`, `method`,
 | ---------- | ------ | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | properties | struct | true     |         | A struct of properties to set. Each property name will be set on the request. Properties that don't exist on the request will throw an error. |
 
+##### `setHttpClient`
+
+Sets the HTTP Client to use for the request.  The client should conform to
+the `HyperHttpClientInterface` (though it does not need to use the `implements` keyword).
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| httpClient   | `HyperHttpClientInterface`     | `true`          |         | The httpClient to use for the request.             |
+
+##### `setInterceptorService`
+
+ColdBox Interceptor Service to announce request and response interception points.
+A noop option is provided in the `init` for non-ColdBox settings.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| interceptorService   | any    | `true`          |         | The interceptor service to use for the request.             |
+
 ### HyperResponse
 
 The `HyperResponse` component is a read-only wrapper to easily grab different information about the response.
 
+##### `getResponseId`
+
+Gets the unique response ID representing this response.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
 ##### `getStatusCode`
+
 
 Gets the status code for the response.
 
@@ -542,6 +597,14 @@ Gets the charset value for the response.
 ##### `getTimestamp`
 
 Gets the timestamp for when this response was recieved.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
+##### `getExecutionTime`
+
+Gets the execution time of the request.
 
 | Name         | Type | Required | Default | Description |
 | ------------ | ---- | -------- | ------- | ----------- |
@@ -696,6 +759,12 @@ property name="url" default="";
 property name="resolveUrls" default="false";
 
 /**
+* Setting this to false will not automatically encode the url passed.
+* WARNING: Setting this to false is not supported on Adobe engines.
+*/
+property name="encodeUrl" default="true";
+
+/**
 * The HTTP method for the request.
 */
 property name="method" default="GET";
@@ -763,4 +832,40 @@ property name="clientCert";
 * 	Password used to decrypt the client certificate.
 */
 property name="clientCertPassword";
+
+/**
+* The domain for the request for NTLM auth.
+*/
+property name="domain" default="";
+
+/**
+* The workstation for the request for NTLM auth.
+*/
+property name="workstation" default="";
+
+/**
+* The authType for the request
+*/
+property name="authType" default="BASIC";
+
+/**
+* An array of callback functions to call
+* before firing off a request.
+*/
+property name="requestCallbacks" type="array";
+
+/**
+* An array of callback functions to call
+* after receiving a response.
+*/
+property name="responseCallbacks" type="array";
 ```
+
+### Interceptors
+
+Hyper announces two interception points you can listen to in your ColdBox applications:
+`onHyperRequest` and `onHyperResponse`.
+
+`onHyperRequest` receives a struct with a `request` key as the data.
+
+`onHyperResponse` receives a struct with a `response` key as the data.
