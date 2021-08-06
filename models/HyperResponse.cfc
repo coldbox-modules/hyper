@@ -91,7 +91,11 @@ component accessors="true" {
 	 */
 	function json() {
 		if ( !isJSON( getData() ) ) {
-			throw( type = "DeserializeJsonException", message = "The response is not json." );
+			throw(
+                type = "DeserializeJsonException",
+                message = "The response is not json.",
+                detail = getData()
+            );
 		}
 		return deserializeJSON( getData() );
 	}
