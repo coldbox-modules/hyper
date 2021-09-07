@@ -24,7 +24,9 @@ component singleton {
 	}
 
 	function onDIComplete() {
-		this.defaults.setInterceptorService( variables.interceptorService );
+		if ( structKeyExists( variables, "interceptorService" ) ) {
+			this.defaults.setInterceptorService( variables.interceptorService );
+		}
 	}
 
 	/**
