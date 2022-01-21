@@ -94,6 +94,18 @@ component implements="HyperHttpClientInterface" {
 				);
 			}
 
+			for ( var file in req.getFiles() ) {
+				var fileAttrCollection = {
+					type : "file",
+					name : file.name,
+					file : file.path
+				};
+				if ( file.keyExists( "mimeType" ) && !isNull( file.mimeType ) ) {
+					fileAttrCollection[ "mimeType" ] = file.mimeType;
+				}
+				cfhttpparam( attributeCollection = fileAttrCollection );
+			}
+
 			if ( req.hasBody() ) {
 				if ( req.getBodyFormat() == "json" ) {
 					cfhttpparam( type = "body", value = req.prepareBody() );
