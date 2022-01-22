@@ -26,7 +26,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 						"#localEndpoint#/photos",
 						{ "description" : "Chuck Norris doesn't need two different photos." }
 					);
-				expect( res.getStatusCode() ).toBe( 201 );
+				expect( res.getStatusCode() ).toBe( 201, res.getData() );
 				expect( res.json() ).toBe( {
 					"id"          : 777, // this is always the id returned
 					"smallPhoto"  : "chuck_norris.jpg",
