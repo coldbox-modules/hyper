@@ -36,7 +36,8 @@ component {
 			// Application Aspects
 			handlerCaching           : false,
 			eventCaching             : false,
-			viewCaching              : false
+			viewCaching              : false,
+			customErrorTemplate      : "/coldbox/system/exceptions/BugReport.cfm"
 		};
 
 		// custom settings
@@ -84,7 +85,7 @@ component {
 	 * Development environment
 	 */
 	function development() {
-		coldbox.customErrorTemplate = "/coldbox/system/includes/BugReport.cfm";
+		coldbox.customErrorTemplate = "/coldbox/system/exceptions/BugReport.cfm";
 	}
 
 }

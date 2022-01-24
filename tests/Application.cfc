@@ -15,4 +15,10 @@ component {
     this.mappings[ "/app" ] = testsPath & "resources/app";
     this.mappings[ "/coldbox" ] = testsPath & "resources/app/coldbox";
     this.mappings[ "/testbox" ] = rootPath & "/testbox";
+
+    // function onRequestStart() {
+    //     applicationStop();
+    //     abort;
+    // }
+
 }

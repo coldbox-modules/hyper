@@ -98,6 +98,11 @@ component accessors="true" {
 	property name="queryParams";
 
 	/**
+	 * An array of files to upload for the request.
+	 */
+	property name="files" type="array";
+
+	/**
 	 * Flag to throw on a cfhttp error.
 	 */
 	property name="throwOnError" default="false";
@@ -150,6 +155,7 @@ component accessors="true" {
 		variables.queryParams = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.headers     = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.headers.put( "Content-Type", "application/json" );
+		variables.files              = [];
 		variables.requestCallbacks   = [];
 		variables.responseCallbacks  = [];
 		// This is overwritten by the HyperBuilder if WireBox exists.
@@ -522,6 +528,35 @@ component accessors="true" {
 	}
 
 	/**
+	 * Attaches a file to the Hyper request.
+	 * Also sets the Content-Type as `multipart/form-data`.
+	 * Multiple files can be attached by calling `attach` multiple times before calling a send method.
+	 *
+	 * @name      The name of the file being uploaded.
+	 * @path      The absolute path to the file to be uploaded.
+	 * @mimeType  An optional mime type to associate with the file.
+	 *
+	 * @returns   The HyperRequest instance.
+	 */
+	function attach(
+		required string name,
+		required string path,
+		string mimeType
+	) {
+		setBodyFormat( "formFields" );
+		setContentType( "multipart/form-data" );
+		var fileInfo = {
+			name : arguments.name,
+			path : arguments.path
+		};
+		if ( !isNull( arguments.mimeType ) ) {
+			fileInfo[ "mimeType" ] = arguments.mimeType;
+		}
+		variables.files.append( fileInfo );
+		return this;
+	}
+
+	/**
 	 * A convenience method to set the Content-Type header.
 	 *
 	 * @type    The Content-Type value for the request.
@@ -629,6 +664,7 @@ component accessors="true" {
 		variables.queryParams = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.headers     = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.headers.put( "Content-Type", "application/json" );
+		variables.files             = [];
 		variables.requestCallbacks  = [];
 		variables.responseCallbacks = [];
 		return this;
@@ -662,11 +698,11 @@ component accessors="true" {
 		return this;
 	}
 
-    /**
-     * Clones the current request into a new HyperRequest.
-     * 
-     * @returns A new HyperRequest instance cloned from this one.
-     */
+	/**
+	 * Clones the current request into a new HyperRequest.
+	 *
+	 * @returns A new HyperRequest instance cloned from this one.
+	 */
 	public HyperRequest function clone() {
 		var req = new HyperRequest();
 		req.setInterceptorService( variables.interceptorService );
@@ -684,6 +720,7 @@ component accessors="true" {
 		req.setReferrer( isNull( variables.referrer ) ? javacast( "null", "" ) : variables.referrer );
 		req.setHeaders( variables.headers.clone() );
 		req.setQueryParams( variables.queryParams.clone() );
+		req.setFiles( duplicate( variables.files ) );
 		req.setThrowOnError( variables.throwOnError );
 		req.setClientCert( isNull( variables.clientCert ) ? javacast( "null", "" ) : variables.clientCert );
 		req.setClientCertPassword(

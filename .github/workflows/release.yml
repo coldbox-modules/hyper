@@ -12,7 +12,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '__SEMANTIC RELEASE VERSION UPDATE__')"
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         cfengine: ["lucee@5", "adobe@2016", "adobe@2018"]
         coldbox: ["coldbox@6"]
@@ -23,16 +23,16 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v1.4.3
         with:
-          java-version: 11 
+          java-version: 11
 
       - name: Set Up CommandBox
         uses: elpete/setup-commandbox@v1.0.0
-      
+
       - name: Install dependencies
         run: |
           box install
           box install ${{ matrix.coldbox }} --noSave
-      
+
       - name: Start server
         run: box server start cfengine=${{ matrix.cfengine }} --noSaveSettings
 
@@ -55,18 +55,18 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v1.4.3
         with:
-          java-version: 11 
+          java-version: 11
 
       - name: Set Up CommandBox
         uses: elpete/setup-commandbox@v1.0.0
-      
+
       - name: Install and Configure Semantic Release
         run: |
           box install commandbox-semantic-release
           box config set endpoints.forgebox.APIToken=${{ secrets.FORGEBOX_TOKEN }}
           box config set modules.commandbox-semantic-release.targetBranch=main
           box config set modules.commandbox-semantic-release.plugins='{ "VerifyConditions": "GitHubActionsConditionsVerifier@commandbox-semantic-release", "FetchLastRelease": "ForgeBoxReleaseFetcher@commandbox-semantic-release", "RetrieveCommits": "JGitCommitsRetriever@commandbox-semantic-release", "ParseCommit": "ConventionalChangelogParser@commandbox-semantic-release", "FilterCommits": "DefaultCommitFilterer@commandbox-semantic-release", "AnalyzeCommits": "DefaultCommitAnalyzer@commandbox-semantic-release", "VerifyRelease": "NullReleaseVerifier@commandbox-semantic-release", "GenerateNotes": "GitHubMarkdownNotesGenerator@commandbox-semantic-release", "UpdateChangelog": "FileAppendChangelogUpdater@commandbox-semantic-release", "CommitArtifacts": "NullArtifactsCommitter@commandbox-semantic-release", "PublishRelease": "ForgeBoxReleasePublisher@commandbox-semantic-release", "PublicizeRelease": "GitHubReleasePublicizer@commandbox-semantic-release" }'
-      
+
       - name: Run Semantic Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

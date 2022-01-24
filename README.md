@@ -496,6 +496,18 @@ Check if the request has a query parameter with the given name.
 | ---- | ------ | -------- | ------- | ----------------------------------------- |
 | name | string | true     |         | The name of the query parameter to check. |
 
+##### `attach`
+
+Attaches a file to the Hyper request.
+Also sets the Content-Type as `multipart/form-data`.
+Multiple files can be attached by calling `attach` multiple times before calling a send method.
+
+| Name     | Type   | Required | Default | Description                                       |
+| -------- | ------ | -------- | ------- | ------------------------------------------------- |
+| name     | string | true     |         | The name of the file being uploaded.              |
+| path     | string | true     |         | The absolute path to the file to be uploaded.     |
+| mimeType | string | false    |         | An optional mime type to associate with the file. |
+
 ##### `setThrowOnError`
 
 Sets the throw on error property for the request. If true, error codes and status

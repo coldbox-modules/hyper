@@ -78,6 +78,12 @@ component implements="HyperHttpClientInterface" {
 		cfhttp( attributeCollection = attrCollection ) {
 			var headers = req.getHeaders();
 			for ( var name in headers ) {
+				// we want to skip adding a Content-Type header when there are files
+				// so that the CFML engines can add the correct boundary to the Content-Type
+				if ( name == "Content-Type" && !req.getFiles().isEmpty() ) {
+					continue;
+				}
+
 				cfhttpparam(
 					type  = "header",
 					name  = name,
@@ -92,6 +98,18 @@ component implements="HyperHttpClientInterface" {
 					name  = name,
 					value = queryParams[ name ]
 				);
+			}
+
+			for ( var file in req.getFiles() ) {
+				var fileAttrCollection = {
+					type : "file",
+					name : file.name,
+					file : file.path
+				};
+				if ( file.keyExists( "mimeType" ) && !isNull( file.mimeType ) ) {
+					fileAttrCollection[ "mimeType" ] = file.mimeType;
+				}
+				cfhttpparam( attributeCollection = fileAttrCollection );
 			}
 
 			if ( req.hasBody() ) {

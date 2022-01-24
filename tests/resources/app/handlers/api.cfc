@@ -35,4 +35,47 @@ component {
 		);
 	}
 
+	function photos( event, rc, prc ) {
+		if ( !event.valueExists( "smallPhoto" ) ) {
+			return event.renderData(
+				type       = "text",
+				statusCode = 422,
+				data       = "A `smallPhoto` is required."
+			);
+		}
+
+		if ( !event.valueExists( "largePhoto" ) ) {
+			return event.renderData(
+				type       = "text",
+				statusCode = 422,
+				data       = "A `largePhoto` is required."
+			);
+		}
+
+		var smallPhoto = fileUpload(
+			getTempDirectory(),
+			"smallPhoto",
+			"*",
+			"overwrite"
+		);
+
+		var largePhoto = fileUpload(
+			getTempDirectory(),
+			"largePhoto",
+			"*",
+			"overwrite"
+		);
+
+		return event.renderData(
+			type       = "json",
+			statusCode = 201,
+			data       = {
+				"id"          : 777,
+				"smallPhoto"  : smallPhoto.serverFile,
+				"largePhoto"  : largePhoto.serverFile,
+				"description" : rc.description
+			}
+		);
+	}
+
 }
