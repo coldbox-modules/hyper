@@ -347,6 +347,24 @@ component accessors="true" {
 	}
 
 	/**
+	 * Adds specified headers to the request if they exist.
+	 * Usually used in conjunction with the current CFML request headers.
+	 *
+	 * @names   An array of header names to add to the request, if they exist in the `headers` struct.
+	 * @headers A struct of headers to inspect. Default: `getHTTPRequestData( false ).headers`
+	 *
+	 * @returns The HyperRequest instance.
+	 */
+	function forwardHeaders( required array names, struct headers = getHTTPRequestData( false ).headers ) {
+		for ( var name in arguments.names ) {
+			if ( arguments.headers.keyExists( name ) ) {
+				setHeader( name, arguments.headers[ name ] );
+			}
+		}
+		return this;
+	}
+
+	/**
 	 * Check if the request has a header with the given name.
 	 *
 	 * @name    The name of the header to check.

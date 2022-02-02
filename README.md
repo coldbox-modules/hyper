@@ -431,6 +431,15 @@ Add additional headers to the request.
 | ------- | ------ | -------- | ------- | ------------------------------------------ |
 | headers | struct | true     |         | A struct of headers to add to the request. |
 
+##### `forwardHeaders`
+
+Adds specified headers to the request if they exist. Usually used in conjunction with the current CFML request headers.
+
+| Name    | Type   | Required | Default                               | Description                                                                           |
+| ------- | ------ | -------- | ------------------------------------- | ------------------------------------------------------------------------------------- |
+| names   | array  | true     |                                       | An array of header names to add to the request if they exist in the `headers` struct. |
+| headers | struct | false    | `getHTTPRequestData( false ).headers` | A struct of headers to inspect.                                                       |
+
 ##### `hasHeader`
 
 Check if the request has a header with the given name.

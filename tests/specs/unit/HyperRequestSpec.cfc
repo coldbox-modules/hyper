@@ -166,6 +166,21 @@ component extends="testbox.system.BaseSpec" {
 				expect( responseId ).toBe( res.getResponseId() );
 				expect( statusCode ).toBe( 201 );
 			} );
+
+			it( "can forward on headers if they exist", function() {
+				expect( req.hasHeader( "X-Requested-With" ) ).toBeFalse();
+				expect( req.hasHeader( "X-Forwarded-For" ) ).toBeFalse();
+				req.forwardHeaders(
+					[
+						"X-Forwarded-For",
+						"X-Requested-With"
+					],
+					{ "X-Forwarded-For" : "1.1.1.1" }
+				);
+				expect( req.hasHeader( "X-Requested-With" ) ).toBeFalse();
+				expect( req.hasHeader( "X-Forwarded-For" ) ).toBeTrue();
+				expect( req.getHeader( "X-Forwarded-For" ) ).toBe( "1.1.1.1" );
+			} );
 		} );
 	}
 
