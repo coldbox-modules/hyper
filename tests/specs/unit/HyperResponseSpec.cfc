@@ -30,6 +30,22 @@ component extends="testbox.system.BaseSpec" {
 					expect( res.isServerError() ).toBeFalse();
 				} );
 
+				it( "can tell if a request is an OK response", function() {
+					var resA = new Hyper.models.HyperResponse(
+						originalRequest = createStub( extends = "models.HyperRequest" ),
+						statusCode      = 200,
+						executionTime   = 100
+					);
+					expect( resA.isOK() ).toBeTrue();
+
+					var resB = new Hyper.models.HyperResponse(
+						originalRequest = createStub( extends = "models.HyperRequest" ),
+						statusCode      = 204,
+						executionTime   = 100
+					);
+					expect( resB.isOK() ).toBeFalse();
+				} );
+
 				it( "can tell if a request is a redirect", function() {
 					var res = new Hyper.models.HyperResponse(
 						originalRequest = createStub( extends = "models.HyperRequest" ),
@@ -54,6 +70,54 @@ component extends="testbox.system.BaseSpec" {
 					expect( res.isError() ).toBeTrue();
 					expect( res.isClientError() ).toBeTrue();
 					expect( res.isServerError() ).toBeFalse();
+				} );
+
+				it( "can tell if a request is an unauthorized error", function() {
+					var resA = new Hyper.models.HyperResponse(
+						originalRequest = createStub( extends = "models.HyperRequest" ),
+						statusCode      = 401,
+						executionTime   = 100
+					);
+					expect( resA.isUnauthorized() ).toBeTrue();
+
+					var resB = new Hyper.models.HyperResponse(
+						originalRequest = createStub( extends = "models.HyperRequest" ),
+						statusCode      = 400,
+						executionTime   = 100
+					);
+					expect( resB.isUnauthorized() ).toBeFalse();
+				} );
+
+				it( "can tell if a request is a forbidden error", function() {
+					var resA = new Hyper.models.HyperResponse(
+						originalRequest = createStub( extends = "models.HyperRequest" ),
+						statusCode      = 403,
+						executionTime   = 100
+					);
+					expect( resA.isForbidden() ).toBeTrue();
+
+					var resB = new Hyper.models.HyperResponse(
+						originalRequest = createStub( extends = "models.HyperRequest" ),
+						statusCode      = 400,
+						executionTime   = 100
+					);
+					expect( resB.isForbidden() ).toBeFalse();
+				} );
+
+				it( "can tell if a request is a not found error", function() {
+					var resA = new Hyper.models.HyperResponse(
+						originalRequest = createStub( extends = "models.HyperRequest" ),
+						statusCode      = 404,
+						executionTime   = 100
+					);
+					expect( resA.isNotFound() ).toBeTrue();
+
+					var resB = new Hyper.models.HyperResponse(
+						originalRequest = createStub( extends = "models.HyperRequest" ),
+						statusCode      = 401,
+						executionTime   = 100
+					);
+					expect( resB.isNotFound() ).toBeFalse();
 				} );
 
 				it( "can tell if a request is a server error", function() {

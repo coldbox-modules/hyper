@@ -648,6 +648,14 @@ Returns true if the request status code is considered successful.
 | ------------ | ---- | -------- | ------- | ----------- |
 | No arguments |      |          |         |             |
 
+##### `isOK`
+
+Returns true if the request status code is 200 OK.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
 ##### `isRedirect`
 
 Returns true if the request status code is considered a redirect.
@@ -667,6 +675,30 @@ Returns true if the request status code is considered either a client error or a
 ##### `isClientError`
 
 Returns true if the request status code is considered a client error.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
+##### `isUnauthorized`
+
+Returns true if the request status code is 401 Unauthorized.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
+##### `isForbidden`
+
+Returns true if the request status code is 403 Forbidden.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
+##### `isNotFound`
+
+Returns true if the request status code is 404 Not Found.
 
 | Name         | Type | Required | Default | Description |
 | ------------ | ---- | -------- | ------- | ----------- |

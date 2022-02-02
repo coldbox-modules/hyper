@@ -108,6 +108,13 @@ component accessors="true" {
 	}
 
 	/**
+	 * Returns true if the request status code is 200 OK.
+	 */
+	function isOK() {
+		return getStatusCode() == "200";
+	}
+
+	/**
 	 * Returns true if the request status code is considered a redirect.
 	 */
 	function isRedirect() {
@@ -129,6 +136,27 @@ component accessors="true" {
 	 */
 	function isClientError() {
 		return left( getStatusCode(), 1 ) == "4";
+	}
+
+	/**
+	 * Returns true if the request status code is 401 Unauthorized.
+	 */
+	function isUnauthorized() {
+		return getStatusCode() == "401";
+	}
+
+	/**
+	 * Returns true if the request status code is 403 Forbidden.
+	 */
+	function isForbidden() {
+		return getStatusCode() == "403";
+	}
+
+	/**
+	 * Returns true if the request status code is 404 Not Found.
+	 */
+	function isNotFound() {
+		return getStatusCode() == "404";
 	}
 
 	/**
