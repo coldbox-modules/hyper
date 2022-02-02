@@ -168,10 +168,17 @@ component accessors="true" {
 	}
 
 	/**
+	 * Checks if a header exists in the response.
+	 */
+	public boolean function hasHeader( required string name ) {
+		return variables.headers.keyExists( lCase( arguments.name ) );
+	}
+
+	/**
 	 * Gets the value of a header from the response.
 	 */
-	function getHeader( name ) {
-		return variables.headers[ lCase( name ) ];
+	public any function getHeader( required string name, any defaultValue = "" ) {
+		return hasHeader( arguments.name ) ? variables.headers[ lCase( arguments.name ) ] : arguments.defaultValue;
 	}
 
 }

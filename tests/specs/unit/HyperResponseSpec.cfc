@@ -133,6 +133,37 @@ component extends="testbox.system.BaseSpec" {
 					expect( res.isServerError() ).toBeTrue();
 				} );
 			} );
+
+			it( "can check if a response header exists", function() {
+				var res = new Hyper.models.HyperResponse(
+					originalRequest = createStub( extends = "models.HyperRequest" ),
+					statusCode      = 200,
+					executionTime   = 100,
+					headers         = { "Content-Type" : "text/html; charset=utf-8" }
+				);
+				expect( res.hasHeader( "Etag" ) ).toBeFalse();
+				expect( res.hasHeader( "Content-Type" ) ).toBeTrue();
+			} );
+
+			it( "can get the value of a response header", function() {
+				var res = new Hyper.models.HyperResponse(
+					originalRequest = createStub( extends = "models.HyperRequest" ),
+					statusCode      = 200,
+					executionTime   = 100,
+					headers         = { "Content-Type" : "text/html; charset=utf-8" }
+				);
+				expect( res.getHeader( "Content-Type" ) ).toBe( "text/html; charset=utf-8" );
+			} );
+
+			it( "can provide a default value for a response header", function() {
+				var res = new Hyper.models.HyperResponse(
+					originalRequest = createStub( extends = "models.HyperRequest" ),
+					statusCode      = 200,
+					executionTime   = 100,
+					headers         = {}
+				);
+				expect( res.getHeader( "Content-Type", "text/html; charset=utf-8" ) ).toBe( "text/html; charset=utf-8" );
+			} );
 		} );
 	}
 
