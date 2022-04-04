@@ -160,7 +160,7 @@ component accessors="true" {
 		variables.responseCallbacks  = [];
 		// This is overwritten by the HyperBuilder if WireBox exists.
 		variables.interceptorService = {
-			"announce" : function() {
+			"processState" : function() {
 			}
 		};
 		return this;
@@ -645,14 +645,14 @@ component accessors="true" {
 		for ( var callback in variables.requestCallbacks ) {
 			callback( this );
 		}
-		variables.interceptorService.announce( "onHyperRequest", { "request" : this } );
+		variables.interceptorService.processState( "onHyperRequest", { "request" : this } );
 
 		var res = httpClient.send( this );
 
 		for ( var callback in variables.responseCallbacks ) {
 			callback( res );
 		}
-		variables.interceptorService.announce( "onHyperResponse", { "response" : res } );
+		variables.interceptorService.processState( "onHyperResponse", { "response" : res } );
 
 
 		if ( res.isRedirect() && shouldFollowRedirect() ) {
