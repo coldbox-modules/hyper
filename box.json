@@ -9,6 +9,12 @@
         "type":"git",
         "URL":"https://github.com/coldbox-modules/hyper"
     },
+    "license":[
+        {
+            "type":"MIT",
+            "URL":"https://github.com/coldbox-modules/hyper/LICENSE"
+        }
+    ],
     "bugs":"https://github.com/coldbox-modules/hyper/issues",
     "slug":"hyper",
     "shortDescription":"A CFML HTTP Builder",
