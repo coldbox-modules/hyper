@@ -12,6 +12,32 @@ component extends="testbox.system.BaseSpec" {
 				}
 			} );
 
+			it( "can serialize to a memento", function() {
+				expect( variables.req.getMemento() ).toBe( {
+					"requestID"          : variables.req.getRequestID(),
+					"baseUrl"            : variables.req.getBaseUrl(),
+					"url"                : variables.req.getUrl(),
+					"fullUrl"            : variables.req.getFullUrl(),
+					"method"             : variables.req.getMethod(),
+					"queryParams"        : variables.req.getQueryParams(),
+					"headers"            : variables.req.getHeaders(),
+					"files"              : variables.req.getFiles(),
+					"bodyFormat"         : variables.req.getBodyFormat(),
+					"body"               : variables.req.getBody(),
+					"referrer"           : "",
+					"throwOnError"       : variables.req.getThrowOnError(),
+					"timeout"            : variables.req.getTimeout(),
+					"maximumRedirects"   : variables.req.getMaximumRedirects(),
+					"authType"           : variables.req.getAuthType(),
+					"username"           : variables.req.getUsername(),
+					"password"           : variables.req.getPassword(),
+					"clientCert"         : "",
+					"clientCertPassword" : "",
+					"domain"             : variables.req.getDomain(),
+					"workstation"        : variables.req.getWorkstation()
+				} );
+			} );
+
 			it( "can set multiple values at once from a struct", function() {
 				expect( req.getUrl() ).toBe( "" );
 				expect( req.getMethod() ).toBe( "GET" );

@@ -102,6 +102,17 @@ component accessors="true" {
 	function getStatus() {
 		return "#getStatusCode()# #getStatusText()#";
 	}
+
+	/**
+	 * Returns the id of the request to which this response is related.
+	 *
+	 * @returns The request id
+	 */
+	function getRequestID() {
+		return getRequest().getRequestID();
+	}
+
+	/**
 	 * Returns the data of the request as deserialized JSON.
 	 *
 	 * @returns A deserialized version of the data.
@@ -196,6 +207,24 @@ component accessors="true" {
 	 */
 	public any function getHeader( required string name, any defaultValue = "" ) {
 		return hasHeader( arguments.name ) ? variables.headers[ lCase( arguments.name ) ] : arguments.defaultValue;
+	}
+
+	/**
+	 * Gets a serializable representation of the response
+	 */
+	public struct function getMemento() {
+		return {
+			"responseID"    : getResponseID(),
+			"requestID"     : getRequestID(),
+			"statusCode"    : getStatusCode(),
+			"statusText"    : getStatusText(),
+			"status"        : getStatus(),
+			"data"          : getData(),
+			"charset"       : getCharset(),
+			"headers"       : getHeaders(),
+			"timestamp"     : getTimestamp(),
+			"executionTime" : getExecutionTime()
+		};
 	}
 
 }

@@ -2,6 +2,28 @@ component extends="testbox.system.BaseSpec" {
 
 	function run() {
 		describe( "HyperResponse", function() {
+			it( "can serialize to a memento", function() {
+				var res = new Hyper.models.HyperResponse(
+					originalRequest = createStub( extends = "models.HyperRequest" ).$( "getRequestID", createUUID() ),
+					statusCode      = 200,
+					executionTime   = 100,
+					headers         = { "Content-Type" : "text/html; charset=utf-8" }
+				);
+
+				expect( res.getMemento() ).toBe( {
+					"responseID"    : res.getResponseID(),
+					"requestID"     : res.getRequestID(),
+					"statusCode"    : res.getStatusCode(),
+					"statusText"    : res.getStatusText(),
+					"status"        : res.getStatus(),
+					"data"          : res.getData(),
+					"charset"       : res.getCharset(),
+					"headers"       : res.getHeaders(),
+					"timestamp"     : res.getTimestamp(),
+					"executionTime" : res.getExecutionTime()
+				} );
+			} );
+
 			it( "throws an exception when requesting json data but the data is not json", function() {
 				var res = new Hyper.models.HyperResponse(
 					originalRequest = createStub( extends = "models.HyperRequest" ),

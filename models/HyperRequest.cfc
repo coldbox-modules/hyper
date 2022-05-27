@@ -855,4 +855,30 @@ component accessors="true" {
 		return serializeJSON( getBody() );
 	}
 
+	public struct function getMemento() {
+		return {
+			"requestID"          : getRequestID(),
+			"baseUrl"            : getBaseUrl(),
+			"url"                : getUrl(),
+			"fullUrl"            : getFullUrl(),
+			"method"             : getMethod(),
+			"queryParams"        : getQueryParams(),
+			"headers"            : getHeaders(),
+			"files"              : getFiles(),
+			"bodyFormat"         : getBodyFormat(),
+			"body"               : getBody(),
+			"referrer"           : isNull( variables.referrer ) ? "" : variables.referrer,
+			"throwOnError"       : getThrowOnError(),
+			"timeout"            : getTimeout(),
+			"maximumRedirects"   : getMaximumRedirects(),
+			"authType"           : getAuthType(),
+			"username"           : getUsername(),
+			"password"           : getPassword(),
+			"clientCert"         : isNull( variables.clientCert ) ? "" : variables.clientCert,
+			"clientCertPassword" : isNull( variables.clientCertPassword ) ? "" : variables.clientCertPassword,
+			"domain"             : getDomain(),
+			"workstation"        : getWorkstation()
+		};
+	}
+
 }
