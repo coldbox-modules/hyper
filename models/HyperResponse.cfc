@@ -17,6 +17,14 @@ component accessors="true" {
 		setter ="false";
 
 	/**
+	 * The status text for the response.
+	 */
+	property
+		name   ="statusText"
+		default="OK"
+		setter ="false";
+
+	/**
 	 * The data for the response.
 	 */
 	property name="data" default="" setter="false";
@@ -67,16 +75,18 @@ component accessors="true" {
 	public HyperResponse function init(
 		required HyperRequest originalRequest,
 		required numeric executionTime,
-		string charset = "UTF-8",
-		any statusCode = 200,
-		struct headers = {},
-		any data       = "",
-		timestamp      = now()
+		string charset     = "UTF-8",
+		numeric statusCode = 200,
+		string statusText  = "OK",
+		struct headers     = {},
+		any data           = "",
+		timestamp          = now()
 	) {
 		variables.responseID    = createUUID();
 		variables.request       = arguments.originalRequest;
 		variables.charset       = arguments.charset;
 		variables.statusCode    = arguments.statusCode;
+		variables.statusText    = arguments.statusText;
 		variables.headers       = arguments.headers;
 		variables.data          = arguments.data;
 		variables.timestamp     = arguments.timestamp;
@@ -85,6 +95,13 @@ component accessors="true" {
 	}
 
 	/**
+	 * Returns the status code and status text as a single string.
+	 *
+	 * @returns The status code and status text
+	 */
+	function getStatus() {
+		return "#getStatusCode()# #getStatusText()#";
+	}
 	 * Returns the data of the request as deserialized JSON.
 	 *
 	 * @returns A deserialized version of the data.

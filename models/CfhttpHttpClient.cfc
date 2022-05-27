@@ -18,6 +18,7 @@ component implements="HyperHttpClientInterface" {
 			executionTime   = getTickCount() - startTick,
 			charset         = cfhttpResponse.charset ?: "UTF-8",
 			statusCode      = cfhttpResponse.responseheader.status_code ?: 504,
+			statusText      = cfhttpResponse.responseheader.explanation ?: "Gateway Timeout",
 			headers         = normalizeHeaders( cfhttpResponse ),
 			data            = cfhttpResponse.filecontent
 		);

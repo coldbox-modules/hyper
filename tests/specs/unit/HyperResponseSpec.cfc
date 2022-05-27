@@ -21,6 +21,7 @@ component extends="testbox.system.BaseSpec" {
 					var res = new Hyper.models.HyperResponse(
 						originalRequest = createStub( extends = "models.HyperRequest" ),
 						statusCode      = 200,
+						statusText      = "OK",
 						executionTime   = 100
 					);
 					expect( res.isSuccess() ).toBeTrue();
@@ -34,6 +35,7 @@ component extends="testbox.system.BaseSpec" {
 					var resA = new Hyper.models.HyperResponse(
 						originalRequest = createStub( extends = "models.HyperRequest" ),
 						statusCode      = 200,
+						statusText      = "OK",
 						executionTime   = 100
 					);
 					expect( resA.isOK() ).toBeTrue();
@@ -50,6 +52,7 @@ component extends="testbox.system.BaseSpec" {
 					var res = new Hyper.models.HyperResponse(
 						originalRequest = createStub( extends = "models.HyperRequest" ),
 						statusCode      = 302,
+						statusText      = "Found",
 						executionTime   = 100
 					);
 					expect( res.isSuccess() ).toBeFalse();
@@ -63,6 +66,7 @@ component extends="testbox.system.BaseSpec" {
 					var res = new Hyper.models.HyperResponse(
 						originalRequest = createStub( extends = "models.HyperRequest" ),
 						statusCode      = 422,
+						statusText      = "Unprocessable Entity",
 						executionTime   = 100
 					);
 					expect( res.isSuccess() ).toBeFalse();
@@ -76,6 +80,7 @@ component extends="testbox.system.BaseSpec" {
 					var resA = new Hyper.models.HyperResponse(
 						originalRequest = createStub( extends = "models.HyperRequest" ),
 						statusCode      = 401,
+						statusText      = "Unauthorized",
 						executionTime   = 100
 					);
 					expect( resA.isUnauthorized() ).toBeTrue();
@@ -92,6 +97,7 @@ component extends="testbox.system.BaseSpec" {
 					var resA = new Hyper.models.HyperResponse(
 						originalRequest = createStub( extends = "models.HyperRequest" ),
 						statusCode      = 403,
+						statusText      = "Forbidden",
 						executionTime   = 100
 					);
 					expect( resA.isForbidden() ).toBeTrue();
@@ -108,6 +114,7 @@ component extends="testbox.system.BaseSpec" {
 					var resA = new Hyper.models.HyperResponse(
 						originalRequest = createStub( extends = "models.HyperRequest" ),
 						statusCode      = 404,
+						statusText      = "Not Found",
 						executionTime   = 100
 					);
 					expect( resA.isNotFound() ).toBeTrue();
@@ -124,6 +131,7 @@ component extends="testbox.system.BaseSpec" {
 					var res = new Hyper.models.HyperResponse(
 						originalRequest = createStub( extends = "models.HyperRequest" ),
 						statusCode      = 500,
+						statusText      = "Internal Server Error",
 						executionTime   = 100
 					);
 					expect( res.isSuccess() ).toBeFalse();
@@ -131,6 +139,18 @@ component extends="testbox.system.BaseSpec" {
 					expect( res.isError() ).toBeTrue();
 					expect( res.isClientError() ).toBeFalse();
 					expect( res.isServerError() ).toBeTrue();
+				} );
+
+				it( "can accept a customer status text", function() {
+					var res = new Hyper.models.HyperResponse(
+						originalRequest = createStub( extends = "models.HyperRequest" ),
+						statusCode      = 500,
+						statusText      = "Boom",
+						executionTime   = 100
+					);
+					expect( res.getStatusCode() ).toBe( 500 );
+					expect( res.getStatusText() ).toBe( "Boom" );
+					expect( res.getStatus() ).toBe( "500 Boom" );
 				} );
 			} );
 
