@@ -13,7 +13,7 @@ component implements="HyperHttpClientInterface" {
 	public HyperResponse function send( required HyperRequest req ) {
 		var startTick      = getTickCount();
 		var cfhttpResponse = makeCFHTTPRequest( req );
-		return new Hyper.models.HyperResponse(
+		var res            = new Hyper.models.HyperResponse(
 			originalRequest = req,
 			executionTime   = getTickCount() - startTick,
 			charset         = cfhttpResponse.charset ?: "UTF-8",
@@ -22,6 +22,20 @@ component implements="HyperHttpClientInterface" {
 			headers         = normalizeHeaders( cfhttpResponse ),
 			data            = cfhttpResponse.filecontent
 		);
+
+		if ( req.getThrowOnError() && res.isError() ) {
+			throw(
+				type         = "HyperRequestError",
+				message      = "Received a [#res.getStatus()#] response when requesting [#req.getFullUrl()#]",
+				detail       = res.getData(),
+				extendedinfo = serializeJSON( {
+					"request"  : req.getMemento(),
+					"response" : res.getMemento()
+				} )
+			);
+		}
+
+		return res;
 	}
 
 	/**
@@ -34,13 +48,12 @@ component implements="HyperHttpClientInterface" {
 	private struct function makeCFHTTPRequest( required HyperRequest req ) {
 		local.res          = "";
 		var attrCollection = {
-			"result"       : "local.res",
-			"timeout"      : req.getTimeout(),
-			"url"          : req.getFullUrl(),
-			"method"       : req.getMethod(),
-			"redirect"     : false,
-			"throwonerror" : req.getThrowOnError(),
-			"resolveURL"   : req.getResolveUrls()
+			"result"     : "local.res",
+			"timeout"    : req.getTimeout(),
+			"url"        : req.getFullUrl(),
+			"method"     : req.getMethod(),
+			"redirect"   : false,
+			"resolveURL" : req.getResolveUrls()
 		};
 
 		if ( !req.getEncodeUrl() ) {
