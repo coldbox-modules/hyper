@@ -89,9 +89,27 @@ Execute a GET request.
 | url         | string | false    | null    | An optional URL to set for the request.                        |
 | queryParams | struct | false    | null    | An optional struct of query parameters to set for the request. |
 
+##### `getAsync`
+
+Execute a GET request asynchronously. Returns a ColdBox Future that returns a HyperResponse.
+
+| Name        | Type   | Required | Default | Description                                                    |
+| ----------- | ------ | -------- | ------- | -------------------------------------------------------------- |
+| url         | string | false    | null    | An optional URL to set for the request.                        |
+| queryParams | struct | false    | null    | An optional struct of query parameters to set for the request. |
+
 ##### `post`
 
 Execute a POST request.
+
+| Name | Type   | Required | Default | Description                              |
+| ---- | ------ | -------- | ------- | ---------------------------------------- |
+| url  | string | false    | null    | An optional URL to set for the request.  |
+| body | struct | false    | null    | An optional body to set for the request. |
+
+##### `postAsync`
+
+Execute a POST request asynchronously. Returns a ColdBox Future that returns a HyperResponse.
 
 | Name | Type   | Required | Default | Description                              |
 | ---- | ------ | -------- | ------- | ---------------------------------------- |
@@ -107,9 +125,27 @@ Execute a PUT request.
 | url  | string | false    | null    | An optional URL to set for the request.  |
 | body | struct | false    | null    | An optional body to set for the request. |
 
+##### `putAsync`
+
+Execute a PUT request asynchronously. Returns a ColdBox Future that returns a HyperResponse.
+
+| Name | Type   | Required | Default | Description                              |
+| ---- | ------ | -------- | ------- | ---------------------------------------- |
+| url  | string | false    | null    | An optional URL to set for the request.  |
+| body | struct | false    | null    | An optional body to set for the request. |
+
 ##### `patch`
 
 Execute a PATCH request.
+
+| Name | Type   | Required | Default | Description                              |
+| ---- | ------ | -------- | ------- | ---------------------------------------- |
+| url  | string | false    | null    | An optional URL to set for the request.  |
+| body | struct | false    | null    | An optional body to set for the request. |
+
+##### `patchAsync`
+
+Execute a PATCH request asynchronously. Returns a ColdBox Future that returns a HyperResponse.
 
 | Name | Type   | Required | Default | Description                              |
 | ---- | ------ | -------- | ------- | ---------------------------------------- |
@@ -125,9 +161,26 @@ Execute a DELETE request.
 | url  | string | false    | null    | An optional URL to set for the request.  |
 | body | struct | false    | null    | An optional body to set for the request. |
 
+##### `deleteAsync`
+
+Execute a DELETE request asynchronously. Returns a ColdBox Future that returns a HyperResponse.
+
+| Name | Type   | Required | Default | Description                              |
+| ---- | ------ | -------- | ------- | ---------------------------------------- |
+| url  | string | false    | null    | An optional URL to set for the request.  |
+| body | struct | false    | null    | An optional body to set for the request. |
+
 ##### `send`
 
 Send the HTTP request and return a HyperResponse.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
+##### `sendAsync`
+
+Send the HTTP request asynchronously and return a ColdBox Future that will resolve to a HyperResponse.
 
 | Name         | Type | Required | Default | Description |
 | ------------ | ---- | -------- | ------- | ----------- |
@@ -368,7 +421,8 @@ Gets the body format for the request.
 
 ##### `setBodyFormat`
 
-Sets the body format for the request.
+Sets the body format for the request. Allowed values are either `formFields` or `json`.
+It is highly receommended to use `asFormFields` or `asJson` instead.
 
 | Name  | Type | Required | Default | Description                      |
 | ----- | ---- | -------- | ------- | -------------------------------- |
@@ -579,6 +633,15 @@ A noop option is provided in the `init` for non-ColdBox settings.
 | Name         | Type | Required | Default | Description |
 | ------------ | ---- | -------- | ------- | ----------- |
 | interceptorService   | any    | `true`          |         | The interceptor service to use for the request.             |
+
+##### `setAsyncManager`
+
+ColdBox AsyncManager to send requests asynchronously.
+A noop option is provided in the `init` for non-ColdBox settings.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| asyncManager   | any    | `true`          |         | The asyncManager to use for the request.             |
 
 ### HyperResponse
 

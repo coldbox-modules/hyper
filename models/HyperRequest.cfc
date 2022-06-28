@@ -14,6 +14,11 @@ component accessors="true" {
 	property name="interceptorService";
 
 	/**
+	 * ColdBox Interceptor Service to announce request and response interception points.
+	 */
+	property name="asyncManager";
+
+	/**
 	 * The httpClient to use for the request.
 	 */
 	property name="httpClient";
@@ -163,6 +168,11 @@ component accessors="true" {
 			"processState" : function() {
 			}
 		};
+		variables.asyncManager = {
+			"newFuture" : function() {
+				throw( "No asyncManager set!" );
+			}
+		};
 		return this;
 	}
 
@@ -183,6 +193,25 @@ component accessors="true" {
 		}
 		setMethod( "GET" );
 		return send();
+	}
+
+	/**
+	 * Execute a GET request asynchronously.
+	 *
+	 * @url         An optional url to set for the request.
+	 * @queryParams An optional struct of query parameters to set for the request.
+	 *
+	 * @returns     A ColdBox Future instance.
+	 */
+	function getAsync( url, queryParams ) {
+		if ( !isNull( arguments.url ) ) {
+			setUrl( arguments.url );
+		}
+		if ( !isNull( arguments.queryParams ) ) {
+			setQueryParams( arguments.queryParams );
+		}
+		setMethod( "GET" );
+		return sendAsync();
 	}
 
 	/**
@@ -207,6 +236,27 @@ component accessors="true" {
 	}
 
 	/**
+	 * Execute a POST request asynchronously.
+	 *
+	 * @url     An optional url to set for the request.
+	 * @body    An optional body to set for the request.
+	 *
+	 * @returns A ColdBox Future instance.
+	 */
+	function postAsync( url, body ) {
+		if ( !isNull( arguments.url ) ) {
+			setUrl( arguments.url );
+		}
+
+		if ( !isNull( arguments.body ) ) {
+			setBody( arguments.body );
+		}
+
+		setMethod( "POST" );
+		return sendAsync();
+	}
+
+	/**
 	 * Execute a PUT request.
 	 *
 	 * @url     An optional url to set for the request.
@@ -225,6 +275,27 @@ component accessors="true" {
 
 		setMethod( "PUT" );
 		return send();
+	}
+
+	/**
+	 * Execute a PUT request asynchronously.
+	 *
+	 * @url     An optional url to set for the request.
+	 * @body    An optional body to set for the request.
+	 *
+	 * @returns A ColdBox Future instance.
+	 */
+	function putAsync( url, body ) {
+		if ( !isNull( arguments.url ) ) {
+			setUrl( arguments.url );
+		}
+
+		if ( !isNull( arguments.body ) ) {
+			setBody( arguments.body );
+		}
+
+		setMethod( "PUT" );
+		return sendAsync();
 	}
 
 	/**
@@ -249,6 +320,27 @@ component accessors="true" {
 	}
 
 	/**
+	 * Execute a PATCH request asynchronously.
+	 *
+	 * @url     An optional url to set for the request.
+	 * @body    An optional body to set for the request.
+	 *
+	 * @returns A ColdBox Future instance.
+	 */
+	function patchAsync( url, body ) {
+		if ( !isNull( arguments.url ) ) {
+			setUrl( arguments.url );
+		}
+
+		if ( !isNull( arguments.body ) ) {
+			setBody( arguments.body );
+		}
+
+		setMethod( "PATCH" );
+		return sendAsync();
+	}
+
+	/**
 	 * Execute a DELETE request.
 	 *
 	 * @url     An optional url to set for the request.
@@ -267,6 +359,27 @@ component accessors="true" {
 
 		setMethod( "DELETE" );
 		return send();
+	}
+
+	/**
+	 * Execute a DELETE request asynchronously.
+	 *
+	 * @url     An optional url to set for the request.
+	 * @body    An optional body to set for the request.
+	 *
+	 * @returns A ColdBox Future instance.
+	 */
+	function deleteAsync( url, body ) {
+		if ( !isNull( arguments.url ) ) {
+			setUrl( arguments.url );
+		}
+
+		if ( !isNull( arguments.body ) ) {
+			setBody( arguments.body );
+		}
+
+		setMethod( "DELETE" );
+		return sendAsync();
 	}
 
 	/**
@@ -632,6 +745,16 @@ component accessors="true" {
 		return this;
 	}
 
+	function sendAsync() {
+		if ( isNull( variables.asyncManager ) ) {
+			throw( "No asyncManager set!" );
+		}
+
+		return variables.asyncManager.newFuture( function() {
+			return this.send();
+		} );
+	}
+
 	/**
 	 * Send the HTTP request and return a HyperResponse.
 	 *
@@ -724,6 +847,7 @@ component accessors="true" {
 	public HyperRequest function clone() {
 		var req = new HyperRequest();
 		req.setInterceptorService( variables.interceptorService );
+		req.setAsyncManager( variables.asyncManager );
 		req.setHttpClient( variables.httpClient );
 		req.setBaseUrl( variables.baseUrl );
 		req.setUrl( variables.url );
