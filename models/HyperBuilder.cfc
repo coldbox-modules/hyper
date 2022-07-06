@@ -4,7 +4,8 @@
 component singleton {
 
 	property name="interceptorService" inject="box:interceptorService";
-	property name="asyncManager"       inject="box:asyncManager";
+	property name="wirebox"            inject="wirebox";
+	property name="asyncManager"; // use wirebox to inject this until CommandBox supports `box:asyncManager`
 
 	/**
 	 * Create a new HyperBuilder.
@@ -27,6 +28,10 @@ component singleton {
 	function onDIComplete() {
 		if ( structKeyExists( variables, "interceptorService" ) ) {
 			this.defaults.setInterceptorService( variables.interceptorService );
+		}
+
+		if ( structKeyExists( variables, "wirebox" ) ) {
+			variables.asyncManager = variables.wirebox.getAsyncManager();
 		}
 
 		if ( structKeyExists( variables, "asyncManager" ) ) {
