@@ -132,11 +132,13 @@ component implements="HyperHttpClientInterface" {
 				} else if ( req.getBodyFormat() == "formFields" ) {
 					var body = req.getBody();
 					for ( var fieldName in body ) {
-						cfhttpparam(
-							type  = "formfield",
-							name  = fieldName,
-							value = body[ fieldName ]
-						);
+						for ( var value in arrayWrap( body[ fieldName ] ) ) {
+							cfhttpparam(
+								type  = "formfield",
+								name  = fieldName,
+								value = value
+							);
+						}
 					}
 				} else {
 					cfhttpparam( type = "body", value = req.prepareBody() );
@@ -159,6 +161,19 @@ component implements="HyperHttpClientInterface" {
 			headers[ lCase( name ) ] = value;
 		} );
 		return headers;
+	}
+
+	/**
+	 * Ensures the return value is an array, either by returning an array
+	 * or by returning the value wrapped in an array.
+	 *
+	 * @value        The value to ensure is an array.
+	 *
+	 * @doc_generic  any
+	 * @return       [any]
+	 */
+	private array function arrayWrap( required any value ) {
+		return isArray( arguments.value ) ? arguments.value : [ arguments.value ];
 	}
 
 }

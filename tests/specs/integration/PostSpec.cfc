@@ -62,21 +62,23 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 				} );
 			} );
 
-			it( "can post the data as form fields", function() {
+			it( "can post the data as form fields when an array is passed for a form field", function() {
 				var res = hyper
 					.asFormFields()
 					.post(
 						"#localEndpoint#/create",
 						{
 							"title" : "Example Title",
-							"body"  : "This is my post body"
+							"body"  : "This is my post body",
+							"tags"  : [ "tag-a", "tag-b" ]
 						}
 					);
 				expect( res.getStatusCode() ).toBe( 201 );
 				expect( res.json() ).toBe( {
 					"id"    : 101, // this is always the id returned
 					"title" : "Example Title",
-					"body"  : "This is my post body"
+					"body"  : "This is my post body",
+					"tags"  : "tag-a,tag-b"
 				} );
 			} );
 		} );
