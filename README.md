@@ -37,6 +37,16 @@ Hyper runs on Adobe ColdFusion 11+ and Lucee 5+.
 
 ColdBox is not required, but mappings are provided for ColdBox users automatically.
 
+### Upgrade from v3
+
+The only changes between v3 and v4 is with the `getQueryParams` and `setQueryParams` methods.
+These now are represented internally as an array of structs to support duplicate keys in
+query strings.  You _probably_ want the `getQueryParamByName` and `getAllQueryParamsByName`
+instead of `getQueryParams` and `withQueryParams` or `appendQueryParams` methods
+instead of `setQueryParams`.
+
+One more item of note, the `getQueryParam` method has been deprecated in favor of `getQueryParamByName`.
+
 ### HyperBuilder
 
 The component you will most likely inject is the `HyperBuilder`. This is
@@ -522,6 +532,9 @@ A convenience method to set the Accept header.
 
 Gets the query parameters for the request.
 
+**This method returns an array of param structs that is used under the hood by Hyper.**
+**You probably want to use `getQueryParamByName` or `getAllQueryParamsByName` instead.**
+
 | Name         | Type | Required | Default | Description |
 | ------------ | ---- | -------- | ------- | ----------- |
 | No arguments |      |          |         |             |
@@ -530,13 +543,56 @@ Gets the query parameters for the request.
 
 Sets the query parameters for the request.
 
-| Name  | Type   | Required | Default | Description                           |
-| ----- | ------ | -------- | ------- | ------------------------------------- |
-| value | struct | true     |         | The query parameters for the request. |
+**This method accepts an array of param structs that is used under the hood by Hyper.**
+**You probably want to use `withQueryParams` or `appendQueryParams` instead.**
+
+If needed, param structs have two keys, `name` and `value`.
+
+| Name  | Type   | Required | Default | Description                                                |
+| ----- | ------ | -------- | ------- | ---------------------------------------------------------- |
+| value | array  | true     |         | The query parameters for the as an array of param structs. |
+
+##### `getQueryParam`
+
+**DEPRECATED:** Use `getQueryParamByName`
+Gets the first value for a certian query parameter.
+Returns an empty string if the query parameter does not exist.
+
+| Name | Type   | Required | Default | Description                                                  |
+| ---- | ------ | -------- | ------- | -------------------------------------------------------------|
+| name | string | true     |         | The name of the query parameter to retrieve the first value. |
+
+##### `getQueryParamByName`
+
+Gets the first value for a certian query parameter.
+Returns an empty string if the query parameter does not exist.
+
+| Name | Type   | Required | Default | Description                                                  |
+| ---- | ------ | -------- | ------- | -------------------------------------------------------------|
+| name | string | true     |         | The name of the query parameter to retrieve the first value. |
+
+##### `getAllQueryParamsByName`
+
+Get all the values for a certian query parameter.
+Returns an empty array if the query parameter does not exist.
+
+| Name | Type   | Required | Default | Description                                                    |
+| ---- | ------ | -------- | ------- | -------------------------------------------------------------- |
+| name | string | true     |         | The name of the query parameter to retrieve all of its values. |
 
 ##### `setQueryParam`
 
 Set a query parameter for the request.
+Note: This removes all other query params with the same name.
+
+| Name  | Type   | Required | Default | Description                       |
+| ----- | ------ | -------- | ------- | --------------------------------- |
+| name  | string | true     |         | The name of the query parameter.  |
+| value | string | true     |         | The value of the query parameter. |
+
+##### `appendQueryParam`
+
+Append a query parameter for the request.
 
 | Name  | Type   | Required | Default | Description                       |
 | ----- | ------ | -------- | ------- | --------------------------------- |
@@ -546,6 +602,15 @@ Set a query parameter for the request.
 ##### `withQueryParams`
 
 Add additional query parameters to the request.
+Note: This will remove any values with duplicate keys prior to adding the new struct of params.
+
+| Name        | Type   | Required | Default | Description                                         |
+| ----------- | ------ | -------- | ------- | --------------------------------------------------- |
+| queryParams | struct | true     |         | A struct of query parameters to add to the request. |
+
+##### `appendQueryParams`
+
+Appends additional query parameters to the request.
 
 | Name        | Type   | Required | Default | Description                                         |
 | ----------- | ------ | -------- | ------- | --------------------------------------------------- |
