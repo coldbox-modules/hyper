@@ -386,8 +386,9 @@ component accessors="true" {
 
 	/**
 	 * Add additional query parameters to the request.
+	 * Note: This will remove any values with duplicate keys prior to adding the new struct of params.
 	 *
-	 * @queryParams A struct of query parameters to add to the request.
+	 * @queryParams A struct of query parameters to set for the request.
 	 *
 	 * @returns     The HyperRequest instance.
 	 */
@@ -399,8 +400,22 @@ component accessors="true" {
 	}
 
 	/**
+	 * Appends additional query parameters to the request.
+	 *
+	 * @queryParams A struct of query parameters to append to the request.
+	 *
+	 * @returns     The HyperRequest instance.
+	 */
+	function appendQueryParams( queryParams = {} ) {
+		for ( var name in arguments.queryParams ) {
+			appendQueryParam( name, arguments.queryParams[ name ] );
+		}
+		return this;
+	}
+
+	/**
 	 * Set a query parameter for the request.
-	 * This will delete any existing query params for the key first.
+	 * Note: This removes all other query params with the same name.
 	 *
 	 * @name    The name of the query parameter.
 	 * @value   The value of the query parameter.
@@ -427,7 +442,10 @@ component accessors="true" {
 	 * @returns The HyperRequest instance.
 	 */
 	function appendQueryParam( name, value ) {
-		variables.queryParams.append( { "name": arguments.name, "value": arguments.value } );
+		variables.queryParams.append( {
+			"name"  : arguments.name,
+			"value" : arguments.value
+		} );
 		return this;
 	}
 
@@ -449,14 +467,27 @@ component accessors="true" {
 	}
 
 	/**
-	 * Get the first value for a certian query parameter.
+	 * Gets the first value for a certian query parameter.
+	 * @deprecated Use `getQueryParamByName`
 	 *
 	 * @name    The name of the query parameter to retrieve its value.
 	 *
-	 * @returns The value of the query parameter.
+	 * @returns The value of the query parameter to retrieve the first value.
 	 *          Returns an empty string if the query parameter does not exist.
 	 */
 	function getQueryParam( name ) {
+		return getQueryParamByName( arguments.name );
+	}
+
+	/**
+	 * Gets the first value for a certian query parameter.
+	 *
+	 * @name    The name of the query parameter to retrieve its value.
+	 *
+	 * @returns The value of the query parameter to retrieve the first value.
+	 *          Returns an empty string if the query parameter does not exist.
+	 */
+	function getQueryParamByName( name ) {
 		for ( var i = 1; i <= variables.queryParams.len(); i++ ) {
 			var param = variables.queryParams[ i ];
 			if ( param.name == arguments.name ) {
@@ -469,12 +500,12 @@ component accessors="true" {
 	/**
 	 * Get all the values for a certian query parameter.
 	 *
-	 * @name    The name of the query parameter to retrieve its value.
+	 * @name    The name of the query parameter to retrieve all of its values.
 	 *
 	 * @returns An array of values for the query parameter.
 	 *          Returns an empty array if the query parameter does not exist.
 	 */
-	function getAllQueryParam( name ) {
+	function getAllQueryParamsByName( name ) {
 		return variables.queryParams.filter( function( param ) {
 			return param.name == name;
 		} );

@@ -78,6 +78,30 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 				);
 			} );
 
+			it( "can add additional query params with the same name", function() {
+				var res = hyper
+					.setBaseUrl( "https://jsonplaceholder.typicode.com" )
+					.setUrl( "/posts" )
+					.appendQueryParam( "foo", "bar" )
+					.appendQueryParam( "foo", "baz" )
+					.get();
+				expect( res.getRequest().getFullUrl( withQueryString = true ) ).toBeWithCase(
+					"https://jsonplaceholder.typicode.com/posts?foo=bar&foo=baz"
+				);
+			} );
+
+			it( "can append multiple query params at once", function() {
+				var res = hyper
+					.setBaseUrl( "https://jsonplaceholder.typicode.com" )
+					.setUrl( "/posts" )
+					.appendQueryParams( { "foo" : "bar" } )
+					.appendQueryParams( { "foo" : "baz", "one" : "two" } )
+					.get();
+				expect( res.getRequest().getFullUrl( withQueryString = true ) ).toBeWithCase(
+					"https://jsonplaceholder.typicode.com/posts?foo=bar&foo=baz&one=two"
+				);
+			} );
+
 			it( "has access to the original HyperRequest in the HyperResponse", function() {
 				var res = hyper.get( "https://jsonplaceholder.typicode.com/posts/1" );
 				expect( res ).toBeInstanceOf( "HyperResponse", "A HyperResponse object should have been returned." );
