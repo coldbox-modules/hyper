@@ -28,10 +28,10 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 				var res = hyper.get( "https://jsonplaceholder.typicode.com/posts/1" );
 				expect( variables.onHyperRequestCalls ).toHaveLength( 1 );
 				var originalParams = res.getRequest().getQueryParams();
-				expect( originalParams ).toBeStruct();
+				expect( originalParams ).toBeArray();
 				expect( originalParams ).toHaveLength( 1 );
-				expect( originalParams ).toHaveKey( "added_in_interceptor" );
-				expect( originalParams[ "added_in_interceptor" ] ).toBe( "true" );
+				expect( originalParams[ 1 ].name ).toBe( "added_in_interceptor" );
+				expect( originalParams[ 1 ].value ).toBe( true );
 			} );
 
 			it( "can run an interceptor onHyperResponse", function() {
