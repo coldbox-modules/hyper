@@ -157,7 +157,7 @@ component accessors="true" {
 	function init( httpClient = new CfhttpHttpClient() ) {
 		variables.requestID   = createUUID();
 		variables.httpClient  = arguments.httpClient;
-		variables.queryParams = createObject( "java", "java.util.LinkedHashMap" ).init();
+		variables.queryParams = [];
 		variables.headers     = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.headers.put( "Content-Type", "application/json" );
 		variables.files              = [];
@@ -189,7 +189,8 @@ component accessors="true" {
 			setUrl( arguments.url );
 		}
 		if ( !isNull( arguments.queryParams ) ) {
-			setQueryParams( arguments.queryParams );
+			setQueryParams( [] );
+			withQueryParams( arguments.queryParams );
 		}
 		setMethod( "GET" );
 		return send();
@@ -208,7 +209,8 @@ component accessors="true" {
 			setUrl( arguments.url );
 		}
 		if ( !isNull( arguments.queryParams ) ) {
-			setQueryParams( arguments.queryParams );
+			setQueryParams( [] );
+			withQueryParams( arguments.queryParams );
 		}
 		setMethod( "GET" );
 		return sendAsync();
@@ -398,6 +400,7 @@ component accessors="true" {
 
 	/**
 	 * Set a query parameter for the request.
+	 * This will delete any existing query params for the key first.
 	 *
 	 * @name    The name of the query parameter.
 	 * @value   The value of the query parameter.
@@ -405,7 +408,26 @@ component accessors="true" {
 	 * @returns The HyperRequest instance.
 	 */
 	function setQueryParam( name, value ) {
-		variables.queryParams[ name ] = value;
+		for ( var i = 1; i <= variables.queryParams.len(); i++ ) {
+			var param = variables.queryParams[ i ];
+			if ( param.name == arguments.name ) {
+				variables.queryParams.deleteAt( i );
+			}
+		}
+		appendQueryParam( arguments.name, arguments.value );
+		return this;
+	}
+
+	/**
+	 * Append a query parameter for the request.
+	 *
+	 * @name    The name of the query parameter.
+	 * @value   The value of the query parameter.
+	 *
+	 * @returns The HyperRequest instance.
+	 */
+	function appendQueryParam( name, value ) {
+		variables.queryParams.append( { "name": arguments.name, "value": arguments.value } );
 		return this;
 	}
 
@@ -417,11 +439,17 @@ component accessors="true" {
 	 * @returns True if the query parameter exists.
 	 */
 	function hasQueryParam( name ) {
-		return variables.queryParams.containsKey( name );
+		for ( var i = 1; i <= variables.queryParams.len(); i++ ) {
+			var param = variables.queryParams[ i ];
+			if ( param.name == arguments.name ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
-	 * Get the value for a certian query parameter.
+	 * Get the first value for a certian query parameter.
 	 *
 	 * @name    The name of the query parameter to retrieve its value.
 	 *
@@ -429,7 +457,27 @@ component accessors="true" {
 	 *          Returns an empty string if the query parameter does not exist.
 	 */
 	function getQueryParam( name ) {
-		return hasQueryParam( name ) ? variables.queryParams.get( name ) : "";
+		for ( var i = 1; i <= variables.queryParams.len(); i++ ) {
+			var param = variables.queryParams[ i ];
+			if ( param.name == arguments.name ) {
+				return param.value;
+			}
+		}
+		return "";
+	}
+
+	/**
+	 * Get all the values for a certian query parameter.
+	 *
+	 * @name    The name of the query parameter to retrieve its value.
+	 *
+	 * @returns An array of values for the query parameter.
+	 *          Returns an empty array if the query parameter does not exist.
+	 */
+	function getAllQueryParam( name ) {
+		return variables.queryParams.filter( function( param ) {
+			return param.name == name;
+		} );
 	}
 
 	/**
@@ -802,7 +850,7 @@ component accessors="true" {
 		setBody( "" );
 		setBodyFormat( "json" );
 		setReferrer( javacast( "null", "" ) );
-		variables.queryParams = createObject( "java", "java.util.LinkedHashMap" ).init();
+		variables.queryParams = [];
 		variables.headers     = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.headers.put( "Content-Type", "application/json" );
 		variables.files             = [];
@@ -861,7 +909,7 @@ component accessors="true" {
 		req.setBodyFormat( variables.bodyFormat );
 		req.setReferrer( isNull( variables.referrer ) ? javacast( "null", "" ) : variables.referrer );
 		req.setHeaders( variables.headers.clone() );
-		req.setQueryParams( variables.queryParams.clone() );
+		req.setQueryParams( duplicate( variables.queryParams ) );
 		req.setFiles( duplicate( variables.files ) );
 		req.setThrowOnError( variables.throwOnError );
 		req.setClientCert( isNull( variables.clientCert ) ? javacast( "null", "" ) : variables.clientCert );
@@ -890,7 +938,7 @@ component accessors="true" {
 		for ( var paramString in queryParams ) {
 			var name  = decodeFromURL( listFirst( paramString, "=" ) );
 			var value = decodeFromURL( listRest( paramString, "=" ) );
-			setQueryParam( name, value );
+			appendQueryParam( name, value );
 		}
 		return listFirst( arguments.url, "?" );
 	}
@@ -904,14 +952,14 @@ component accessors="true" {
 		if ( variables.queryParams.isEmpty() ) {
 			return "";
 		}
-		var queryParamNames = [];
-		for ( var name in variables.queryParams ) {
-			queryParamNames.append( name );
-		}
-		queryParamNames.sort( "textnocase" );
-		return "?" & queryParamNames
-			.map( function( name ) {
-				return len( variables.queryParams[ name ] ) ? "#encodeForURL( name )#=#encodeForURL( variables.queryParams[ name ] )#" : "#encodeForURL( name )#";
+
+		variables.queryParams.sort( function( paramA, paramB ) {
+			return compare( paramA.name, paramB.name );
+		} );
+
+		return "?" & variables.queryParams
+			.map( function( param ) {
+				return len( param.value ) ? "#encodeForURL( param.name )#=#encodeForURL( param.value )#" : "#encodeForURL( param.name )#";
 			} )
 			.toList( "&" );
 	}

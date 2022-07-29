@@ -106,11 +106,11 @@ component implements="HyperHttpClientInterface" {
 			}
 
 			var queryParams = req.getQueryParams();
-			for ( var name in queryParams ) {
+			for ( var param in queryParams ) {
 				cfhttpparam(
 					type  = "url",
-					name  = name,
-					value = queryParams[ name ]
+					name  = param.name,
+					value = param.value
 				);
 			}
 
