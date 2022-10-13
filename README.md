@@ -898,17 +898,20 @@ component {
             .initWith(
                 baseUrl = "https://swapi.co/api"
             );
-
-        map( "GitHubClient" )
+    }
+    
+    function afterAspectsLoad(){
+		// Map Bindings below
+		map( "GitHubClient" )
             .to( "hyper.models.HyperBuilder" )
             .asSingleton()
             .initWith(
                 baseUrl = "https://api.github.com",
                 headers = {
-                    "Authorization" = getSetting( "SWAPI_TOKEN" )
+                    "Authorization" = getColdBox().getSetting( "SWAPI_TOKEN" )
                 }
             );
-    }
+	}
 
 }
 ```
