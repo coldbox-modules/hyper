@@ -931,6 +931,7 @@ component accessors="true" {
 		req.setBaseUrl( variables.baseUrl );
 		req.setUrl( variables.url );
 		req.setResolveUrls( variables.resolveUrls );
+		req.setEncodeUrl( variables.encodeUrl );
 		req.setMethod( variables.method );
 		req.setUsername( variables.username );
 		req.setPassword( variables.password );

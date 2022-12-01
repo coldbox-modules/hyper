@@ -898,26 +898,20 @@ component {
             .initWith(
                 baseUrl = "https://swapi.co/api"
             );
-    }
-    
-    function afterAspectsLoad(){
-		// Map Bindings below
-		map( "GitHubClient" )
+
+        map( "GitHubClient" )
             .to( "hyper.models.HyperBuilder" )
             .asSingleton()
             .initWith(
                 baseUrl = "https://api.github.com",
                 headers = {
-                    "Content-Type" : "application/json", // If you map to a builder with headers - make sure you set your Content-Type if desired
-		    "Authorization" = getColdBox().getSetting( "SWAPI_TOKEN" )
+                    "Authorization" = getColdBox().getUtil().getSystemSetting( "SWAPI_TOKEN" )
                 }
             );
-	}
+    }
 
 }
 ```
-
-Note: If you are mapping a builder and use the `initWith( headers = {... } )`, these headers will overwrite the default headers you get with a HyperRequest so you might see some inconsistencies. A hyperRequest defaults the headers to `"Content-Type" : "application/json"`, so if you want to set a content-type, please include that in your headers struct, like above.
 
 You can also set or change the defaults by either passing the key / value pairs in to the `init` method or by calling the appropriate `HyperRequest` method on the `HyperBuilder.defaults` property.
 
