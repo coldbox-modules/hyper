@@ -810,8 +810,8 @@ component accessors="true" {
 	 * @returns The full url for the request.
 	 */
 	function getFullUrl( withQueryString = false ) {
-		return getBaseUrl() & getUrl() &
-		( arguments.withQueryString ? serializeQueryParams() : "" );
+		var base = isValid( "url", getUrl() ) ? getUrl() : getBaseUrl() & getUrl();
+		return base & ( arguments.withQueryString ? serializeQueryParams() : "" );
 	}
 
 	/**
