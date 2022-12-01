@@ -1081,7 +1081,9 @@ component accessors="true" {
 			"clientCert"         : isNull( variables.clientCert ) ? "" : variables.clientCert,
 			"clientCertPassword" : isNull( variables.clientCertPassword ) ? "" : variables.clientCertPassword,
 			"domain"             : getDomain(),
-			"workstation"        : getWorkstation()
+			"workstation"        : getWorkstation(),
+			"resolveUrls"        : getResolveUrls(),
+			"encodeUrl"          : getEncodeUrl()
 		};
 	}
 
