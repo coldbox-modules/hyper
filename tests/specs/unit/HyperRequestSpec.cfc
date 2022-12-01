@@ -34,7 +34,9 @@ component extends="testbox.system.BaseSpec" {
 					"clientCert"         : "",
 					"clientCertPassword" : "",
 					"domain"             : variables.req.getDomain(),
-					"workstation"        : variables.req.getWorkstation()
+					"workstation"        : variables.req.getWorkstation(),
+					"resolveUrls"        : variables.req.getResolveUrls(),
+					"encodeUrl"          : variables.req.getEncodeUrl()
 				} );
 			} );
 
