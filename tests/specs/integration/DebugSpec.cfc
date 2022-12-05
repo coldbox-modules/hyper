@@ -11,8 +11,8 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 				var binaryBody = charsetDecode( "some binary body", "utf-8" );
 				var debugReq   = hyper
 					.withHeaders( {
-						"Authorization" : "Bearer token",
 						"Accept"        : "application/json;odata=verbose",
+						"Authorization" : "Bearer token",
 						"Content-Type"  : "application/octet-stream"
 					} )
 					.setBody( binaryBody )
@@ -40,26 +40,30 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 				expect( debugReq.body.files ).toBeEmpty();
 
 				expect( debugReq.body ).toHaveKey( "headers" );
-				expect( debugReq.body.headers ).toBeArray();
-				expect( debugReq.body.headers ).toHaveLength( 3 );
+				var headers = debugReq.body.headers;
+				arraySort( headers, function( a, b ) {
+					return compare( a.name, b.name );
+				} );
+				expect( headers ).toBeArray();
+				expect( headers ).toHaveLength( 3 );
 
-				expect( debugReq.body.headers[ 1 ] ).toBeStruct();
-				expect( debugReq.body.headers[ 1 ] ).toHaveKey( "name" );
-				expect( debugReq.body.headers[ 1 ].name ).toBe( "Content-Type" );
-				expect( debugReq.body.headers[ 1 ] ).toHaveKey( "value" );
-				expect( debugReq.body.headers[ 1 ].value ).toBe( "application/octet-stream" );
+				expect( headers[ 1 ] ).toBeStruct();
+				expect( headers[ 1 ] ).toHaveKey( "name" );
+				expect( headers[ 1 ].name ).toBe( "Accept" );
+				expect( headers[ 1 ] ).toHaveKey( "value" );
+				expect( headers[ 1 ].value ).toBe( "application/json;odata=verbose" );
 
-				expect( debugReq.body.headers[ 2 ] ).toBeStruct();
-				expect( debugReq.body.headers[ 2 ] ).toHaveKey( "name" );
-				expect( debugReq.body.headers[ 2 ].name ).toBe( "Accept" );
-				expect( debugReq.body.headers[ 2 ] ).toHaveKey( "value" );
-				expect( debugReq.body.headers[ 2 ].value ).toBe( "application/json;odata=verbose" );
+				expect( headers[ 2 ] ).toBeStruct();
+				expect( headers[ 2 ] ).toHaveKey( "name" );
+				expect( headers[ 2 ].name ).toBe( "Authorization" );
+				expect( headers[ 2 ] ).toHaveKey( "value" );
+				expect( headers[ 2 ].value ).toBe( "Bearer token" );
 
-				expect( debugReq.body.headers[ 3 ] ).toBeStruct();
-				expect( debugReq.body.headers[ 3 ] ).toHaveKey( "name" );
-				expect( debugReq.body.headers[ 3 ].name ).toBe( "Authorization" );
-				expect( debugReq.body.headers[ 3 ] ).toHaveKey( "value" );
-				expect( debugReq.body.headers[ 3 ].value ).toBe( "Bearer token" );
+				expect( headers[ 3 ] ).toBeStruct();
+				expect( headers[ 3 ] ).toHaveKey( "name" );
+				expect( headers[ 3 ].name ).toBe( "Content-Type" );
+				expect( headers[ 3 ] ).toHaveKey( "value" );
+				expect( headers[ 3 ].value ).toBe( "application/octet-stream" );
 			} );
 		} );
 	}
