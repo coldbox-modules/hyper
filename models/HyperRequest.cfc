@@ -1052,11 +1052,8 @@ component accessors="true" {
 	 *
 	 * @returns A simple value representing the body.
 	 */
-	public string function prepareBody() {
-		if ( isSimpleValue( getBody() ) ) {
-			return getBody();
-		}
-		return serializeJSON( getBody() );
+	public any function prepareBody() {
+		return getBodyFormat() == "json" ? serializeJSON( getBody() ) : getBody();
 	}
 
 	public struct function getMemento() {
