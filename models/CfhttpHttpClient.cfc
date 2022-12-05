@@ -39,6 +39,121 @@ component implements="HyperHttpClientInterface" {
 	}
 
 	/**
+	 * Return a struct of information showing how the client will execute the HyperRequest.
+	 * This will be used by a developer to debug any differences between the generated
+	 * request values and the expected request values.
+	 *
+	 * @req     The HyperRequest to debug.
+	 *
+	 * @returns A struct of information detailing how the client would execute the HyperRequest.
+	 */
+	public struct function debug( required HyperRequest req ) {
+		var attrCollection = {
+			"timeout"    : req.getTimeout(),
+			"url"        : req.getFullUrl(),
+			"method"     : req.getMethod(),
+			"redirect"   : false,
+			"resolveURL" : req.getResolveUrls()
+		};
+
+		if ( !req.getEncodeUrl() ) {
+			attrCollection[ "encodeurl" ] = false;
+		}
+
+		if ( len( req.getUsername() ) ) {
+			attrCollection[ "username" ] = req.getUsername();
+		}
+
+		if ( len( req.getPassword() ) ) {
+			attrCollection[ "password" ] = req.getPassword();
+		}
+
+		if ( len( req.getDomain() ) ) {
+			attrCollection[ "domain" ] = req.getDomain();
+		}
+
+		if ( len( req.getWorkStation() ) ) {
+			attrCollection[ "workstation" ] = req.getWorkStation();
+		}
+
+		// this is only necessarry for NTLM authType, BASIC is the default
+		if ( len( req.getAuthType() ) && len( req.getUsername() ) ) {
+			attrCollection[ "authType" ] = req.getAuthType();
+		}
+
+		if ( !isNull( req.getClientCert() ) ) {
+			attrCollection[ "clientCert" ] = req.getClientCert();
+		}
+
+		if ( !isNull( req.getClientCertPassword() ) ) {
+			attrCollection[ "clientCertPassword" ] = req.getClientCertPassword();
+		}
+
+		var cfhttpHeaders = [];
+		var headers       = req.getHeaders();
+		for ( var name in headers ) {
+			// we want to skip adding a Content-Type header when there are files
+			// so that the CFML engines can add the correct boundary to the Content-Type
+			if ( name == "Content-Type" && !req.getFiles().isEmpty() ) {
+				continue;
+			}
+
+			cfhttpHeaders.append( {
+				"name"  : name,
+				"value" : headers[ name ]
+			} );
+		}
+
+		var cfhttpParams = [];
+		var queryParams  = req.getQueryParams();
+		for ( var param in queryParams ) {
+			cfhttpParams.append( {
+				"name"  : param.name,
+				"value" : param.value
+			} );
+		}
+
+		var cfhttpFiles = [];
+		for ( var file in req.getFiles() ) {
+			var fileAttrCollection = { name : file.name, file : file.path };
+			if ( file.keyExists( "mimeType" ) && !isNull( file.mimeType ) ) {
+				fileAttrCollection[ "mimeType" ] = file.mimeType;
+			}
+			cfhttpFiles.append( fileAttrCollection );
+		}
+
+		var cfhttpBody = [];
+		if ( req.hasBody() ) {
+			if ( req.getBodyFormat() == "json" ) {
+				cfhttpBody.append( req.prepareBody() );
+			} else if ( req.getBodyFormat() == "formFields" ) {
+				var body = req.getBody();
+				for ( var fieldName in body ) {
+					for ( var value in arrayWrap( body[ fieldName ] ) ) {
+						cfhttpBody.append( {
+							"type"  : "formfield",
+							"name"  : fieldName,
+							"value" : value
+						} );
+					}
+				}
+			} else {
+				cfhttpBody.append( req.prepareBody() );
+			}
+		}
+
+		return {
+			"attributes" : attrCollection,
+			"body"       : {
+				"headers" : cfhttpHeaders,
+				"params"  : cfhttpParams,
+				"files"   : cfhttpFiles,
+				"body"    : cfhttpBody
+			}
+		};
+	}
+
+	/**
 	 * Makes an HTTP request using CFHTTP.
 	 *
 	 * @req     The request to execute

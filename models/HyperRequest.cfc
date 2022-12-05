@@ -865,6 +865,24 @@ component accessors="true" {
 	}
 
 	/**
+	 * Creates a debug representation of the HTTP request for the current HTTP client.
+	 *
+	 * @returns A struct with debug information about the request.
+	 */
+	public struct function debug() {
+		if ( getFullUrl() == "" ) {
+			throw( type = "NoUrlException" );
+		}
+
+		for ( var callback in variables.requestCallbacks ) {
+			callback( this );
+		}
+		variables.interceptorService.processState( "onHyperRequest", { "request" : this } );
+
+		return httpClient.debug( this );
+	}
+
+	/**
 	 * Clears the request of any set values, including
 	 * defaults passed by the builder.
 	 *
