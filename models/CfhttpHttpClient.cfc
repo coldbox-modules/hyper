@@ -77,7 +77,7 @@ component implements="HyperHttpClientInterface" {
 		}
 
 		// this is only necessarry for NTLM authType, BASIC is the default
-		if ( len( req.getAuthType() ) ) {
+		if ( len( req.getAuthType() ) && len( req.getUsername() ) ) {
 			attrCollection[ "authType" ] = req.getAuthType();
 		}
 
