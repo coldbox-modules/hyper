@@ -12,7 +12,7 @@ interface displayname="HyperHttpClientInterface" {
 	 */
 	public HyperResponse function send( required HyperRequest req );
 
-		/**
+	/**
 	 * Return a struct of information showing how the client will execute the HyperRequest.
 	 * This will be used by a developer to debug any differences between the generated
 	 * request values and the expected request values.
