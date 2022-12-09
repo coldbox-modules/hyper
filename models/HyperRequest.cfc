@@ -1071,6 +1071,9 @@ component accessors="true" {
 	 * @returns A simple value representing the body.
 	 */
 	public any function prepareBody() {
+		if ( isSimpleValue( getBody() ) ) {
+			return getBody();
+		}
 		return getBodyFormat() == "json" ? serializeJSON( getBody() ) : getBody();
 	}
 

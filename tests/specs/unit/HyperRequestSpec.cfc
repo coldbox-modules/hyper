@@ -209,6 +209,17 @@ component extends="testbox.system.BaseSpec" {
 				expect( req.hasHeader( "X-Forwarded-For" ) ).toBeTrue();
 				expect( req.getHeader( "X-Forwarded-For" ) ).toBe( "1.1.1.1" );
 			} );
+
+			it( "can handle a JSON body format with a body as a string", function() {
+				req.setBodyFormat( 'json' );
+				req.setBody( '{"query":{},"size":0,"from":0}' );
+				expect( req.prepareBody( ) ).toBe( '{"query":{},"size":0,"from":0}' );
+			} );
+			it( "can handle a JSON body format with a body as an struct", function() {
+				req.setBodyFormat( 'json' );
+				req.setBody( {"query":{},"size":0,"from":0} );
+				expect( req.prepareBody( ) ).toBe( '{"query":{},"size":0,"from":0}' );
+			} );
 		} );
 	}
 
