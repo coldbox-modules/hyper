@@ -211,14 +211,14 @@ component extends="testbox.system.BaseSpec" {
 			} );
 
 			it( "can handle a JSON body format with a body as a string", function() {
-				req.setBodyFormat( 'json' );
+				req.setBodyFormat( "json" );
 				req.setBody( '{"query":{},"size":0,"from":0}' );
-				expect( req.prepareBody( ) ).toBe( '{"query":{},"size":0,"from":0}' );
+				expect( req.prepareBody() ).toBe( '{"query":{},"size":0,"from":0}' );
 			} );
 			it( "can handle a JSON body format with a body as an struct", function() {
-				req.setBodyFormat( 'json' );
-				req.setBody( {"query":{},"size":0,"from":0} );
-				expect( req.prepareBody( ) ).toBe( '{"query":{},"size":0,"from":0}' );
+				req.setBodyFormat( "json" );
+				req.setBody( { "query" : {}, "size" : 0, "from" : 0 } );
+				expect( req.prepareBody() ).toBe( '{"query":{},"size":0,"from":0}' );
 			} );
 		} );
 	}
