@@ -1,19 +1,23 @@
-name: Cron
+name: Test Suites
 
+# We are a reusable Workflow only
 on:
-  schedule:
-    - cron:  0 0 * * 1
+  workflow_call:
 
 jobs:
   tests:
     runs-on: ubuntu-latest
     name: Tests
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
-        cfengine: ["lucee@5", "lucee@be", "adobe@2016", "adobe@2018", "adobe@be"]
-        coldbox: ["coldbox@6", "coldbox@be"]
-        javaVersion: ["openjdk8", "openjdk11"]
+        cfengine: ["lucee@5", "adobe@2016", "adobe@2018", "adobe@2021"]
+        coldbox: ["coldbox@6"]
+        experimental: [false]
+        include:
+          - cfengine: "adobe@@2023.0.0-beta.1"
+            experimental: true
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -21,18 +25,18 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v1.4.3
         with:
-          java-version: 11 
+          java-version: 11
 
       - name: Set Up CommandBox
         uses: elpete/setup-commandbox@v1.0.0
-      
+
       - name: Install dependencies
         run: |
           box install
           box install ${{ matrix.coldbox }} --noSave
-      
+
       - name: Start server
-        run: box server start cfengine=${{ matrix.cfengine }} javaVersion=${{ matrix.javaVersion }} --noSaveSettings
+        run: box server start cfengine=${{ matrix.cfengine }} --noSaveSettings
 
       - name: Run TestBox Tests
         run: box testbox run

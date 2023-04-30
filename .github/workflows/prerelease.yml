@@ -7,37 +7,7 @@ on:
 
 jobs:
   tests:
-    name: Tests
-    if: "!contains(github.event.head_commit.message, '__SEMANTIC RELEASE VERSION UPDATE__')"
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        cfengine: ["lucee@5", "adobe@2016", "adobe@2018"]
-        coldbox: ["coldbox@6"]
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Setup Java JDK
-        uses: actions/setup-java@v1.4.3
-        with:
-          java-version: 11
-
-      - name: Set Up CommandBox
-        uses: elpete/setup-commandbox@v1.0.0
-
-      - name: Install dependencies
-        run: |
-          box install
-          box install ${{ matrix.coldbox }} --noSave
-
-      - name: Start server
-        run: box server start cfengine=${{ matrix.cfengine }} --noSaveSettings
-
-      - name: Run TestBox Tests
-        run: box testbox run
-
+    uses: ./.github/workflows/tests.yml
   # release:
   #   name: Semantic Release
   #   if: "!contains(github.event.head_commit.message, '__SEMANTIC RELEASE VERSION UPDATE__')"
