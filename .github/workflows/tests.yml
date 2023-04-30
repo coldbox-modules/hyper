@@ -17,6 +17,10 @@ jobs:
         experimental: [false]
         include:
           - cfengine: "adobe@@2023.0.0-beta.1"
+            coldbox: "coldbox@6"
+            experimental: true
+          - cfengine: "lucee@5"
+            coldbox: "coldbox@be"
             experimental: true
     steps:
       - name: Checkout Repository
