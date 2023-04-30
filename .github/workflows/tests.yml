@@ -16,7 +16,7 @@ jobs:
         coldbox: ["coldbox@6"]
         experimental: [false]
         include:
-          - cfengine: "adobe@@2023.0.0-beta.1"
+          - cfengine: "adobe@2023.0.0-beta.1"
             coldbox: "coldbox@6"
             experimental: true
           - cfengine: "lucee@5"
