@@ -126,6 +126,7 @@ component implements="HyperHttpClientInterface" {
 		if ( req.hasBody() ) {
 			switch ( req.getBodyFormat() ) {
 				case "json":
+					// this is here for backwards compatibility
 					if ( !headers.keyExists( "Content-Type" ) ) {
 						cfhttpHeaders.append( {
 							"name"  : "Content-Type",
@@ -138,14 +139,8 @@ component implements="HyperHttpClientInterface" {
 						"value" : req.prepareBody()
 					} );
 					break;
-				case "formFields":
-					if ( !headers.keyExists( "Content-Type" ) ) {
-						cfhttpHeaders.append( {
-							"name"  : "Content-Type",
-							"value" : "application/x-www-form-urlencoded"
-						} );
-					}
 
+				case "formFields":
 					var body = req.getBody();
 					for ( var fieldName in body ) {
 						for ( var value in arrayWrap( body[ fieldName ] ) ) {
@@ -157,19 +152,14 @@ component implements="HyperHttpClientInterface" {
 						}
 					}
 					break;
-				case "xml":
-					if ( !headers.keyExists( "Content-Type" ) ) {
-						cfhttpHeaders.append( {
-							"name"  : "Content-Type",
-							"value" : "application/xml"
-						} );
-					}
 
+				case "xml":
 					cfhttpBody.append( {
 						"type"  : "xml",
 						"value" : req.prepareBody()
 					} );
 					break;
+
 				default:
 					cfhttpBody.append( {
 						"type"  : "body",
@@ -280,6 +270,7 @@ component implements="HyperHttpClientInterface" {
 			if ( req.hasBody() ) {
 				switch ( req.getBodyFormat() ) {
 					case "json":
+						// this is here for backwards compatibility
 						if ( !headers.keyExists( "Content-Type" ) ) {
 							cfhttpparam(
 								type  = "header",
@@ -290,15 +281,8 @@ component implements="HyperHttpClientInterface" {
 
 						cfhttpparam( type = "body", value = req.prepareBody() );
 						break;
-					case "formFields":
-						if ( !headers.keyExists( "Content-Type" ) ) {
-							cfhttpparam(
-								type  = "header",
-								name  = "Content-Type",
-								value = "application/x-www-form-urlencoded"
-							);
-						}
 
+					case "formFields":
 						var body = req.getBody();
 						for ( var fieldName in body ) {
 							for ( var value in arrayWrap( body[ fieldName ] ) ) {
@@ -310,17 +294,11 @@ component implements="HyperHttpClientInterface" {
 							}
 						}
 						break;
-					case "xml":
-						if ( !headers.keyExists( "Content-Type" ) ) {
-							cfhttpparam(
-								type  = "header",
-								name  = "Content-Type",
-								value = "application/xml"
-							);
-						}
 
+					case "xml":
 						cfhttpparam( type = "xml", value = req.prepareBody() );
 						break;
+
 					default:
 						cfhttpparam( type = "body", value = req.prepareBody() );
 				}
