@@ -162,6 +162,7 @@ component extends="testbox.system.BaseSpec" {
 				} );
 
 				req.withHeaders( { "Accept" : "application/xml" } )
+					.asJSON()
 					.patch( "https://jsonplaceholder.typicode.com/posts/1" );
 				expect( method ).toBe( "PATCH" );
 				expect( headers ).toBe( {
