@@ -3,14 +3,6 @@
     <a href="https://forgebox.io/view/hyper"><img src="https://cfmlbadges.monkehworks.com/images/badges/available-on-forgebox.svg" alt="Available on ForgeBox" /></a>
     <img src="https://cfmlbadges.monkehworks.com/images/badges/tested-with-testbox.svg" alt="Tested With TestBox" />
 </p>
-<p style="text-align: center;">
-    <img height="30" src="https://cfmlbadges.monkehworks.com/images/badges/compatibility-coldfusion-11.svg" alt="Compatible with ColdFusion 11" />
-    <img height="30" src="https://cfmlbadges.monkehworks.com/images/badges/compatibility-coldfusion-2016.svg" alt="Compatible with ColdFusion 2016" />
-    <img height="30" src="https://cfmlbadges.monkehworks.com/images/badges/compatibility-lucee-5.svg" alt="Compatible with Lucee 5" />
-</p>
-<p style="text-align: center;">
-    <a href="https://travis-ci.org/coldbox-modules/hyper"><img src="https://img.shields.io/travis/coldbox-modules/hyper/master.svg?style=flat-square&label=master" alt="Master Branch Build Status"></a>
-</p>
 
 ## A CFML HTTP Builder
 
@@ -33,9 +25,18 @@ Hyper exists to provide a fluent builder experience for HTTP requests and respon
 
 ### Requirements
 
-Hyper runs on Adobe ColdFusion 11+ and Lucee 5+.
+Hyper runs on Adobe ColdFusion 2018+ and Lucee 5+.
 
 ColdBox is not required, but mappings are provided for ColdBox users automatically.
+
+### Upgrade from v5
+Two breaking changes:
+1. There is no default `Content-Type`.  Make sure to either set it or use one of the helper methods, like `asJson()`.
+2. `hyper@^6` dropped support for `adobe@2016`.
+
+### Upgrade from v4
+This is only a breaking change if you have a custom `HttpClient`.
+The `HyperHttpClientInterface` now requires a `debug` method.
 
 ### Upgrade from v3
 

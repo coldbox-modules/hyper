@@ -155,11 +155,10 @@ component accessors="true" {
 	 * @returns The HyperRequest instance.
 	 */
 	function init( httpClient = new CfhttpHttpClient() ) {
-		variables.requestID   = createUUID();
-		variables.httpClient  = arguments.httpClient;
-		variables.queryParams = [];
-		variables.headers     = createObject( "java", "java.util.LinkedHashMap" ).init();
-		variables.headers.put( "Content-Type", "application/json" );
+		variables.requestID          = createUUID();
+		variables.httpClient         = arguments.httpClient;
+		variables.queryParams        = [];
+		variables.headers            = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.files              = [];
 		variables.requestCallbacks   = [];
 		variables.responseCallbacks  = [];
@@ -738,6 +737,17 @@ component accessors="true" {
 	}
 
 	/**
+	 * A convenience method to set the body format and Content-Type to xml.
+	 *
+	 * @returns The HyperRequest instance.
+	 */
+	function asXML() {
+		setBodyFormat( "xml" );
+		setContentType( "application/xml" );
+		return this;
+	}
+
+	/**
 	 * Attaches a file to the Hyper request.
 	 * Also sets the Content-Type as `multipart/form-data`.
 	 * Multiple files can be attached by calling `attach` multiple times before calling a send method.
@@ -899,9 +909,8 @@ component accessors="true" {
 		setBody( "" );
 		setBodyFormat( "json" );
 		setReferrer( javacast( "null", "" ) );
-		variables.queryParams = [];
-		variables.headers     = createObject( "java", "java.util.LinkedHashMap" ).init();
-		variables.headers.put( "Content-Type", "application/json" );
+		variables.queryParams       = [];
+		variables.headers           = createObject( "java", "java.util.LinkedHashMap" ).init();
 		variables.files             = [];
 		variables.requestCallbacks  = [];
 		variables.responseCallbacks = [];

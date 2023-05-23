@@ -124,21 +124,44 @@ component implements="HyperHttpClientInterface" {
 
 		var cfhttpBody = [];
 		if ( req.hasBody() ) {
-			if ( req.getBodyFormat() == "json" ) {
-				cfhttpBody.append( req.prepareBody() );
-			} else if ( req.getBodyFormat() == "formFields" ) {
-				var body = req.getBody();
-				for ( var fieldName in body ) {
-					for ( var value in arrayWrap( body[ fieldName ] ) ) {
-						cfhttpBody.append( {
-							"type"  : "formfield",
-							"name"  : fieldName,
-							"value" : value
+			switch ( req.getBodyFormat() ) {
+				case "json":
+					// this is here for backwards compatibility
+					if ( !headers.keyExists( "Content-Type" ) ) {
+						cfhttpHeaders.append( {
+							"name"  : "Content-Type",
+							"value" : "application/json"
 						} );
 					}
-				}
-			} else {
-				cfhttpBody.append( req.prepareBody() );
+
+					cfhttpBody.append( {
+						"type"  : "body",
+						"value" : req.prepareBody()
+					} );
+					break;
+				case "formFields":
+					var body = req.getBody();
+					for ( var fieldName in body ) {
+						for ( var value in arrayWrap( body[ fieldName ] ) ) {
+							cfhttpBody.append( {
+								"type"  : "formfield",
+								"name"  : fieldName,
+								"value" : value
+							} );
+						}
+					}
+					break;
+				case "xml":
+					cfhttpBody.append( {
+						"type"  : "xml",
+						"value" : req.prepareBody()
+					} );
+					break;
+				default:
+					cfhttpBody.append( {
+						"type"  : "body",
+						"value" : req.prepareBody()
+					} );
 			}
 		}
 
@@ -242,21 +265,36 @@ component implements="HyperHttpClientInterface" {
 			}
 
 			if ( req.hasBody() ) {
-				if ( req.getBodyFormat() == "json" ) {
-					cfhttpparam( type = "body", value = req.prepareBody() );
-				} else if ( req.getBodyFormat() == "formFields" ) {
-					var body = req.getBody();
-					for ( var fieldName in body ) {
-						for ( var value in arrayWrap( body[ fieldName ] ) ) {
+				switch ( req.getBodyFormat() ) {
+					case "json":
+						// this is here for backwards compatibility
+						if ( !headers.keyExists( "Content-Type" ) ) {
 							cfhttpparam(
-								type  = "formfield",
-								name  = fieldName,
-								value = value
+								type  = "header",
+								name  = "Content-Type",
+								value = "application/json"
 							);
 						}
-					}
-				} else {
-					cfhttpparam( type = "body", value = req.prepareBody() );
+
+						cfhttpparam( type = "body", value = req.prepareBody() );
+						break;
+					case "formFields":
+						var body = req.getBody();
+						for ( var fieldName in body ) {
+							for ( var value in arrayWrap( body[ fieldName ] ) ) {
+								cfhttpparam(
+									type  = "formfield",
+									name  = fieldName,
+									value = value
+								);
+							}
+						}
+						break;
+					case "xml":
+						cfhttpparam( type = "xml", value = req.prepareBody() );
+						break;
+					default:
+						cfhttpparam( type = "body", value = req.prepareBody() );
 				}
 			}
 		}

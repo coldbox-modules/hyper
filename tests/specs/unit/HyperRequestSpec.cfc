@@ -162,6 +162,7 @@ component extends="testbox.system.BaseSpec" {
 				} );
 
 				req.withHeaders( { "Accept" : "application/xml" } )
+					.asJSON()
 					.patch( "https://jsonplaceholder.typicode.com/posts/1" );
 				expect( method ).toBe( "PATCH" );
 				expect( headers ).toBe( {
@@ -215,10 +216,15 @@ component extends="testbox.system.BaseSpec" {
 				req.setBody( '{"query":{},"size":0,"from":0}' );
 				expect( req.prepareBody() ).toBe( '{"query":{},"size":0,"from":0}' );
 			} );
+
 			it( "can handle a JSON body format with a body as an struct", function() {
 				req.setBodyFormat( "json" );
 				req.setBody( { "query" : {}, "size" : 0, "from" : 0 } );
 				expect( req.prepareBody() ).toBe( '{"query":{},"size":0,"from":0}' );
+			} );
+
+			it( "defaults to no Content-Type or Headers", function() {
+				expect( req.getHeaders() ).toBeEmpty();
 			} );
 		} );
 	}

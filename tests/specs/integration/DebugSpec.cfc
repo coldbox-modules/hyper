@@ -21,8 +21,6 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 					.setUrl( "https://example.com" )
 					.debug();
 
-				debug( debugReq );
-
 				expect( debugReq ).toBeStruct();
 
 				expect( debugReq ).toHaveKey( "attributes" );
@@ -35,7 +33,10 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 				expect( debugReq.body ).toHaveKey( "body" );
 				expect( debugReq.body.body ).toBeArray();
 				expect( debugReq.body.body ).toHaveLength( 1 );
-				expect( debugReq.body.body[ 1 ] ).toBe( binaryBody );
+				expect( debugReq.body.body[ 1 ] ).toBe( {
+					"type"  : "body",
+					"value" : binaryBody
+				} );
 				expect( debugReq.body ).toHaveKey( "files" );
 				expect( debugReq.body.files ).toBeEmpty();
 
