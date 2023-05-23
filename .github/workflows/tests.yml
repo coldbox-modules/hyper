@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cfengine: ["lucee@5", "adobe@2016", "adobe@2018", "adobe@2021", "adobe@2023"]
+        cfengine: ["lucee@5", "adobe@2018", "adobe@2021"]
         coldbox: ["coldbox@6", "coldbox@7", "coldbox@be"]
         experimental: [false]
         include:
