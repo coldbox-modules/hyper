@@ -384,6 +384,86 @@ component accessors="true" {
 	}
 
 	/**
+	 * Execute a HEAD request.
+	 *
+	 * @url         An optional url to set for the request.
+	 * @queryParams An optional struct of query parameters to set for the request.
+	 *
+	 * @returns     A HyperResponse instance for the request.
+	 */
+	function head( url, queryParams ) {
+		if ( !isNull( arguments.url ) ) {
+			setUrl( arguments.url );
+		}
+		if ( !isNull( arguments.queryParams ) ) {
+			setQueryParams( [] );
+			withQueryParams( arguments.queryParams );
+		}
+		setMethod( "HEAD" );
+		return send();
+	}
+
+	/**
+	 * Execute a HEAD request asynchronously.
+	 *
+	 * @url         An optional url to set for the request.
+	 * @queryParams An optional struct of query parameters to set for the request.
+	 *
+	 * @returns     A ColdBox Future instance.
+	 */
+	function headAsync( url, queryParams ) {
+		if ( !isNull( arguments.url ) ) {
+			setUrl( arguments.url );
+		}
+		if ( !isNull( arguments.queryParams ) ) {
+			setQueryParams( [] );
+			withQueryParams( arguments.queryParams );
+		}
+		setMethod( "HEAD" );
+		return sendAsync();
+	}
+
+	/**
+	 * Execute an OPTIONS request.
+	 *
+	 * @url         An optional url to set for the request.
+	 * @queryParams An optional struct of query parameters to set for the request.
+	 *
+	 * @returns     A HyperResponse instance for the request.
+	 */
+	function options( url, queryParams ) {
+		if ( !isNull( arguments.url ) ) {
+			setUrl( arguments.url );
+		}
+		if ( !isNull( arguments.queryParams ) ) {
+			setQueryParams( [] );
+			withQueryParams( arguments.queryParams );
+		}
+		setMethod( "OPTIONS" );
+		return send();
+	}
+
+	/**
+	 * Execute an OPTIONS request asynchronously.
+	 *
+	 * @url         An optional url to set for the request.
+	 * @queryParams An optional struct of query parameters to set for the request.
+	 *
+	 * @returns     A ColdBox Future instance.
+	 */
+	function optionsAsync( url, queryParams ) {
+		if ( !isNull( arguments.url ) ) {
+			setUrl( arguments.url );
+		}
+		if ( !isNull( arguments.queryParams ) ) {
+			setQueryParams( [] );
+			withQueryParams( arguments.queryParams );
+		}
+		setMethod( "OPTIONS" );
+		return sendAsync();
+	}
+
+	/**
 	 * Add additional query parameters to the request.
 	 * Note: This will remove any values with duplicate keys prior to adding the new struct of params.
 	 *

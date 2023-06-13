@@ -181,6 +181,42 @@ Execute a DELETE request asynchronously. Returns a ColdBox Future that returns a
 | url  | string | false    | null    | An optional URL to set for the request.  |
 | body | struct | false    | null    | An optional body to set for the request. |
 
+##### `head`
+
+Execute a HEAD request.
+
+| Name        | Type   | Required | Default | Description                                                    |
+| ----------- | ------ | -------- | ------- | -------------------------------------------------------------- |
+| url         | string | false    | null    | An optional URL to set for the request.                        |
+| queryParams | struct | false    | null    | An optional struct of query parameters to set for the request. |
+
+##### `headAsync`
+
+Execute a HEAD request asynchronously. Returns a ColdBox Future that returns a HyperResponse.
+
+| Name        | Type   | Required | Default | Description                                                    |
+| ----------- | ------ | -------- | ------- | -------------------------------------------------------------- |
+| url         | string | false    | null    | An optional URL to set for the request.                        |
+| queryParams | struct | false    | null    | An optional struct of query parameters to set for the request. |
+
+##### `options`
+
+Execute an OPTIONS request.
+
+| Name        | Type   | Required | Default | Description                                                    |
+| ----------- | ------ | -------- | ------- | -------------------------------------------------------------- |
+| url         | string | false    | null    | An optional URL to set for the request.                        |
+| queryParams | struct | false    | null    | An optional struct of query parameters to set for the request. |
+
+##### `optionsAsync`
+
+Execute an OPTIONS request asynchronously. Returns a ColdBox Future that returns a HyperResponse.
+
+| Name        | Type   | Required | Default | Description                                                    |
+| ----------- | ------ | -------- | ------- | -------------------------------------------------------------- |
+| url         | string | false    | null    | An optional URL to set for the request.                        |
+| queryParams | struct | false    | null    | An optional struct of query parameters to set for the request. |
+
 ##### `send`
 
 Send the HTTP request and return a HyperResponse.
