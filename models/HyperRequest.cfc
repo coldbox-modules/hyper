@@ -1178,7 +1178,7 @@ component accessors="true" {
 			"files"              : getFiles(),
 			"bodyFormat"         : getBodyFormat(),
 			"body"               : getBody(),
-			"referrer"           : isNull( variables.referrer ) ? "" : variables.referrer,
+			"referrerId"         : isNull( variables.referrer ) ? "" : variables.referrer.getResponseID(),
 			"throwOnError"       : getThrowOnError(),
 			"timeout"            : getTimeout(),
 			"maximumRedirects"   : getMaximumRedirects(),
