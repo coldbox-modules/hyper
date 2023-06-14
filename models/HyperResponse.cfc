@@ -56,7 +56,7 @@ component accessors="true" {
 	property name="timestamp" setter="false";
 
 	/**
-	 * The execution time of the request.
+	 * The execution time of the request, in milliseconds.
 	 */
 	property name="executionTime" setter="false";
 
@@ -64,6 +64,7 @@ component accessors="true" {
 	 * Create a new HyperResponse.
 	 *
 	 * @originalRequest The HyperRequest associated with this response.
+	 * @executionTime   The execution time of the request, in milliseconds.
 	 * @charset         The response charset. Default: UTF-8
 	 * @statusCode      The response status code. Default: 200.
 	 * @headers         The response headers. Default: {}.
@@ -129,7 +130,9 @@ component accessors="true" {
 	}
 
 	/**
-	 * Returns true if the request status code is considered successful.
+	 * Returns true if the request status code is considered successful (2xx status code).
+	 *
+	 * @returns boolean
 	 */
 	function isSuccess() {
 		return left( getStatusCode(), 1 ) == "2";
@@ -137,21 +140,36 @@ component accessors="true" {
 
 	/**
 	 * Returns true if the request status code is 200 OK.
+	 *
+	 * @returns boolean
 	 */
 	function isOK() {
 		return getStatusCode() == "200";
 	}
 
 	/**
-	 * Returns true if the request status code is considered a redirect.
+	 * Returns true if the request status code is 201 Created.
+	 *
+	 * @returns boolean
+	 */
+	function isCreated() {
+		return getStatusCode() == "201";
+	}
+
+	/**
+	 * Returns true if the request status code is considered a redirect (3xx status code).
+	 *
+	 * @returns boolean
 	 */
 	function isRedirect() {
 		return left( getStatusCode(), 1 ) == "3";
 	}
 
 	/**
-	 * Returns true if the request status code is considered
-	 * either a client error or a server error.
+	 * Returns true if the request status code is considered either a
+	 * client error (4xx status code) or a server error (5xx status code).
+	 *
+	 * @returns boolean
 	 */
 	function isError() {
 		return left( getStatusCode(), 1 ) == "4" ||
@@ -159,8 +177,9 @@ component accessors="true" {
 	}
 
 	/**
-	 * Returns true if the request status code is
-	 * considered a client error.
+	 * Returns true if the request status code is considered a client error (4xx status code).
+	 *
+	 * @returns boolean
 	 */
 	function isClientError() {
 		return left( getStatusCode(), 1 ) == "4";
@@ -168,6 +187,8 @@ component accessors="true" {
 
 	/**
 	 * Returns true if the request status code is 401 Unauthorized.
+	 *
+	 * @returns boolean
 	 */
 	function isUnauthorized() {
 		return getStatusCode() == "401";
@@ -175,6 +196,8 @@ component accessors="true" {
 
 	/**
 	 * Returns true if the request status code is 403 Forbidden.
+	 *
+	 * @returns boolean
 	 */
 	function isForbidden() {
 		return getStatusCode() == "403";
@@ -182,14 +205,17 @@ component accessors="true" {
 
 	/**
 	 * Returns true if the request status code is 404 Not Found.
+	 *
+	 * @returns boolean
 	 */
 	function isNotFound() {
 		return getStatusCode() == "404";
 	}
 
 	/**
-	 * Returns true if the request status code is
-	 * considered a server error.
+	 * Returns true if the request status code is considered a server error.
+	 *
+	 * @returns boolean
 	 */
 	function isServerError() {
 		return left( getStatusCode(), 1 ) == "5";
@@ -197,6 +223,10 @@ component accessors="true" {
 
 	/**
 	 * Checks if a header exists in the response.
+	 *
+	 * @name    The name of the header to check.
+	 *
+	 * @returns boolean
 	 */
 	public boolean function hasHeader( required string name ) {
 		return variables.headers.keyExists( lCase( arguments.name ) );
@@ -204,6 +234,11 @@ component accessors="true" {
 
 	/**
 	 * Gets the value of a header from the response.
+	 *
+	 * @name         The name of the header to retrieve.
+	 * @defaultValue The value to return if the header does not exist.
+	 *
+	 * @returns any
 	 */
 	public any function getHeader( required string name, any defaultValue = "" ) {
 		return hasHeader( arguments.name ) ? variables.headers[ lCase( arguments.name ) ] : arguments.defaultValue;
@@ -211,6 +246,8 @@ component accessors="true" {
 
 	/**
 	 * Gets a serializable representation of the response
+	 *
+	 * @returns struct
 	 */
 	public struct function getMemento() {
 		return {
