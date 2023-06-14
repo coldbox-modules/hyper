@@ -83,7 +83,7 @@ component accessors="true" {
 
 	/**
 	 * The format to serialize the body.
-	 * e.g. `json` or `formFields`
+	 * e.g. `json`, `formFields`, or `xml`
 	 */
 	property name="bodyFormat" default="json";
 
@@ -914,6 +914,12 @@ component accessors="true" {
 		return this;
 	}
 
+	/**
+	 * Send the HTTP request asynchronously and return a ColdBox Future that resolves to a HyperResponse
+	 *
+	 * @throws MissingAsyncManager
+	 * @returns Future< HyperResponse >
+	 */
 	function sendAsync() {
 		if ( isNull( variables.asyncManager ) ) {
 			throw( type = "MissingAsyncManager", message = "No asyncManager set!" );
@@ -1166,6 +1172,11 @@ component accessors="true" {
 		return getBodyFormat() == "json" ? serializeJSON( getBody() ) : getBody();
 	}
 
+	/**
+	 * Returns a struct representing this HyperRequest.
+	 *
+	 * @return struct
+	 */
 	public struct function getMemento() {
 		return {
 			"requestID"          : getRequestID(),

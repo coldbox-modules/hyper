@@ -24,7 +24,7 @@ component extends="testbox.system.BaseSpec" {
 					"files"              : variables.req.getFiles(),
 					"bodyFormat"         : variables.req.getBodyFormat(),
 					"body"               : variables.req.getBody(),
-					"referrer"           : "",
+					"referrerId"         : "",
 					"throwOnError"       : variables.req.getThrowOnError(),
 					"timeout"            : variables.req.getTimeout(),
 					"maximumRedirects"   : variables.req.getMaximumRedirects(),
