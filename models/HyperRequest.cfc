@@ -916,7 +916,7 @@ component accessors="true" {
 
 	function sendAsync() {
 		if ( isNull( variables.asyncManager ) ) {
-			throw( "No asyncManager set!" );
+			throw( type = "MissingAsyncManager", message = "No asyncManager set!" );
 		}
 
 		return variables.asyncManager.newFuture( function() {
