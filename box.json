@@ -20,14 +20,17 @@
     "shortDescription":"A CFML HTTP Builder",
     "description":"A CFML HTTP Builder",
     "type":"modules",
-    "dependencies":{},
+    "dependencies":{
+        "globber":"^3.1.5"
+    },
     "devDependencies":{
         "testbox":"^4",
         "coldbox":"^6"
     },
     "installPaths":{
         "testbox":"testbox/",
-        "coldbox":"tests/resources/app/coldbox/"
+        "coldbox":"tests/resources/app/coldbox/",
+        "globber":"modules/globber/"
     },
     "scripts":{
         "format":"cfformat run ModuleConfig.cfc,models/**/*.cfc,tests/specs/**/*.cfc,tests/resources/app/handlers/**/*.cfc,tests/resources/app/config/**/*.cfc --overwrite",

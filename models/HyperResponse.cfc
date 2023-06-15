@@ -1,5 +1,5 @@
 /**
- * A convienent wrapper for HTTP responses.
+ * A convenient wrapper for HTTP responses.
  */
 component accessors="true" {
 
