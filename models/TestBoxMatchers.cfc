@@ -11,7 +11,7 @@ component {
 	 */
 	function toHaveSentRequest( expectation, args = {} ) {
 		var hyper = expectation.actual;
-		if ( args.len() >= 2 ) {
+		if ( structCount( args ) >= 2 ) {
 			expectation.message = args[ 2 ];
 		} else {
 			expectation.message = expectation.isNot ? "Expected to not find a request that matched the callback parameters but did." : "Expected to find a request that matched the callback parameters but did not.";
@@ -31,7 +31,7 @@ component {
 		var actualCount   = hyper.getFakeRequestCount();
 		var expectedCount = args[ 1 ];
 		var messagePlural = expectedCount == 1 ? "request" : "requests";
-		if ( args.len() >= 2 ) {
+		if ( structCount( args ) >= 2 ) {
 			expectation.message = args[ 2 ];
 		} else {
 			expectation.message = expectation.isNot ? "Expected not to have sent exactly #expectedCount# #messagePlural# but did." : "Expected to have sent exactly #expectedCount# #messagePlural# but sent #actualCount#.";
@@ -47,7 +47,7 @@ component {
 	function toHaveSentNothing( expectation, args = {} ) {
 		var hyper       = expectation.actual;
 		var actualCount = hyper.getFakeRequestCount();
-		if ( args.len() >= 1 ) {
+		if ( structCount( args ) >= 1 ) {
 			expectation.message = args[ 1 ];
 		} else {
 			expectation.message = expectation.isNot ? "Expected to have sent any number of requests but have sent nothing." : "Expected to have sent no requests but have sent #actualCount#.";
