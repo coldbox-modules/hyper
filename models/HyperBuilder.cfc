@@ -13,9 +13,13 @@ component singleton {
 	 *
 	 * @returns The new HyperBuilder instance.
 	 */
-	function init() {
-		this.defaults = new Hyper.models.HyperRequest();
+	public HyperBuilder function init( defaults = new Hyper.models.HyperRequest() ) {
+		this.defaults = arguments.defaults;
 		for ( var key in arguments ) {
+			if ( key == "defaults" ) {
+				continue;
+			}
+
 			invoke(
 				this.defaults,
 				"set#key#",
@@ -40,12 +44,41 @@ component singleton {
 	}
 
 	/**
+	 * Registers a new custom Hyper client with the given request.
+	 *
+	 * @alias    The WireBox mapping for the custom client.
+	 * @defaults The request to use as the defaults for the custom client.
+	 *
+	 * @throws   HyperNonColdBoxContext
+	 * @returns  The HyperRequest instance being used as the defaults.
+	 */
+	public HyperRequest function registerAs( required string alias, required HyperRequest defaults ) {
+		if ( !structKeyExists( variables, "wirebox" ) ) {
+			throw(
+				type    = "HyperNonColdBoxContext",
+				message = "No wirebox instance available to register custom client. Are you sure you are running in a ColdBox context?"
+			);
+		}
+
+		variables.wirebox
+			.getBinder()
+			.forceMap( alias )
+			.to( "hyper.models.HyperBuilder" )
+			.asSingleton()
+			.initWith( defaults = arguments.defaults );
+
+		return arguments.defaults;
+	}
+
+	/**
 	 * Create a new request from the default request.
 	 *
 	 * @returns A new HyperRequest instance from the default request.
 	 */
 	function new() {
-		return this.defaults.clone();
+		var req = this.defaults.clone();
+		req.setBuilder( this );
+		return req;
 	}
 
 	/**

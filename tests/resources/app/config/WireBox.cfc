@@ -28,6 +28,10 @@ component extends="coldbox.system.ioc.config.Binder" {
 		};
 
 		// Map Bindings below
+		map( "SWAPIClient" )
+			.to( "hyper.models.HyperBuilder" )
+			.asSingleton()
+			.initWith( baseUrl = "https://swapi.dev/api" );
 	}
 
 }
