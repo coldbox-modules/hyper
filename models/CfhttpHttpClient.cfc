@@ -324,6 +324,14 @@ component implements="HyperHttpClientInterface" {
 		}
 
 		if ( cfhttpResponse.keyExists( "status_text" ) ) {
+			if ( cfhttpResponse.status_text == "Request Time-out" ) {
+				return "Request Timeout";
+			}
+
+			if ( cfhttpResponse.status_text == "Connection Failure" ) {
+				return "Bad Gateway";
+			}
+
 			return cfhttpResponse.status_text;
 		}
 
