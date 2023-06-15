@@ -27,6 +27,33 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 				expect( req.getBaseUrl() ).toBe( "https://jsonplaceholder.typicode.com" );
 				expect( req.getHeader( "X-Requested-With" ) ).toBe( "XMLHTTPRequest" );
 			} );
+
+			it( "can configure builders in the WireBox config file", () => {
+				var hyper = getInstance( "SWAPIClient" );
+				var res   = hyper.get( "/people/1" );
+				expect( res.isOK() ).toBeTrue();
+				var data = res.json();
+				expect( data ).toHaveKey( "name" );
+				expect( data.name ).toBe( "Luke Skywalker" );
+			} );
+
+			it( "can configure builders using a registerAs syntax", () => {
+				getInstance( "HyperBuilder@hyper" )
+					.setBaseUrl( "https://swapi.dev/api" )
+					.withRequestCallback( function( req ) {
+						req.withHeaders( { "X-Custom-Header" : "foobar" } );
+					} )
+					.registerAs( "SWAPIClient2" );
+
+				var hyper = getInstance( "SWAPIClient2" );
+				var res   = hyper.get( "/people/1" );
+				expect( res.isOK() ).toBeTrue();
+				var data = res.json();
+				expect( data ).toHaveKey( "name" );
+				expect( data.name ).toBe( "Luke Skywalker" );
+				expect( res.getRequest().getHeaders() ).toHaveKey( "X-Custom-Header" );
+				expect( res.getRequest().getHeaders()[ "X-Custom-Header" ] ).toBe( "foobar" );
+			} );
 		} );
 	}
 

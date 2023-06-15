@@ -150,6 +150,11 @@ component accessors="true" {
 	property name="responseCallbacks" type="array";
 
 	/**
+	 * A reference to the HyperBuilder that created this request, if any.
+	 */
+	property name="builder" type="HyperBuilder";
+
+	/**
 	 * Initialize a new HyperRequest.
 	 *
 	 * @returns The HyperRequest instance.
@@ -1205,4 +1210,14 @@ component accessors="true" {
 		};
 	}
 
+	/**
+	 * Registers this configured HyperRequest as the defaults for a named HyperBuilder in WireBox.
+	 *
+	 * @alias  The name to register the custom HyperBuilder.
+	 *
+	 * @returns The HyperRequest instance.
+	 */
+	public HyperRequest function registerAs( required string alias ) {
+		return variables.builder.registerAs( alias, this );
+	}
 }
