@@ -36,15 +36,12 @@ component accessors="true" extends="HyperResponse" {
 	/**
 	 * The charset value for the response.
 	 */
-	property
-		name="headers"
-		type="struct";
+	property name="headers" type="struct";
 
-		/**
-		 * The timestamp for when this response was received.
-		 */
-		property
-		name="timestamp";
+	/**
+	 * The timestamp for when this response was received.
+	 */
+	property name="timestamp";
 
 	/**
 	 * The execution time of the request, in milliseconds.
