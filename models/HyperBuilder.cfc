@@ -190,6 +190,7 @@ component singleton {
 		}
 		var nextRes = sequence[ 1 ];
 		arrayDeleteAt( sequence, 1 );
+		variables.sequences[ arguments.pattern ] = sequence;
 		return nextRes;
 	}
 
