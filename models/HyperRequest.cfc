@@ -150,6 +150,18 @@ component accessors="true" {
 	property name="responseCallbacks" type="array";
 
 	/**
+	 * A struct of patterns to fake response generator functions.
+	 * If this value exists, it means the request should be faked.
+	 */
+	property name="fakeConfiguration" type="struct";
+
+	/**
+	 * A boolean flag to prevent requests from being made that don't match a pattern in the fakeConfiguration.
+	 * Only applies when faking requests.
+	 */
+	property name="preventStrayRequests" type="boolean";
+
+	/**
 	 * A reference to the HyperBuilder that created this request, if any.
 	 */
 	property name="builder" type="HyperBuilder";
@@ -950,13 +962,12 @@ component accessors="true" {
 		}
 		variables.interceptorService.processState( "onHyperRequest", { "request" : this } );
 
-		var res = httpClient.send( this );
+		var res = shouldFake() ? generateFakeRequest() : variables.httpClient.send( this );
 
 		for ( var callback in variables.responseCallbacks ) {
 			callback( res );
 		}
 		variables.interceptorService.processState( "onHyperResponse", { "response" : res } );
-
 
 		if ( res.isRedirect() && shouldFollowRedirect() ) {
 			return followRedirect( res );
@@ -1220,4 +1231,87 @@ component accessors="true" {
 	public HyperRequest function registerAs( required string alias ) {
 		return variables.builder.registerAs( alias, this );
 	}
+
+	/**
+	 * Returns true if the request should be faked.
+	 *
+	 * @returns boolean
+	 */
+	private boolean function shouldFake() {
+		return !isNull( variables.fakeConfiguration );
+	}
+
+	/**
+	 * Generates a FakeHyperResponse for this request.
+	 *
+	 * First, it checks against any registered patterns.
+	 * Second, it checks if stray requests should be prevented. If so, it throws an HyperFakeStrayRequest exception.
+	 * Finally, it returns a default 200 OK fake response.
+	 *
+	 * @throws HyperFakeStrayRequest
+	 *
+	 * @returns FakeHyperResponse
+	 */
+	private FakeHyperResponse function generateFakeRequest() {
+		for ( var pattern in variables.fakeConfiguration ) {
+			if ( getPathPatternMatcher().matchPattern( pattern, getFullUrl() ) ) {
+				if ( variables.builder.hasSequenceForPattern( pattern ) ) {
+					return variables.builder.record( this, variables.builder.popResponseForSequence( pattern ) );
+				}
+
+				var callback = variables.fakeConfiguration[ pattern ];
+				var res      = callback( function(
+					numeric statusCode    = 200,
+					string statusText     = "OK",
+					any data              = "",
+					struct headers        = {},
+					numeric executionTime = 0,
+					string charset        = "UTF-8",
+					timestamp             = now()
+				) {
+					arguments.originalRequest = this;
+					return createFakeResponse( argumentCollection = arguments );
+				}, this );
+
+				if ( !isArray( res ) ) {
+					return variables.builder.record( this, res );
+				}
+
+				variables.builder.registerSequence( pattern, res );
+				return variables.builder.record( this, variables.builder.popResponseForSequence( pattern ) );
+			}
+		}
+
+		if ( !isNull( variables.preventStrayRequests ) && variables.preventStrayRequests ) {
+			throw(
+				type         = "HyperFakeStrayRequest",
+				message      = "Request sent to #getFullUrl()# but no fake response was configured.",
+				detail       = "To prevent this exception, don't call `preventStrayRequests()` in your tests.",
+				extendedInfo = serializeJSON( variables.fakeConfiguration )
+			);
+		}
+
+		return variables.builder.record( this, createFakeResponse( originalRequest = this ) );
+	}
+
+	/**
+	 * Creates a FakeHyperResponse passing in the arguments provided.
+	 *
+	 * @returns A new FakeHyperResponse instance.
+	 */
+	private FakeHyperResponse function createFakeResponse() {
+		return new hyper.models.FakeHyperResponse( argumentCollection = arguments );
+	}
+
+	/**
+	 * Returns a PathPatternMatcher instance.
+	 * Used for matching paths when faking requests.
+	 *
+	 * @returns PathPatternMatcher
+	 */
+	private PathPatternMatcher function getPathPatternMatcher() {
+		param variables.pathPatternMatcher = new globber.models.PathPatternMatcher();
+		return variables.pathPatternMatcher;
+	}
+
 }

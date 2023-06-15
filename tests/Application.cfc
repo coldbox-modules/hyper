@@ -11,6 +11,7 @@ component {
     rootPath = REReplaceNoCase( this.mappings[ "/tests" ], "tests(\\|/)", "" );
     this.mappings[ "/root" ] = rootPath;
     this.mappings[ "/hyper" ] = rootPath;
+    this.mappings[ "/globber" ] = rootPath & "modules/globber";
     this.mappings[ "/testingModuleRoot" ] = listDeleteAt( rootPath, listLen( rootPath, '\/' ), "\/" );
     this.mappings[ "/app" ] = testsPath & "resources/app";
     this.mappings[ "/coldbox" ] = testsPath & "resources/app/coldbox";
