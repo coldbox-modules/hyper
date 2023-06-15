@@ -17,8 +17,8 @@ component implements="HyperHttpClientInterface" {
 			originalRequest = req,
 			executionTime   = getTickCount() - startTick,
 			charset         = cfhttpResponse.charset ?: "UTF-8",
-			statusCode      = cfhttpResponse.responseheader.status_code ?: cfhttpResponse.status_code ?: 504,
-			statusText      = cfhttpResponse.responseheader.explanation ?: cfhttpResponse.status_text ?: "Gateway Timeout",
+			statusCode      = normalizeStatusCode( cfhttpResponse ),
+			statusText      = normalizeStatusText( cfhttpResponse ),
 			headers         = normalizeHeaders( cfhttpResponse ),
 			data            = cfhttpResponse.filecontent
 		);
@@ -299,6 +299,44 @@ component implements="HyperHttpClientInterface" {
 			}
 		}
 		return local.res;
+	}
+
+	private numeric function normalizeStatusCode( required struct cfhttpResponse ) {
+		if ( cfhttpResponse.keyExists( "responseheader" ) && cfhttpResponse.responseheader.keyExists( "status_code" ) ) {
+			return cfhttpResponse.responseheader.status_code;
+		}
+
+		if ( cfhttpResponse.keyExists( "status_code" ) ) {
+			return cfhttpResponse.status_code != 0 ? cfhttpResponse.status_code : 502;
+		}
+
+		if ( cfhttpResponse.keyExists( "statuscode" ) ) {
+			var code = listFirst( cfhttpResponse.statuscode, " " );
+			return isNumeric( code ) ? code : 502;
+		}
+
+		return 504;
+	}
+
+	private string function normalizeStatusText( required struct cfhttpResponse ) {
+		if ( cfhttpResponse.keyExists( "responseheader" ) && cfhttpResponse.responseheader.keyExists( "explanation" ) ) {
+			return cfhttpResponse.responseheader.explanation;
+		}
+
+		if ( cfhttpResponse.keyExists( "status_text" ) ) {
+			return cfhttpResponse.status_text;
+		}
+
+		if ( cfhttpResponse.keyExists( "statuscode" ) ) {
+			var code = listFirst( cfhttpResponse.statuscode, " " );
+			if ( !isNumeric( code ) ) {
+				return "Bad Gateway";
+			}
+			var text = listRest( cfhttpResponse.statuscode, " " );
+			return text == "Request Time-out" ? "Request Timeout" : text;
+		}
+
+		return "Gateway Timeout";
 	}
 
 	/**
