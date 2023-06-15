@@ -38,7 +38,7 @@ component accessors="true" extends="HyperResponse" {
 	 */
 	property
 		name="headers"
-		type="struct"
+		type="struct";
 
 		/**
 		 * The timestamp for when this response was received.
