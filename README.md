@@ -469,7 +469,7 @@ Gets the body format for the request.
 ##### `setBodyFormat`
 
 Sets the body format for the request. Allowed values are either `formFields` or `json`.
-It is highly receommended to use `asFormFields` or `asJson` instead.
+It is highly recommended to use `asFormFields` or `asJson` instead.
 
 | Name  | Type | Required | Default | Description                      |
 | ----- | ---- | -------- | ------- | -------------------------------- |
@@ -486,6 +486,14 @@ A convenience method to set the body format and Content-Type to json.
 ##### `asFormFields`
 
 A convenience method to set the body format and Content-Type to form fields.
+
+| Name         | Type | Required | Default | Description |
+| ------------ | ---- | -------- | ------- | ----------- |
+| No arguments |      |          |         |             |
+
+##### `asXML`
+
+A convenience method to set the body format and Content-Type to xml.
 
 | Name         | Type | Required | Default | Description |
 | ------------ | ---- | -------- | ------- | ----------- |
