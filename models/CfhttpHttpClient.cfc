@@ -122,6 +122,13 @@ component implements="HyperHttpClientInterface" {
 			cfhttpFiles.append( fileAttrCollection );
 		}
 
+		var cfhttpCookies = req
+			.getCookies()
+			.reduce( function( acc, name, value ) {
+				acc.append( { "name" : name, "value" : value } );
+				return acc;
+			}, [] );
+
 		var cfhttpBody = [];
 		if ( req.hasBody() ) {
 			switch ( req.getBodyFormat() ) {
@@ -171,7 +178,8 @@ component implements="HyperHttpClientInterface" {
 				"headers" : cfhttpHeaders,
 				"params"  : cfhttpParams,
 				"files"   : cfhttpFiles,
-				"body"    : cfhttpBody
+				"body"    : cfhttpBody,
+				"cookies" : cfhttpCookies
 			}
 		};
 	}
@@ -262,6 +270,15 @@ component implements="HyperHttpClientInterface" {
 					fileAttrCollection[ "mimeType" ] = file.mimeType;
 				}
 				cfhttpparam( attributeCollection = fileAttrCollection );
+			}
+
+			var cookies = req.getCookies();
+			for ( var name in cookies ) {
+				cfhttpparam(
+					type  = "cookie",
+					name  = name,
+					value = cookies[ name ]
+				);
 			}
 
 			if ( req.hasBody() ) {

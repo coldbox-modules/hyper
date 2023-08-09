@@ -24,8 +24,8 @@
         "globber":"^3.1.5"
     },
     "devDependencies":{
-        "testbox":"^4",
-        "coldbox":"^6"
+        "testbox":"^5.0.0",
+        "coldbox":"^7.0.0"
     },
     "installPaths":{
         "testbox":"testbox/",
