@@ -98,6 +98,11 @@ component accessors="true" {
 	property name="headers";
 
 	/**
+	 * A struct of headers for the request.
+	 */
+	property name="cookies";
+
+	/**
 	 * A struct of query parameters for the request.
 	 */
 	property name="queryParams";
@@ -176,6 +181,7 @@ component accessors="true" {
 		variables.httpClient         = arguments.httpClient;
 		variables.queryParams        = [];
 		variables.headers            = createObject( "java", "java.util.LinkedHashMap" ).init();
+		variables.cookies            = structNew( "ordered" );
 		variables.files              = [];
 		variables.requestCallbacks   = [];
 		variables.responseCallbacks  = [];
@@ -664,7 +670,7 @@ component accessors="true" {
 	}
 
 	/**
-	 * Get the value for a certian header.
+	 * Get the value for a certain header.
 	 *
 	 * @name    The name of the header to retrieve its value.
 	 *
@@ -673,6 +679,68 @@ component accessors="true" {
 	 */
 	function getHeader( name ) {
 		return hasHeader( name ) ? variables.headers.get( name ) : "";
+	}
+
+	/**
+	 * Add additional cookies to the request.
+	 *
+	 * @headers A struct of cookies to add to the request.
+	 *
+	 * @returns The HyperRequest instance.
+	 */
+	public HyperRequest function withCookies( struct cookies = {} ) {
+		for ( var name in arguments.cookies ) {
+			setCookie( name, arguments.cookies[ name ] );
+		}
+		return this;
+	}
+
+	/**
+	 * Set a header for the request.
+	 *
+	 * @name    The name of the header.
+	 * @value   The value of the header.
+	 *
+	 * @returns The HyperRequest instance.
+	 */
+	public HyperRequest function setCookie( required string name, required any value ) {
+		variables.cookies[ name ] = value;
+		return this;
+	}
+
+	/**
+	 * Sends all current cookies along with the request.
+
+	 * @returns The HyperRequest instance.
+	 */
+	public HyperRequest function withCredentials() {
+		for ( var name in cookie ) {
+			setCookie( name, cookie[ name ] );
+		}
+		return this;
+	}
+
+	/**
+	 * Check if the request has a cookie with the given name.
+	 *
+	 * @name    The name of the cookie to check.
+	 *
+	 * @returns True if the cookie exists.
+	 */
+	public boolean function hasCookie( required string name ) {
+		return variables.cookies.keyExists( arguments.name );
+	}
+
+	/**
+	 * Get the value for a certain cookie.
+	 *
+	 * @name    The name of the cookie to retrieve its value.
+	 *
+	 * @returns The value of the cookie.
+	 *          Returns an empty string if the cookie does not exist.
+	 */
+	public any function getCookie( required string name ) {
+		return hasCookie( arguments.name ) ? variables.cookies.get( arguments.name ) : "";
 	}
 
 	/**
@@ -1202,6 +1270,7 @@ component accessors="true" {
 			"method"             : getMethod(),
 			"queryParams"        : getQueryParams(),
 			"headers"            : getHeaders(),
+			"cookies"            : getCookies(),
 			"files"              : getFiles(),
 			"bodyFormat"         : getBodyFormat(),
 			"body"               : getBody(),

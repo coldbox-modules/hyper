@@ -15,6 +15,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 						"Authorization" : "Bearer token",
 						"Content-Type"  : "application/octet-stream"
 					} )
+					.withCookies( { "foo" : "bar" } )
 					.setBody( binaryBody )
 					.setBodyFormat( "other|binary" )
 					.setMethod( "POST" )
@@ -39,6 +40,11 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 				} );
 				expect( debugReq.body ).toHaveKey( "files" );
 				expect( debugReq.body.files ).toBeEmpty();
+
+				expect( debugReq.body ).toHaveKey( "cookies" );
+				expect( debugReq.body.cookies ).toBeArray();
+				expect( debugReq.body.cookies ).toHaveLength( 1 );
+				expect( debugReq.body.cookies[ 1 ] ).toBe( { "name" : "foo", "value" : "bar" } );
 
 				expect( debugReq.body ).toHaveKey( "headers" );
 				var headers = debugReq.body.headers;

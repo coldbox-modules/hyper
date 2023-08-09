@@ -21,6 +21,7 @@ component extends="testbox.system.BaseSpec" {
 					"method"             : variables.req.getMethod(),
 					"queryParams"        : variables.req.getQueryParams(),
 					"headers"            : variables.req.getHeaders(),
+					"cookies"            : variables.req.getCookies(),
 					"files"              : variables.req.getFiles(),
 					"bodyFormat"         : variables.req.getBodyFormat(),
 					"body"               : variables.req.getBody(),
@@ -69,6 +70,14 @@ component extends="testbox.system.BaseSpec" {
 				expect( req.getHeader( "accept" ) ).toBe( "application/xml" );
 				req.withHeaders( { "Accept" : "application/xml" } );
 				expect( req.getHeader( "Accept" ) ).toBe( "application/xml" );
+			} );
+
+			it( "can set multiple cookies at once", function() {
+				expect( req.getCookie( "foo" ) ).toBe( "" );
+				expect( req.getCookie( "baz" ) ).toBe( "" );
+				req.withCookies( { "foo" : "bar", "baz" : "qux" } );
+				expect( req.getCookie( "foo" ) ).toBe( "bar" );
+				expect( req.getCookie( "baz" ) ).toBe( "qux" );
 			} );
 
 			it( "throws an exception if the url is empty when trying to make a request", function() {

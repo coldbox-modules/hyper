@@ -245,6 +245,76 @@ component accessors="true" {
 	}
 
 	/**
+	 * Caches the result of parsing the `Set-Cookie` header and returns it.
+	 *
+	 * @returns struct<name, cookieStruct>
+	 */
+	public struct function getCookies() {
+		param variables.cookies = parseCookies();
+		return variables.cookies;
+	}
+
+	/**
+	 * Parses and saves the cookies to the cookie scope.
+	 *
+	 * @returns The HyperResponse instance.
+	 */
+	public HyperResponse function persistCookies() {
+		var cookies = getCookies().each( function( name, cookieStruct ) {
+			cookieStruct[ "name" ]         = name;
+			cookieStruct[ "preservecase" ] = true;
+			if ( !cookieStruct.keyExists( "domain" ) ) {
+				cookieStruct[ "domain" ] = CGI.HTTP_HOST;
+			}
+			cfcookie( attributeCollection = cookieStruct );
+		} );
+		return this;
+	}
+
+	/**
+	 * Parses the `Set-Cookie` header and returns a struct of cookies for the response.
+	 *
+	 * @returns struct<name, cookieStruct>
+	 */
+	private struct function parseCookies() {
+		return arrayWrap( getHeader( "Set-Cookie", [] ) ).reduce( function( acc, cookieString ) {
+			var parts = listToArray( cookieString, ";" );
+
+			// the first item is always the name/value pair
+			var nameValuePair = parts[ 1 ];
+
+			// grab the name from the name/value pair and set it in our return struct
+			var name    = listFirst( nameValuePair, "=" );
+			acc[ name ] = {};
+
+			// parse out the value, if one exists
+			acc[ name ][ "value" ] = "";
+			if ( listLen( nameValuePair, "=" ) > 1 ) {
+				acc[ name ][ "value" ] = listRest( nameValuePair, "=" );
+			}
+
+			// grab the rest of the parts and parse them out
+			var rest = arrayLen( parts ) > 1 ? arraySlice( parts, 2 ) : [];
+			for ( var segment in rest ) {
+				var segmentParts = listToArray( segment, "=" );
+				var segmentName  = segmentParts[ 1 ];
+				var segmentValue = arrayLen( segmentParts ) > 1 ? segmentParts[ 2 ] : true;
+
+				// CFML doesn't support passing Max-Age so we'll
+				// convert to days instead and pass as the Expires key
+				if ( segmentName == "max-age" ) {
+					segmentName  = "expires";
+					segmentValue = segmentValue / 60 / 60 / 24;
+				}
+
+				acc[ name ][ segmentName ] = segmentValue;
+			}
+
+			return acc;
+		}, {} );
+	}
+
+	/**
 	 * Gets a serializable representation of the response
 	 *
 	 * @returns struct
@@ -260,8 +330,23 @@ component accessors="true" {
 			"charset"       : getCharset(),
 			"headers"       : getHeaders(),
 			"timestamp"     : getTimestamp(),
-			"executionTime" : getExecutionTime()
+			"executionTime" : getExecutionTime(),
+			"cookies"       : getCookies()
 		};
+	}
+
+	/**
+	 * Ensures the passed in value is an array
+	 *
+	 * @value A single value or an array.
+	 *
+	 * @returns An array
+	 */
+	private array function arrayWrap( required any value ) {
+		if ( isArray( arguments.value ) ) {
+			return arguments.value;
+		}
+		return [ arguments.value ];
 	}
 
 }

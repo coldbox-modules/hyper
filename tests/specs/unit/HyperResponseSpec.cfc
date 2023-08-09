@@ -20,7 +20,8 @@ component extends="testbox.system.BaseSpec" {
 					"charset"       : res.getCharset(),
 					"headers"       : res.getHeaders(),
 					"timestamp"     : res.getTimestamp(),
-					"executionTime" : res.getExecutionTime()
+					"executionTime" : res.getExecutionTime(),
+					"cookies"       : res.getCookies()
 				} );
 			} );
 
@@ -205,6 +206,74 @@ component extends="testbox.system.BaseSpec" {
 					headers         = {}
 				);
 				expect( res.getHeader( "Content-Type", "text/html; charset=utf-8" ) ).toBe( "text/html; charset=utf-8" );
+			} );
+
+			it( "can get the returned cookies as a struct", function() {
+				var res = new Hyper.models.HyperResponse(
+					originalRequest = createStub( extends = "models.HyperRequest" ),
+					statusCode      = 200,
+					executionTime   = 100,
+					headers         = {
+						"Set-Cookie" : [
+							"foo=bar;path=/;secure;samesite=none;httponly",
+							"baz=qux;path=/;expires=Mon, 31 Dec 2038 23:59:59 GMT",
+							"one=two;max-age=2592000;domain=example.com"
+						]
+					}
+				);
+				expect( res.getCookies() ).toBe( {
+					"foo" : {
+						"value"    : "bar",
+						"path"     : "/",
+						"secure"   : true,
+						"samesite" : "none",
+						"httponly" : true
+					},
+					"baz" : {
+						"value"   : "qux",
+						"path"    : "/",
+						"expires" : "Mon, 31 Dec 2038 23:59:59 GMT"
+					},
+					"one" : {
+						"value"   : "two",
+						"domain"  : "example.com",
+						"expires" : 2592000 / 60 / 60 / 24 // seconds to days
+					}
+				} );
+			} );
+
+			it( "can save cookies to the cookie scope", function() {
+				var res = new Hyper.models.HyperResponse(
+					originalRequest = createStub( extends = "models.HyperRequest" ),
+					statusCode      = 200,
+					executionTime   = 100,
+					headers         = {
+						"Set-Cookie" : [
+							"foo=bar;path=/;secure;samesite=none;httponly",
+							"baz=qux;path=/;expires=Mon, 31 Dec 2038 23:59:59 GMT",
+							"one=two;max-age=2592000;domain=example.com"
+						]
+					}
+				);
+				for ( var key in cookie ) {
+					cfcookie(
+						name    = key,
+						value   = "",
+						expires = "now"
+					);
+				}
+				expect( cookie ).notToHaveKey( "foo" );
+				expect( cookie ).notToHaveKey( "baz" );
+				expect( cookie ).notToHaveKey( "one" );
+
+				res.persistCookies();
+
+				expect( cookie ).toHaveKey( "foo" );
+				expect( cookie.foo ).toBe( "bar" );
+				expect( cookie ).toHaveKey( "baz" );
+				expect( cookie.baz ).toBe( "qux" );
+				expect( cookie ).toHaveKey( "one" );
+				expect( cookie.one ).toBe( "two" );
 			} );
 		} );
 	}
