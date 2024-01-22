@@ -90,6 +90,7 @@ component singleton {
 	/**
 	 * Sets this HyperBuilder to fake HTTP requests. Used primarily for testing.
 	 * Accepts an optional configuration struct of patterns to response generator functions.
+	 * Usually called in a `beforeAll` block.
 	 *
 	 * @configuration An optional configuration struct of patterns to response generator functions.
 	 *
@@ -181,16 +182,20 @@ component singleton {
 				detail  = "Registered patterns are: [#variables.sequences.keyArray().toList( ", " )#]"
 			);
 		}
-		var sequence = variables.sequences[ arguments.pattern ];
-		if ( sequence.isEmpty() ) {
+		var sequence                    = variables.sequences[ arguments.pattern ];
+		param variables.sequenceIndexes = {};
+		if ( !variables.sequenceIndexes.keyExists( arguments.pattern ) ) {
+			variables.sequenceIndexes[ arguments.pattern ] = 1;
+		}
+		var sequenceIndex = variables.sequenceIndexes[ arguments.pattern ];
+		if ( sequenceIndex > sequence.len() ) {
 			throw(
 				type    = "HyperFakeSequenceExhausted",
 				message = "Sequence for pattern #arguments.pattern# is out of responses."
 			);
 		}
-		var nextRes = sequence[ 1 ];
-		arrayDeleteAt( sequence, 1 );
-		variables.sequences[ arguments.pattern ] = sequence;
+		var nextRes                                    = sequence[ sequenceIndex ];
+		variables.sequenceIndexes[ arguments.pattern ] = sequenceIndex + 1;
 		return nextRes;
 	}
 
@@ -226,15 +231,30 @@ component singleton {
 
 	/**
 	 * Clears the fake configuration from this HyperBuilder.
-	 * Usually called in an `afterEach` block.
+	 * Usually called in an `afterAll` block.
 	 *
 	 * @returns The HyperBuilder instance.
 	 */
 	public HyperBuilder function clearFakes() {
 		structDelete( variables, "sequences" );
+		structDelete( variables, "sequenceIndexes" );
+		structDelete( variables, "originalSequences" );
 		structDelete( variables, "requests" );
 		structDelete( variables, "prevent" );
 		structDelete( variables, "fakeConfiguration" );
+		return this;
+	}
+
+	/**
+	 * Resets the requests made and fake responses received for the HyperBuilder.
+	 * The configuration remains intact and sequences are reset.
+	 * Usually called in an `afterEach` block.
+	 *
+	 * @returns The HyperBuilder instance.
+	 */
+	public HyperBuilder function resetFakes() {
+		structDelete( variables, "requests" );
+		structDelete( variables, "sequenceIndexes" );
 		return this;
 	}
 
