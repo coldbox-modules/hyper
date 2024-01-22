@@ -216,6 +216,38 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 				expect( res.getStatusCode() ).toBe( 502 );
 				expect( res.getStatusText() ).toBe( "Bad Gateway" );
 			} );
+
+			it( "can reset fake requests and restart sequences", () => {
+				var hyper = new hyper.models.HyperBuilder();
+				hyper.fake( {
+					"https://does-not-exist.also-does-not-exist" : function( createFakeResponse ) {
+						return [
+							createFakeResponse( 200, "OK" ),
+							createFakeResponse( 404, "Not Found" )
+						];
+					}
+				} );
+
+				var resA = hyper.get( "https://does-not-exist.also-does-not-exist" );
+				expect( resA.getStatusCode() ).toBe( 200 );
+				expect( resA.getStatusText() ).toBe( "OK" );
+
+				var resB = hyper.get( "https://does-not-exist.also-does-not-exist" );
+				expect( resB.getStatusCode() ).toBe( 404 );
+				expect( resB.getStatusText() ).toBe( "Not Found" );
+
+				expect( hyper ).toHaveSentCount( 2 );
+
+				hyper.resetFakes();
+
+				expect( hyper ).toHaveSentCount( 0 );
+
+				var resC = hyper.get( "https://does-not-exist.also-does-not-exist" );
+				expect( resC.getStatusCode() ).toBe( 200 );
+				expect( resC.getStatusText() ).toBe( "OK" );
+
+				expect( hyper ).toHaveSentCount( 1 );
+			} );
 		} );
 	}
 
