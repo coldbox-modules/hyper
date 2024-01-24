@@ -185,6 +185,8 @@ component accessors="true" {
 		variables.files              = [];
 		variables.requestCallbacks   = [];
 		variables.responseCallbacks  = [];
+
+		setUserAgent( "HyperCFML/#getHyperVersion()#" );
 		// This is overwritten by the HyperBuilder if WireBox exists.
 		variables.interceptorService = {
 			"processState" : function() {
@@ -942,6 +944,18 @@ component accessors="true" {
 	}
 
 	/**
+	 * A convenience method to set the User-Agent header.
+	 *
+	 * @type    The User-Agent value for the request.
+	 *
+	 * @returns The HyperRequest instance.
+	 */
+	public HyperRequest function setUserAgent( required string userAgent ) {
+		setHeader( "User-Agent", arguments.userAgent );
+		return this;
+	}
+
+	/**
 	 * A convenience method to set the Content-Type header.
 	 *
 	 * @type    The Content-Type value for the request.
@@ -1381,6 +1395,13 @@ component accessors="true" {
 	private PathPatternMatcher function getPathPatternMatcher() {
 		param variables.pathPatternMatcher = new globber.models.PathPatternMatcher();
 		return variables.pathPatternMatcher;
+	}
+
+	public string function getHyperVersion() {
+		if ( !structKeyExists( application, "hyperVersion" ) ) {
+			application.hyperVersion = deserializeJSON( fileRead( expandPath( "/hyper/box.json" ) ) ).version;
+		}
+		return application.hyperVersion;
 	}
 
 }
