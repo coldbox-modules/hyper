@@ -1,3 +1,13 @@
+# v7.3.0
+## 24 Jan 2024 — 20:14:11 UTC
+
+### feat
+
++ __HyperRequest:__ Add retry handling to HyperRequests ([daf90bd](https://github.com/coldbox-modules/hyper/commit/daf90bd8f85ec6287c08909aa24931abe4fc9f2a))
++ __HyperRequest:__ Default to a `HyperCFML/#versionNumber#` User-Agent ([60100c4](https://github.com/coldbox-modules/hyper/commit/60100c4b05b9d7886000f2c631cb338038035269))
++ __HyperBuilder:__ Allow resetting of existing fakes using `resetFakes` ([beab1b7](https://github.com/coldbox-modules/hyper/commit/beab1b7c41ca1d9f5df1aac641a0f6915027aec1))
+
+
 # v2.3.5
 ## 02 Nov 2020 — 21:55:39 UTC
 
