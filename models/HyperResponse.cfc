@@ -81,9 +81,10 @@ component accessors="true" {
 		string statusText  = "OK",
 		struct headers     = {},
 		any data           = "",
-		timestamp          = now()
+		timestamp          = now(),
+		any responseID     = createUUID()
 	) {
-		variables.responseID    = createUUID();
+		variables.responseID    = arguments.responseID;
 		variables.request       = arguments.originalRequest;
 		variables.charset       = arguments.charset;
 		variables.statusCode    = arguments.statusCode;

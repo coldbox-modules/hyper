@@ -75,6 +75,26 @@ component accessors="true" {
 	property name="maximumRedirects" default="*";
 
 	/**
+	 * An array describing how to retry failed requests.
+	 * Defaults to an empty array meaning no retries will be attempted.
+	 */
+	property name="retries";
+
+	/**
+	 * The current request count.
+	 * Used for determining if a retry should happen and for how long.
+	 */
+	property name="currentRequestCount" default="1";
+
+	/**
+	 * A predicate function to determine if the retry should be attempted.
+	 * The next request can also be modified in this predicate function.
+	 * Defaults to retrying if the response has an error status code,
+	 * as determined by `HyperResponse#isError`
+	 */
+	property name="retryPredicate";
+
+	/**
 	 * The body to send with the request.
 	 * How the body is serialized is
 	 * determined by the bodyFormat.
@@ -177,21 +197,28 @@ component accessors="true" {
 	 * @returns The HyperRequest instance.
 	 */
 	function init( httpClient = new CfhttpHttpClient() ) {
-		variables.requestID          = createUUID();
-		variables.httpClient         = arguments.httpClient;
-		variables.queryParams        = [];
-		variables.headers            = createObject( "java", "java.util.LinkedHashMap" ).init();
-		variables.cookies            = structNew( "ordered" );
-		variables.files              = [];
-		variables.requestCallbacks   = [];
-		variables.responseCallbacks  = [];
+		variables.requestID         = createUUID();
+		variables.httpClient        = arguments.httpClient;
+		variables.queryParams       = [];
+		variables.headers           = createObject( "java", "java.util.LinkedHashMap" ).init();
+		variables.cookies           = structNew( "ordered" );
+		variables.files             = [];
+		variables.requestCallbacks  = [];
+		variables.responseCallbacks = [];
+		variables.retries           = [];
+		variables.retryPredicate    = function( res, req, exception ) {
+			return res.isError();
+		};
 
 		setUserAgent( "HyperCFML/#getHyperVersion()#" );
+
 		// This is overwritten by the HyperBuilder if WireBox exists.
 		variables.interceptorService = {
 			"processState" : function() {
 			}
 		};
+
+		// This is overwritten by the HyperBuilder if WireBox exists.
 		variables.asyncManager = {
 			"newFuture" : function() {
 				throw( "No asyncManager set!" );
@@ -1044,18 +1071,53 @@ component accessors="true" {
 		}
 		variables.interceptorService.processState( "onHyperRequest", { "request" : this } );
 
-		var res = shouldFake() ? generateFakeRequest() : variables.httpClient.send( this );
+		try {
+			var res = shouldFake() ? generateFakeRequest() : variables.httpClient.send( this );
 
-		for ( var callback in variables.responseCallbacks ) {
-			callback( res );
+			for ( var callback in variables.responseCallbacks ) {
+				callback( res );
+			}
+			variables.interceptorService.processState( "onHyperResponse", { "response" : res } );
+
+			if (
+				variables.currentRequestCount <= variables.retries.len() &&
+				variables.retryPredicate( res, this )
+			) {
+				sleep( variables.retries[ variables.currentRequestCount ] );
+				variables.currentRequestCount++;
+				return variables.send();
+			}
+
+			if ( res.isRedirect() && shouldFollowRedirect() ) {
+				return followRedirect( res );
+			}
+
+			return res;
+		} catch ( HyperRequestError e ) {
+			var resMemento = deserializeJSON( e.extendedinfo ).response;
+			var res        = new Hyper.models.HyperResponse(
+				originalRequest = this,
+				executionTime   = resMemento.executionTime,
+				charset         = resMemento.charset,
+				statusCode      = resMemento.statusCode,
+				statusText      = resMemento.statusText,
+				headers         = resMemento.headers,
+				data            = resMemento.data,
+				timestamp       = resMemento.timestamp,
+				responseID      = resMemento.responseID
+			);
+
+			if (
+				variables.currentRequestCount <= variables.retries.len() &&
+				variables.retryPredicate( res, this, e )
+			) {
+				sleep( variables.retries[ variables.currentRequestCount ] );
+				variables.currentRequestCount++;
+				return variables.send();
+			}
+
+			rethrow;
 		}
-		variables.interceptorService.processState( "onHyperResponse", { "response" : res } );
-
-		if ( res.isRedirect() && shouldFollowRedirect() ) {
-			return followRedirect( res );
-		}
-
-		return res;
 	}
 
 	/**
@@ -1129,6 +1191,34 @@ component accessors="true" {
 		return this;
 	}
 
+	public HyperRequest function retry(
+		required any attempts,
+		numeric delay,
+		function predicate
+	) {
+		// convert attempt counts into an array of identical backoff delays
+		if ( isSimpleValue( arguments.attempts ) ) {
+			if ( isNull( arguments.delay ) || !isNumeric( arguments.delay ) ) {
+				throw(
+					type    = "HyperRetryMissingParameter",
+					message = "The `delay` parameter is required when using a numeric attempt count."
+				);
+			}
+			var attemptCount   = arguments.attempts;
+			arguments.attempts = [];
+			for ( var i = 1; i <= attemptCount; i++ ) {
+				arguments.attempts.append( arguments.delay );
+			}
+		}
+
+		variables.retries = arguments.attempts;
+		if ( !isNull( arguments.predicate ) ) {
+			variables.retryPredicate = arguments.predicate;
+		}
+
+		return this;
+	}
+
 	/**
 	 * Clones the current request into a new HyperRequest.
 	 *
@@ -1164,6 +1254,8 @@ component accessors="true" {
 		req.setAuthType( variables.authType );
 		req.setRequestCallbacks( duplicate( variables.requestCallbacks ) );
 		req.setResponseCallbacks( duplicate( variables.responseCallbacks ) );
+		req.setRetries( duplicate( getRetries() ) );
+		req.setRetryPredicate( getRetryPredicate() );
 		return req;
 	}
 
@@ -1277,30 +1369,32 @@ component accessors="true" {
 	 */
 	public struct function getMemento() {
 		return {
-			"requestID"          : getRequestID(),
-			"baseUrl"            : getBaseUrl(),
-			"url"                : getUrl(),
-			"fullUrl"            : getFullUrl(),
-			"method"             : getMethod(),
-			"queryParams"        : getQueryParams(),
-			"headers"            : getHeaders(),
-			"cookies"            : getCookies(),
-			"files"              : getFiles(),
-			"bodyFormat"         : getBodyFormat(),
-			"body"               : getBody(),
-			"referrerId"         : isNull( variables.referrer ) ? "" : variables.referrer.getResponseID(),
-			"throwOnError"       : getThrowOnError(),
-			"timeout"            : getTimeout(),
-			"maximumRedirects"   : getMaximumRedirects(),
-			"authType"           : getAuthType(),
-			"username"           : getUsername(),
-			"password"           : getPassword(),
-			"clientCert"         : isNull( variables.clientCert ) ? "" : variables.clientCert,
-			"clientCertPassword" : isNull( variables.clientCertPassword ) ? "" : variables.clientCertPassword,
-			"domain"             : getDomain(),
-			"workstation"        : getWorkstation(),
-			"resolveUrls"        : getResolveUrls(),
-			"encodeUrl"          : getEncodeUrl()
+			"requestID"           : getRequestID(),
+			"baseUrl"             : getBaseUrl(),
+			"url"                 : getUrl(),
+			"fullUrl"             : getFullUrl(),
+			"method"              : getMethod(),
+			"queryParams"         : getQueryParams(),
+			"headers"             : getHeaders(),
+			"cookies"             : getCookies(),
+			"files"               : getFiles(),
+			"bodyFormat"          : getBodyFormat(),
+			"body"                : getBody(),
+			"referrerId"          : isNull( variables.referrer ) ? "" : variables.referrer.getResponseID(),
+			"throwOnError"        : getThrowOnError(),
+			"timeout"             : getTimeout(),
+			"maximumRedirects"    : getMaximumRedirects(),
+			"authType"            : getAuthType(),
+			"username"            : getUsername(),
+			"password"            : getPassword(),
+			"clientCert"          : isNull( variables.clientCert ) ? "" : variables.clientCert,
+			"clientCertPassword"  : isNull( variables.clientCertPassword ) ? "" : variables.clientCertPassword,
+			"domain"              : getDomain(),
+			"workstation"         : getWorkstation(),
+			"resolveUrls"         : getResolveUrls(),
+			"encodeUrl"           : getEncodeUrl(),
+			"retries"             : getRetries(),
+			"currentRequestCount" : getCurrentRequestCount()
 		};
 	}
 
