@@ -176,7 +176,8 @@ component extends="testbox.system.BaseSpec" {
 				expect( method ).toBe( "PATCH" );
 				expect( headers ).toBe( {
 					"Accept"       : "application/xml",
-					"Content-Type" : "application/json"
+					"Content-Type" : "application/json",
+					"User-Agent"   : "HyperCFML/#req.getHyperVersion()#"
 				} );
 			} );
 
@@ -232,8 +233,12 @@ component extends="testbox.system.BaseSpec" {
 				expect( req.prepareBody() ).toBe( '{"query":{},"size":0,"from":0}' );
 			} );
 
-			it( "defaults to no Content-Type or Headers", function() {
-				expect( req.getHeaders() ).toBeEmpty();
+			it( "defaults to no Content-Type", function() {
+				expect( req.getHeader( "Content-Type" ) ).toBeEmpty();
+			} );
+
+			it( "defaults to the Hyper User-Agent", () => {
+				expect( req.getHeader( "User-Agent" ) ).toBe( "HyperCFML/#req.getHyperVersion()#" );
 			} );
 		} );
 	}

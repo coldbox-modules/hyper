@@ -9,7 +9,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 		describe( "debug spec", function() {
 			it( "can print out information about the cfhttp call that will be made", function() {
 				var binaryBody = charsetDecode( "some binary body", "utf-8" );
-				var debugReq   = hyper
+				var req        = hyper
 					.withHeaders( {
 						"Accept"        : "application/json;odata=verbose",
 						"Authorization" : "Bearer token",
@@ -19,8 +19,9 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 					.setBody( binaryBody )
 					.setBodyFormat( "other|binary" )
 					.setMethod( "POST" )
-					.setUrl( "https://example.com" )
-					.debug();
+					.setUrl( "https://example.com" );
+
+				var debugReq = req.debug();
 
 				expect( debugReq ).toBeStruct();
 
@@ -52,7 +53,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 					return compare( a.name, b.name );
 				} );
 				expect( headers ).toBeArray();
-				expect( headers ).toHaveLength( 3 );
+				expect( headers ).toHaveLength( 4 );
 
 				expect( headers[ 1 ] ).toBeStruct();
 				expect( headers[ 1 ] ).toHaveKey( "name" );
@@ -71,6 +72,12 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 				expect( headers[ 3 ].name ).toBe( "Content-Type" );
 				expect( headers[ 3 ] ).toHaveKey( "value" );
 				expect( headers[ 3 ].value ).toBe( "application/octet-stream" );
+
+				expect( headers[ 4 ] ).toBeStruct();
+				expect( headers[ 4 ] ).toHaveKey( "name" );
+				expect( headers[ 4 ].name ).toBe( "User-Agent" );
+				expect( headers[ 4 ] ).toHaveKey( "value" );
+				expect( headers[ 4 ].value ).toBe( "HyperCFML/#req.getHyperVersion()#" );
 			} );
 		} );
 	}
