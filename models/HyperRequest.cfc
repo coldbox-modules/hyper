@@ -942,6 +942,17 @@ component accessors="true" {
 	}
 
 	/**
+	 * A convenience method to set the body format and Content-Type to xml.
+	 *
+	 * @returns The HyperRequest instance.
+	 */
+	function asBinary() {
+		setBodyFormat( "binary" );
+		setContentType( "application/octet-stream" );
+		return this;
+	}
+
+	/**
 	 * Attaches a file to the Hyper request.
 	 * Also sets the Content-Type as `multipart/form-data`.
 	 * Multiple files can be attached by calling `attach` multiple times before calling a send method.
