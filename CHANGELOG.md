@@ -1,3 +1,12 @@
+# v7.4.0
+## 02 Feb 2024 — 18:44:17 UTC
+
+### feat
+
++ __HyperRequest:__ Add `asBinary` helper method.
+ ([98053ed](https://github.com/coldbox-modules/hyper/commit/98053eda1399fe2eb99850e34d329915cc4aa703))
+
+
 # v7.3.0
 ## 24 Jan 2024 — 20:14:11 UTC
 
