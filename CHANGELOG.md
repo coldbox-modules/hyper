@@ -1,3 +1,11 @@
+# v7.5.0
+## 18 Mar 2024 — 16:19:44 UTC
+
+### feat
+
++ __Interceptors:__ Add request to `onHyperResponse` interception point. ([07ca539](https://github.com/coldbox-modules/hyper/commit/07ca539653838a60c36df7b61198e417f75df875))
+
+
 # v7.4.0
 ## 02 Feb 2024 — 18:44:17 UTC
 
