@@ -1088,7 +1088,13 @@ component accessors="true" {
 			for ( var callback in variables.responseCallbacks ) {
 				callback( res );
 			}
-			variables.interceptorService.processState( "onHyperResponse", { "response" : res } );
+			variables.interceptorService.processState(
+				"onHyperResponse",
+				{
+					"response" : res,
+					"request"  : res.getRequest()
+				}
+			);
 
 			if (
 				variables.currentRequestCount <= variables.retries.len() &&
