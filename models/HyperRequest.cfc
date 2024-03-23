@@ -118,12 +118,12 @@ component accessors="true" {
 	property name="headers";
 
 	/**
-	 * A struct of headers for the request.
+	 * A struct of cookies for the request.
 	 */
 	property name="cookies";
 
 	/**
-	 * A struct of query parameters for the request.
+	 * An array of query parameters for the request.
 	 */
 	property name="queryParams";
 
@@ -193,6 +193,8 @@ component accessors="true" {
 
 	/**
 	 * Initialize a new HyperRequest.
+	 *
+	 * @httpClient The HTTP client to use for the request. Must implement HyperHttpClientInterface.
 	 *
 	 * @returns The HyperRequest instance.
 	 */
@@ -598,7 +600,7 @@ component accessors="true" {
 	}
 
 	/**
-	 * Gets the first value for a certian query parameter.
+	 * Gets the first value for a certain query parameter.
 	 * @deprecated Use `getQueryParamByName`
 	 *
 	 * @name    The name of the query parameter to retrieve its value.
@@ -611,7 +613,7 @@ component accessors="true" {
 	}
 
 	/**
-	 * Gets the first value for a certian query parameter.
+	 * Gets the first value for a certain query parameter.
 	 *
 	 * @name    The name of the query parameter to retrieve its value.
 	 *
@@ -629,7 +631,7 @@ component accessors="true" {
 	}
 
 	/**
-	 * Get all the values for a certian query parameter.
+	 * Get all the values for a certain query parameter.
 	 *
 	 * @name    The name of the query parameter to retrieve all of its values.
 	 *
@@ -713,7 +715,7 @@ component accessors="true" {
 	/**
 	 * Add additional cookies to the request.
 	 *
-	 * @headers A struct of cookies to add to the request.
+	 * @cookies A struct of cookies to add to the request.
 	 *
 	 * @returns The HyperRequest instance.
 	 */
@@ -984,7 +986,7 @@ component accessors="true" {
 	/**
 	 * A convenience method to set the User-Agent header.
 	 *
-	 * @type    The User-Agent value for the request.
+	 * @userAgent    The User-Agent value for the request.
 	 *
 	 * @returns The HyperRequest instance.
 	 */
@@ -1033,6 +1035,8 @@ component accessors="true" {
 	/**
 	 * Returns the full url for the request.
 	 * Combines the baseURL, the URL, and the serialized queryParams.
+	 *
+	 * @withQueryString Whether to include the query string in the full url.
 	 *
 	 * @returns The full url for the request.
 	 */
@@ -1208,6 +1212,15 @@ component accessors="true" {
 		return this;
 	}
 
+	/**
+	 * Configures the request's retry by setting the number of attempts, delays between attempts, and condition
+	 *
+	 * @attempts The maximum number of attempts to retry or an array of delays for each attempt.
+	 * @delay The number of milliseconds to wait between retries.
+	 * @predicate A predicate function to determine if the retry should be attempted.
+	 *
+	 * @returns The HyperRequest instance.
+	 */
 	public HyperRequest function retry(
 		required any attempts,
 		numeric delay,
@@ -1327,7 +1340,7 @@ component accessors="true" {
 	}
 
 	/**
-	 * Send a new request based on the redirect response recieved.
+	 * Send a new request based on the redirect response received.
 	 *
 	 * @res The HyperResponse specifying a redirect.
 	 *
@@ -1508,6 +1521,9 @@ component accessors="true" {
 		return variables.pathPatternMatcher;
 	}
 
+	/**
+	 * Gets the version of hyper being used and also stores it in the application scope.
+	 */
 	public string function getHyperVersion() {
 		if ( !structKeyExists( application, "hyperVersion" ) ) {
 			application.hyperVersion = deserializeJSON( fileRead( expandPath( "/hyper/box.json" ) ) ).version;

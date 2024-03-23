@@ -76,7 +76,7 @@ component implements="HyperHttpClientInterface" {
 			attrCollection[ "workstation" ] = req.getWorkStation();
 		}
 
-		// this is only necessarry for NTLM authType, BASIC is the default
+		// this is only necessary for NTLM authType, BASIC is the default
 		if ( len( req.getAuthType() ) && len( req.getUsername() ) ) {
 			attrCollection[ "authType" ] = req.getAuthType();
 		}
@@ -222,7 +222,7 @@ component implements="HyperHttpClientInterface" {
 			attrCollection[ "workstation" ] = req.getWorkStation();
 		}
 
-		// this is only necessarry for NTLM authType, BASIC is the default
+		// this is only necessary for NTLM authType, BASIC is the default
 		if ( len( req.getAuthType() ) && len( req.getUsername() ) ) {
 			attrCollection[ "authType" ] = req.getAuthType();
 		}
