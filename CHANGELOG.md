@@ -1,3 +1,11 @@
+# v7.5.1
+## 26 Mar 2024 — 13:25:18 UTC
+
+### other
+
++ __\*:__ docs: Updated misspelled and missing docblocks ([1ba168b](https://github.com/coldbox-modules/hyper/commit/1ba168ba8777e0852300453dfaece01fa92266cb))
+
+
 # v7.5.0
 ## 18 Mar 2024 — 16:19:44 UTC
 
