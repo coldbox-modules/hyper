@@ -67,9 +67,11 @@ component accessors="true" {
 	 * @executionTime   The execution time of the request, in milliseconds.
 	 * @charset         The response charset. Default: UTF-8
 	 * @statusCode      The response status code. Default: 200.
+	 * @statusText      The response status text. Default: OK.
 	 * @headers         The response headers. Default: {}.
 	 * @data            The response data. Default: "".
 	 * @timestamp       The timestamp for when this response was received. Default: `now()`.
+	 * @responseID      Unique response ID representing this response. Default: `createUUID()`.
 	 *
 	 * @returns         A new HyperResponse instance.
 	 */
@@ -214,7 +216,7 @@ component accessors="true" {
 	}
 
 	/**
-	 * Returns true if the request status code is considered a server error.
+	 * Returns true if the request status code is considered a server error (5xx status code).
 	 *
 	 * @returns boolean
 	 */
