@@ -25,6 +25,18 @@ component extends="testbox.system.BaseSpec" {
 				} );
 			} );
 
+			it( "can exclude keys from the memento", function() {
+				var res = new Hyper.models.HyperResponse(
+					originalRequest = createStub( extends = "models.HyperRequest" ).$( "getRequestID", createUUID() ),
+					statusCode      = 200,
+					executionTime   = 100,
+					headers         = { "Content-Type" : "text/html; charset=utf-8" }
+				);
+
+				var memento = res.getMemento( excludes = [ "cookies" ] );
+				expect( memento ).notToHaveKey( "cookies" );
+			} );
+
 			it( "throws an exception when requesting json data but the data is not json", function() {
 				var res = new Hyper.models.HyperResponse(
 					originalRequest = createStub( extends = "models.HyperRequest" ),
