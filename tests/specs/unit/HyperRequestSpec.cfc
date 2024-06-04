@@ -43,6 +43,11 @@ component extends="testbox.system.BaseSpec" {
 				} );
 			} );
 
+			it( "can exclude keys from the memento", () => {
+				var memento = variables.req.getMemento( excludes = [ "cookies" ] );
+				expect( memento ).notToHaveKey( "cookies" );
+			} );
+
 			it( "can set multiple values at once from a struct", function() {
 				expect( req.getUrl() ).toBe( "" );
 				expect( req.getMethod() ).toBe( "GET" );

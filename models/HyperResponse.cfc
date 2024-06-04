@@ -322,20 +322,25 @@ component accessors="true" {
 	 *
 	 * @returns struct
 	 */
-	public struct function getMemento() {
-		return {
-			"responseID"    : getResponseID(),
-			"requestID"     : getRequestID(),
-			"statusCode"    : getStatusCode(),
-			"statusText"    : getStatusText(),
-			"status"        : getStatus(),
-			"data"          : getData(),
-			"charset"       : getCharset(),
-			"headers"       : getHeaders(),
-			"timestamp"     : getTimestamp(),
-			"executionTime" : getExecutionTime(),
-			"cookies"       : getCookies()
-		};
+	public struct function getMemento( array excludes = [] ) {
+		return structFilter(
+			{
+				"responseID"    : getResponseID(),
+				"requestID"     : getRequestID(),
+				"statusCode"    : getStatusCode(),
+				"statusText"    : getStatusText(),
+				"status"        : getStatus(),
+				"data"          : getData(),
+				"charset"       : getCharset(),
+				"headers"       : getHeaders(),
+				"timestamp"     : getTimestamp(),
+				"executionTime" : getExecutionTime(),
+				"cookies"       : getCookies()
+			},
+			function( key ) {
+				return !arrayContainsNoCase( excludes, key );
+			}
+		);
 	}
 
 	/**

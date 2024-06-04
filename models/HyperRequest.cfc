@@ -1397,35 +1397,40 @@ component accessors="true" {
 	 *
 	 * @return struct
 	 */
-	public struct function getMemento() {
-		return {
-			"requestID"           : getRequestID(),
-			"baseUrl"             : getBaseUrl(),
-			"url"                 : getUrl(),
-			"fullUrl"             : getFullUrl(),
-			"method"              : getMethod(),
-			"queryParams"         : getQueryParams(),
-			"headers"             : getHeaders(),
-			"cookies"             : getCookies(),
-			"files"               : getFiles(),
-			"bodyFormat"          : getBodyFormat(),
-			"body"                : getBody(),
-			"referrerId"          : isNull( variables.referrer ) ? "" : variables.referrer.getResponseID(),
-			"throwOnError"        : getThrowOnError(),
-			"timeout"             : getTimeout(),
-			"maximumRedirects"    : getMaximumRedirects(),
-			"authType"            : getAuthType(),
-			"username"            : getUsername(),
-			"password"            : getPassword(),
-			"clientCert"          : isNull( variables.clientCert ) ? "" : variables.clientCert,
-			"clientCertPassword"  : isNull( variables.clientCertPassword ) ? "" : variables.clientCertPassword,
-			"domain"              : getDomain(),
-			"workstation"         : getWorkstation(),
-			"resolveUrls"         : getResolveUrls(),
-			"encodeUrl"           : getEncodeUrl(),
-			"retries"             : getRetries(),
-			"currentRequestCount" : getCurrentRequestCount()
-		};
+	public struct function getMemento( array excludes = [] ) {
+		return structFilter(
+			{
+				"requestID"           : getRequestID(),
+				"baseUrl"             : getBaseUrl(),
+				"url"                 : getUrl(),
+				"fullUrl"             : getFullUrl(),
+				"method"              : getMethod(),
+				"queryParams"         : getQueryParams(),
+				"headers"             : getHeaders(),
+				"cookies"             : getCookies(),
+				"files"               : getFiles(),
+				"bodyFormat"          : getBodyFormat(),
+				"body"                : getBody(),
+				"referrerId"          : isNull( variables.referrer ) ? "" : variables.referrer.getResponseID(),
+				"throwOnError"        : getThrowOnError(),
+				"timeout"             : getTimeout(),
+				"maximumRedirects"    : getMaximumRedirects(),
+				"authType"            : getAuthType(),
+				"username"            : getUsername(),
+				"password"            : getPassword(),
+				"clientCert"          : isNull( variables.clientCert ) ? "" : variables.clientCert,
+				"clientCertPassword"  : isNull( variables.clientCertPassword ) ? "" : variables.clientCertPassword,
+				"domain"              : getDomain(),
+				"workstation"         : getWorkstation(),
+				"resolveUrls"         : getResolveUrls(),
+				"encodeUrl"           : getEncodeUrl(),
+				"retries"             : getRetries(),
+				"currentRequestCount" : getCurrentRequestCount()
+			},
+			function( key ) {
+				return !arrayContainsNoCase( excludes, key );
+			}
+		);
 	}
 
 	/**
@@ -1463,7 +1468,19 @@ component accessors="true" {
 		for ( var pattern in variables.fakeConfiguration ) {
 			if ( getPathPatternMatcher().matchPattern( pattern, getFullUrl() ) ) {
 				if ( variables.builder.hasSequenceForPattern( pattern ) ) {
-					return variables.builder.record( this, variables.builder.popResponseForSequence( pattern ) );
+					var fakeRes = variables.builder.record( this, variables.builder.popResponseForSequence( pattern ) );
+					if ( fakeRes.getRequest().getThrowOnError() && fakeRes.isError() ) {
+						throw(
+							type         = "HyperRequestError",
+							message      = "Received a [#fakeRes.getStatus()#] response when requesting [#fakeRes.getRequest().getFullUrl()#]",
+							detail       = fakeRes.getData(),
+							extendedinfo = serializeJSON( {
+								"request"  : fakeRes.getRequest().getMemento(),
+								"response" : fakeRes.getMemento()
+							} )
+						);
+					}
+					return fakeRes;
 				}
 
 				var callback = variables.fakeConfiguration[ pattern ];
@@ -1485,7 +1502,19 @@ component accessors="true" {
 				}
 
 				variables.builder.registerSequence( pattern, res );
-				return variables.builder.record( this, variables.builder.popResponseForSequence( pattern ) );
+				var fakeRes = variables.builder.record( this, variables.builder.popResponseForSequence( pattern ) );
+				if ( fakeRes.getRequest().getThrowOnError() && fakeRes.isError() ) {
+					throw(
+						type         = "HyperRequestError",
+						message      = "Received a [#fakeRes.getStatus()#] response when requesting [#fakeRes.getRequest().getFullUrl()#]",
+						detail       = fakeRes.getData(),
+						extendedinfo = serializeJSON( {
+							"request"  : fakeRes.getRequest().getMemento(),
+							"response" : fakeRes.getMemento()
+						} )
+					);
+				}
+				return fakeRes;
 			}
 		}
 
