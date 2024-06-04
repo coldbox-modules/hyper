@@ -1,3 +1,12 @@
+# v7.5.2
+## 04 Jun 2024 — 15:52:34 UTC
+
+### other
+
++ __\*:__ feat: Add ability to exclude keys from HyperRequest and HyperResponse mementos
+ ([c0171fc](https://github.com/coldbox-modules/hyper/commit/c0171fc9f8554547331eaa236b7ef68dd5892b2e))
+
+
 # v7.5.1
 ## 26 Mar 2024 — 13:25:18 UTC
 
