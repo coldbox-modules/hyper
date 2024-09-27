@@ -1,3 +1,12 @@
+# v7.5.3
+## 27 Sep 2024 — 18:45:18 UTC
+
+### fix
+
++ __BoxLang:__ Certify for BoxLang
+ ([8a84363](https://github.com/coldbox-modules/hyper/commit/8a84363940256fb0a0a813039c98e01d4386c073))
+
+
 # v7.5.2
 ## 04 Jun 2024 — 15:52:34 UTC
 
