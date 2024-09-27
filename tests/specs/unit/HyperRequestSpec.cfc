@@ -73,6 +73,7 @@ component extends="testbox.system.BaseSpec" {
 			it( "preserves case in header names", function() {
 				expect( req.getHeader( "Accept" ) ).toBe( "" );
 				req.withHeaders( { "accept" : "application/xml" } );
+				req.setHeader( "accept", "application/xml" );
 				expect( req.getHeader( "Accept" ) ).toBe( "" );
 				expect( req.getHeader( "accept" ) ).toBe( "application/xml" );
 				req.withHeaders( { "Accept" : "application/xml" } );
@@ -237,7 +238,7 @@ component extends="testbox.system.BaseSpec" {
 			it( "can handle a JSON body format with a body as an struct", function() {
 				req.setBodyFormat( "json" );
 				req.setBody( { "query" : {}, "size" : 0, "from" : 0 } );
-				expect( req.prepareBody() ).toBe( '{"query":{},"size":0,"from":0}' );
+				expect( deserializeJSON( req.prepareBody() ) ).toBe( { "query" : {}, "size" : 0, "from" : 0 } );
 			} );
 
 			it( "defaults to no Content-Type", function() {

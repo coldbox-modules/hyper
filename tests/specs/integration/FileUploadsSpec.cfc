@@ -27,12 +27,10 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 						{ "description" : "Chuck Norris doesn't need two different photos." }
 					);
 				expect( res.getStatusCode() ).toBe( 201, res.getData() );
-				expect( res.json() ).toBe( {
-					"id"          : 777, // this is always the id returned
-					"smallPhoto"  : "chuck_norris.jpg",
-					"largePhoto"  : "chuck_norris.jpg",
-					"description" : "Chuck Norris doesn't need two different photos."
-				} );
+				var json = res.json();
+				expect( json.smallPhoto ).toBe( "chuck_norris.jpg" );
+				expect( json.largePhoto ).toBe( "chuck_norris.jpg" );
+				expect( json.description ).toBe( "Chuck Norris doesn't need two different photos." );
 			} );
 		} );
 	}

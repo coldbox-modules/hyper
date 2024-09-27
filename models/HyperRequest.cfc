@@ -659,6 +659,18 @@ component accessors="true" {
 	}
 
 	/**
+	 * Sets the headers for the request.
+	 *
+	 * @headers The headers for the request.
+	 *
+	 * @returns The HyperRequest instance.
+	 */
+	function setHeaders( required struct headers ) {
+		variables.headers = createObject( "java", "java.util.LinkedHashMap" ).init();
+		return withHeaders( arguments.headers );
+	}
+
+	/**
 	 * Set a header for the request.
 	 *
 	 * @name    The name of the header.
@@ -667,7 +679,7 @@ component accessors="true" {
 	 * @returns The HyperRequest instance.
 	 */
 	function setHeader( name, value ) {
-		variables.headers[ name ] = value;
+		variables.headers.put( arguments.name, arguments.value );
 		return this;
 	}
 
@@ -865,7 +877,7 @@ component accessors="true" {
 	 */
 	function setProperties( properties = {} ) {
 		properties.each( function( key, value ) {
-			invoke( this, "set#key#", { 1 : value } );
+			invoke( this, "set#key#", [ value ] );
 		} );
 		return this;
 	}

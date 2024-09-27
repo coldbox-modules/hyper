@@ -71,8 +71,8 @@ component {
 			statusCode = 201,
 			data       = {
 				"id"          : 777,
-				"smallPhoto"  : smallPhoto.serverFile,
-				"largePhoto"  : largePhoto.serverFile,
+				"smallPhoto"  : smallPhoto.serverFile.reFind( "[/\\]+" ) > 0 ? smallPhoto.serverFileName : smallPhoto.serverFile,
+				"largePhoto"  : largePhoto.serverFile.reFind( "[/\\]+" ) > 0 ? largePhoto.serverFileName : largePhoto.serverFile,
 				"description" : rc.description
 			}
 		);

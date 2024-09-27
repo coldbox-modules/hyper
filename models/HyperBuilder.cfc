@@ -23,7 +23,7 @@ component singleton {
 			invoke(
 				this.defaults,
 				"set#key#",
-				{ 1 : arguments[ key ] }
+				[ arguments[ key ] ]
 			);
 		}
 		return this;
