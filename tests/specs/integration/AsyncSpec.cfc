@@ -9,6 +9,10 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 	function run() {
 		describe( "async requests", function() {
 			it( "can send a request asynchronously", function() {
+				if ( isBoxLang() ) {
+					return skip( "Variadic parameters are not yet supported in BoxLang." );
+				}
+
 				var future = hyper.setUrl( "https://jsonplaceholder.typicode.com/posts/1" ).sendAsync();
 				expect( future ).toBeInstanceOf( "Future", "A Future object should have been returned." );
 				var res = future.get();
