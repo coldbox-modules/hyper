@@ -76,7 +76,7 @@ component singleton {
 	 * @returns A new HyperRequest instance from the default request.
 	 */
 	public HyperRequest function new() {
-		var req = this.defaults.clone();
+		var req = this.defaults.duplicate();
 		req.setBuilder( this );
 		if ( !isNull( variables.fakeConfiguration ) ) {
 			req.setFakeConfiguration( variables.fakeConfiguration );
