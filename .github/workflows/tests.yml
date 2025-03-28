@@ -31,7 +31,7 @@ jobs:
           java-version: 11
 
       - name: Set Up CommandBox
-        uses: ortussolutions/setup-commandbox@v2.0.1
+        uses: ortus-solutions/setup-commandbox@v2.0.1
         with:
           # Update when 6.2 is released
           version: "6.2.0-alpha"
