@@ -1283,7 +1283,7 @@ component accessors="true" {
 		req.setBody( duplicate( variables.body ) );
 		req.setBodyFormat( variables.bodyFormat );
 		req.setReferrer( isNull( variables.referrer ) ? javacast( "null", "" ) : variables.referrer );
-		req.setHeaders( variables.headers.clone() );
+		req.setHeaders( variables.headers.duplicate() );
 		req.setQueryParams( duplicate( variables.queryParams ) );
 		req.setFiles( duplicate( variables.files ) );
 		req.setThrowOnError( variables.throwOnError );

@@ -8,27 +8,45 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     name: Tests
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
-        cfengine: ["lucee@5", "adobe@2018", "adobe@2021", "adobe@2023", "boxlang@be"]
+        cfengine: ["lucee@5", "lucee@6", "adobe@2018", "adobe@2021", "adobe@2023", "boxlang@be"]
         coldbox: ["coldbox@6", "coldbox@7"]
+        experimental: [ false ]
+        # Experimental Engine Support
+        include:
+          - coldbox: "coldbox@7"
+            cfengine: "adobe@2025"
+            experimental: true
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Setup Java
+        if: ${{ matrix.cfengine  == 'boxlang@be' || matrix.cfengine  == 'adobe@2025' }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
       - name: Setup Java JDK
+        if: ${{ matrix.cfengine  != 'boxlang@be' && matrix.cfengine  != 'adobe@2025' }}
         uses: actions/setup-java@v1.4.3
         with:
           java-version: 11
 
       - name: Set Up CommandBox
-        uses: elpete/setup-commandbox@v1.0.0
+        uses: ortus-solutions/setup-commandbox@v2.0.1
+        with:
+          # Update when 6.2 is released
+          version: "6.2.0-alpha"
 
       - name: Install dependencies
         run: |
           box install
-          box install ${{ matrix.coldbox }} --noSave
+          box install ${{ matrix.coldbox }} --force --noSave
 
       - name: Start server
         run: |
