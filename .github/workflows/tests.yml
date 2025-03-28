@@ -8,6 +8,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     name: Tests
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
