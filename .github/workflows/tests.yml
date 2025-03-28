@@ -11,8 +11,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cfengine: ["lucee@5", "lucee@6", "adobe@2018", "adobe@2021", "adobe@2023", "adobe@2025", "boxlang@be"]
+        cfengine: ["lucee@5", "lucee@6", "adobe@2018", "adobe@2021", "adobe@2023", "boxlang@be"]
         coldbox: ["coldbox@6", "coldbox@7"]
+        experimental: [ false ]
+        # Experimental: ColdBox BE vs All Engines
+        include:
+          - coldbox: "coldbox@7"
+            cfengine: "adobe@2025"
+            experimental: true
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
