@@ -32,6 +32,11 @@ component extends="coldbox.system.ioc.config.Binder" {
 			.to( "hyper.models.HyperBuilder" )
 			.asSingleton()
 			.initWith( baseUrl = "https://swapi.dev/api" );
+
+		map( "JSONPlaceholderClient" )
+			.to( "hyper.models.HyperBuilder" )
+			.asSingleton()
+			.initWith( baseUrl = "https://jsonplaceholder.typicode.com" );
 	}
 
 }

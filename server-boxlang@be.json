@@ -1,0 +1,14 @@
+{
+    "name":"hyper-boxlang@be",
+    "app":{
+        "cfengine":"boxlang@be"
+    },
+    "web":{
+        "http":{
+            "port":"8500"
+        }
+    },
+    "scripts": {
+        "onServerInitialInstall": "install bx-compat-cfml,bx-esapi"
+    }
+}

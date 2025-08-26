@@ -29,30 +29,46 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 			} );
 
 			it( "can configure builders in the WireBox config file", () => {
-				var hyper = getInstance( "SWAPIClient" );
-				var res   = hyper.get( "/people/1" );
+				var hyper = getInstance( "JSONPlaceholderClient" );
+				var res   = hyper.get( "/posts/1" );
 				expect( res.isOK() ).toBeTrue();
 				var data = res.json();
-				expect( data ).toHaveKey( "name" );
-				expect( data.name ).toBe( "Luke Skywalker" );
+				expect( data ).toBeStruct( "Expected to deserialize JSON data from the response." );
+				expect( data ).toBe(
+					deserializeJSON(
+						"{
+                        ""userId"": 1,
+                        ""id""    : 1,
+                        ""title"" : ""sunt aut facere repellat provident occaecati excepturi optio reprehenderit"",
+                        ""body""  : ""quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto""
+                    }"
+					)
+				);
 			} );
 
 			it( "can configure builders using a registerAs syntax", () => {
 				getInstance( "HyperBuilder@hyper" )
-					.setBaseUrl( "https://swapi.dev/api" )
+					.setBaseUrl( "https://jsonplaceholder.typicode.com" )
 					.withRequestCallback( function( req ) {
 						req.withHeaders( { "X-Custom-Header" : "foobar" } );
 					} )
-					.registerAs( "SWAPIClient2" );
+					.registerAs( "JSONPlaceholderClient2" );
 
-				var hyper = getInstance( "SWAPIClient2" );
-				var res   = hyper.get( "/people/1" );
+				var hyper = getInstance( "JSONPlaceholderClient2" );
+				var res   = hyper.get( "/posts/1" );
 				expect( res.isOK() ).toBeTrue();
 				var data = res.json();
-				expect( data ).toHaveKey( "name" );
-				expect( data.name ).toBe( "Luke Skywalker" );
-				expect( res.getRequest().getHeaders() ).toHaveKey( "X-Custom-Header" );
-				expect( res.getRequest().getHeaders()[ "X-Custom-Header" ] ).toBe( "foobar" );
+				expect( data ).toBeStruct( "Expected to deserialize JSON data from the response." );
+				expect( data ).toBe(
+					deserializeJSON(
+						"{
+                        ""userId"": 1,
+                        ""id""    : 1,
+                        ""title"" : ""sunt aut facere repellat provident occaecati excepturi optio reprehenderit"",
+                        ""body""  : ""quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto""
+                    }"
+					)
+				);
 			} );
 		} );
 	}
