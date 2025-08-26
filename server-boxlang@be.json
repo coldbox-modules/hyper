@@ -8,6 +8,10 @@
             "port":"8500"
         }
     },
+    "JVM": {
+        "heapSize": "1024",
+        "javaVersion": "openjdk21_jre"
+    },
     "scripts": {
         "onServerInitialInstall": "install bx-compat-cfml,bx-esapi"
     }
