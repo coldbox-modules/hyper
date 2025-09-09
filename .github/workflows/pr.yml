@@ -13,26 +13,64 @@ on:
       - development
 
 jobs:
-  #############################################
-  # Tests First baby! We fail, no build :(
-  #############################################
   tests:
-    uses: ./.github/workflows/tests.yml
+    runs-on: ubuntu-latest
+    name: Tests
+    strategy:
+      fail-fast: false
+      matrix:
+        cfengine: ["lucee@5", "lucee@6", "adobe@2021", "adobe@2023", "adobe@2025", "boxlang@1", "boxlang-cfml@1"]
+        experimental: [ false ]
+        include:
+          - cfengine: "lucee@be"
+            experimental: true
+          - cfengine: "adobe@be"
+            experimental: true
+          - cfengine: "boxlang@be"
+            experimental: true
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3.2.0
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.9.0
+        with:
+          distribution: 'zulu'
+          java-version: 21
+
+      - name: Setup CommandBox CLI
+        uses: Ortus-Solutions/setup-commandbox@v2.0.1
+        with:
+          install: commandbox-boxlang,commandbox-cfconfig
+
+      - name: Install dependencies
+        run: |
+          box install
+
+      - name: Start server
+        run: |
+          box server start serverConfigFile="server-${{ matrix.cfengine }}.json" --noSaveSettings --debug
+          curl http://127.0.0.1:8500
+
+      - name: Run TestBox Tests
+        continue-on-error: ${{ matrix.experimental }}
+        run: box testbox run
 
   format:
     runs-on: ubuntu-latest
     name: Format
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.2.0
 
       - name: Setup Java JDK
-        uses: actions/setup-java@v1.4.3
+        uses: actions/setup-java@v3.9.0
         with:
+          distribution: 'zulu'
           java-version: 11
 
-      - name: Set Up CommandBox
-        uses: elpete/setup-commandbox@v1.0.0
+      - name: Setup CommandBox CLI
+        uses: Ortus-Solutions/setup-commandbox@v2.0.1
 
       - name: Install CFFormat
         run: box install commandbox-cfformat

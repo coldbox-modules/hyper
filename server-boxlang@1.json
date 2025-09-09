@@ -1,8 +1,8 @@
 {
-    "name":"hyper-boxlang@be",
+    "name":"hyper-boxlang@1",
     "app":{
-        "serverHomeDirectory":".engine/boxlangBE",
-        "cfengine":"boxlang@be"
+        "serverHomeDirectory":".engine/boxlang",
+        "cfengine":"boxlang@^1.0.0"
     },
     "web":{
         "http":{

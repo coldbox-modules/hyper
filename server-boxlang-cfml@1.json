@@ -1,8 +1,8 @@
 {
-    "name":"hyper-boxlang@be",
+    "name":"hyper-boxlang-cfml@1",
     "app":{
-        "serverHomeDirectory":".engine/boxlangBE",
-        "cfengine":"boxlang@be"
+        "serverHomeDirectory":".engine/boxlangCFML",
+        "cfengine":"boxlang@^1.0.0"
     },
     "web":{
         "http":{
@@ -20,6 +20,6 @@
     "openBrowser": false,
     "env": {},
     "scripts": {
-        "onServerInitialInstall": "install bx-esapi"
+        "onServerInitialInstall": "install bx-esapi,bx-compat-cfml"
     }
 }
