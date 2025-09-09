@@ -1,5 +1,7 @@
 component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 
+	variables.localEndpoint = "http://#CGI[ "server_name" ]#:#CGI[ "server_port" ]#/tests/resources/app/index.cfm/api";
+
 	function run() {
 		describe( "incomplete requests", function() {
 			beforeEach( function() {
@@ -19,10 +21,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 			} );
 
 			it( "returns a 408 status code for any request that times out", function() {
-				var res = hyper.setTimeout( 1 ).get( "https://httpbin.org/delay/5" );
-				if ( res.getStatusCode() == 503 ) {
-					skip( "Got a 503 from the server. Skipping test." );
-				}
+				var res = hyper.setTimeout( 1 ).get( "#localEndpoint#/sleep/delay/5" );
 				expect( res.getStatusCode() ).toBe( 408 );
 				expect( res.getStatusText() ).toBe( "Request Timeout" );
 			} );
