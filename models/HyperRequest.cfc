@@ -216,7 +216,7 @@ component accessors="true" {
 
 		// This is overwritten by the HyperBuilder if WireBox exists.
 		variables.interceptorService = {
-			"processState" : function() {
+			"announce" : function() {
 			}
 		};
 
@@ -1096,7 +1096,7 @@ component accessors="true" {
 		for ( var callback in variables.requestCallbacks ) {
 			callback( this );
 		}
-		variables.interceptorService.processState( "onHyperRequest", { "request" : this } );
+		variables.interceptorService.announce( "onHyperRequest", { "request" : this } );
 
 		try {
 			var res = shouldFake() ? generateFakeRequest() : variables.httpClient.send( this );
@@ -1104,7 +1104,7 @@ component accessors="true" {
 			for ( var callback in variables.responseCallbacks ) {
 				callback( res );
 			}
-			variables.interceptorService.processState(
+			variables.interceptorService.announce(
 				"onHyperResponse",
 				{
 					"response" : res,
@@ -1166,7 +1166,7 @@ component accessors="true" {
 		for ( var callback in variables.requestCallbacks ) {
 			callback( this );
 		}
-		variables.interceptorService.processState( "onHyperRequest", { "request" : this } );
+		variables.interceptorService.announce( "onHyperRequest", { "request" : this } );
 
 		return httpClient.debug( this );
 	}

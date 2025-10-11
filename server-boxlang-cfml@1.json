@@ -8,18 +8,18 @@
         "http":{
             "port":"8500"
         },
-        "rewrites": {
-            "enable": true
+        "rewrites":{
+            "enable":true
         }
     },
-    "JVM": {
-        "heapSize": "1024",
-        "javaVersion": "openjdk21_jre",
+    "JVM":{
+        "heapSize":"1024",
+        "javaVersion":"openjdk21_jre",
         "args":"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8888"
     },
-    "openBrowser": false,
-    "env": {},
-    "scripts": {
-        "onServerInitialInstall": "install bx-esapi,bx-compat-cfml"
+    "openBrowser":false,
+    "env":{},
+    "scripts":{
+        "onServerInitialInstall":"install bx-esapi,bx-compat-cfml"
     }
 }

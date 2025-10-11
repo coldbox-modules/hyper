@@ -11,15 +11,34 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cfengine: ["lucee@5", "lucee@6", "adobe@2021", "adobe@2023", "adobe@2025", "boxlang@1", "boxlang-cfml@1"]
+        cfengine: ["lucee@5", "lucee@6", "lucee@7", "adobe@2021", "adobe@2023", "adobe@2025", "boxlang-cfml@1"]
+        coldbox: ["^6.0.0", "^7.0.0", "^8.0.0"]
         experimental: [ false ]
         include:
           - cfengine: "lucee@be"
+            coldbox: "^6.0.0"
+            experimental: true
+          - cfengine: "lucee@be"
+            coldbox: "^7.0.0"
+            experimental: true
+          - cfengine: "lucee@be"
+            coldbox: "^8.0.0"
             experimental: true
           - cfengine: "adobe@be"
+            coldbox: "^6.0.0"
+            experimental: true
+          - cfengine: "adobe@be"
+            coldbox: "^7.0.0"
+            experimental: true
+          - cfengine: "adobe@be"
+            coldbox: "^8.0.0"
             experimental: true
           - cfengine: "boxlang@be"
+            coldbox: "^8.0.0"
             experimental: true
+          - cfengine: "boxlang@1"
+            coldbox: "^8.0.0"
+            experimental: false
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3.2.0
@@ -38,6 +57,7 @@ jobs:
       - name: Install dependencies
         run: |
           box install
+          box install coldbox@{{ matrix.coldbox }} --noSave
 
       - name: Start server
         run: |
