@@ -65,7 +65,7 @@ jobs:
       - name: Install dependencies
         run: |
           box install
-          box install coldbox@{{ matrix.coldbox }} --noSave
+          box install coldbox@${{ matrix.coldbox }} --noSave
 
       - name: Start server
         run: |
