@@ -217,6 +217,8 @@ component accessors="true" {
 		// This is overwritten by the HyperBuilder if WireBox exists.
 		variables.interceptorService = {
 			"processState" : function() {
+			},
+			"announce" : function() {
 			}
 		};
 
@@ -1096,7 +1098,7 @@ component accessors="true" {
 		for ( var callback in variables.requestCallbacks ) {
 			callback( this );
 		}
-		variables.interceptorService.processState( "onHyperRequest", { "request" : this } );
+		announceInterception( "onHyperRequest", { "request" : this } );
 
 		try {
 			var res = shouldFake() ? generateFakeRequest() : variables.httpClient.send( this );
@@ -1104,7 +1106,7 @@ component accessors="true" {
 			for ( var callback in variables.responseCallbacks ) {
 				callback( res );
 			}
-			variables.interceptorService.processState(
+			announceInterception(
 				"onHyperResponse",
 				{
 					"response" : res,
@@ -1166,7 +1168,7 @@ component accessors="true" {
 		for ( var callback in variables.requestCallbacks ) {
 			callback( this );
 		}
-		variables.interceptorService.processState( "onHyperRequest", { "request" : this } );
+		announceInterception( "onHyperRequest", { "request" : this } );
 
 		return httpClient.debug( this );
 	}
@@ -1570,6 +1572,21 @@ component accessors="true" {
 			application.hyperVersion = deserializeJSON( fileRead( expandPath( "/hyper/box.json" ) ) ).version;
 		}
 		return application.hyperVersion;
+	}
+
+	/**
+	 * Announces interception events using the appropriate method for backward compatibility.
+	 * Uses announce() for ColdBox 8+ and falls back to processState() for older versions.
+	 *
+	 * @interceptionPoint The name of the interception point
+	 * @data              The data to pass to the interceptors
+	 */
+	private void function announceInterception( required string interceptionPoint, struct data = {} ) {
+		if ( structKeyExists( variables.interceptorService, "announce" ) ) {
+			variables.interceptorService.announce( arguments.interceptionPoint, arguments.data );
+		} else {
+			variables.interceptorService.processState( arguments.interceptionPoint, arguments.data );
+		}
 	}
 
 }
