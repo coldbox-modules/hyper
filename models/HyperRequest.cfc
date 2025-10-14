@@ -1096,7 +1096,12 @@ component accessors="true" {
 		for ( var callback in variables.requestCallbacks ) {
 			callback( this );
 		}
-		variables.interceptorService.announce( "onHyperRequest", { "request" : this } );
+		param variables.useAnnounceMethodForInterceptorService = structKeyExists( variables.interceptorService, "announce" );
+		if ( variables.useAnnounceMethodForInterceptorService ) {
+			variables.interceptorService.announce( "onHyperRequest", { "request" : this } );
+		} else {
+			variables.interceptorService.processState( "onHyperRequest", { "request" : this } );
+		}
 
 		try {
 			var res = shouldFake() ? generateFakeRequest() : variables.httpClient.send( this );
@@ -1104,13 +1109,25 @@ component accessors="true" {
 			for ( var callback in variables.responseCallbacks ) {
 				callback( res );
 			}
-			variables.interceptorService.announce(
-				"onHyperResponse",
-				{
-					"response" : res,
-					"request"  : res.getRequest()
-				}
-			);
+
+			param variables.useAnnounceMethodForInterceptorService = structKeyExists( variables.interceptorService, "announce" );
+			if ( variables.useAnnounceMethodForInterceptorService ) {
+				variables.interceptorService.announce(
+					"onHyperResponse",
+					{
+						"response" : res,
+						"request"  : res.getRequest()
+					}
+				);
+			} else {
+				variables.interceptorService.processState(
+					"onHyperResponse",
+					{
+						"response" : res,
+						"request"  : res.getRequest()
+					}
+				);
+			}
 
 			if (
 				variables.currentRequestCount <= variables.retries.len() &&
