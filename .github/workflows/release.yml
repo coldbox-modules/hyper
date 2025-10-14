@@ -89,23 +89,3 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: box semantic-release
-
-      - name: Generate API Docs
-        run: |
-          box install commandbox-docbox
-          box run-script generateAPIDocs
-
-      - name: Get Current Version
-        id: current_version
-        run: echo "version=`cat box.json | jq '.version' -r`" >> $GITHUB_OUTPUT
-
-      - name: Upload API Docs to S3
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl public-read
-        env:
-          AWS_S3_BUCKET: "apidocs.ortussolutions.com"
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_SECRET }}
-          SOURCE_DIR: ".tmp/apidocs"
-          DEST_DIR: "${{ github.repository }}/${{ steps.current_version.outputs.version }}"
