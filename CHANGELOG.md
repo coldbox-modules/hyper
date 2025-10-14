@@ -1,3 +1,12 @@
+# v8.0.2
+## 14 Oct 2025 — 15:21:52 UTC
+
+### chore
+
++ __CI:__ Remove unused API docs build
+ ([7620533](https://github.com/coldbox-modules/hyper/commit/762053359171726429767d7c78eae2c47631ded1))
+
+
 # v8.0.1
 ## 14 Oct 2025 — 02:33:56 UTC
 
