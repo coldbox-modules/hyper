@@ -1,0 +1,23 @@
+{
+    "name":"hyper-adobe@2021",
+    "app":{
+        "serverHomeDirectory":".engine/adobe2021",
+        "cfengine":"adobe@2021"
+    },
+    "web":{
+        "http":{
+            "port":"8500"
+        },
+        "rewrites":{
+            "enable":"true"
+        }
+    },
+    "jvm":{
+        "heapSize":"1024",
+        "javaVersion":"openjdk11_jre"
+    },
+    "openBrowser":"false",
+    "scripts":{
+        "onServerInstall":"cfpm install zip,debugger"
+    }
+}

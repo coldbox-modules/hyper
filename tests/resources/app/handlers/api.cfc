@@ -78,4 +78,14 @@ component {
 		);
 	}
 
+	function sleep( event, rc, prc ) {
+		param rc.delay = 0;
+		sleep( rc.delay * 1000 );
+		return event.renderData(
+			type       = "plain",
+			statusCode = 200,
+			data       = "Slept for #rc.delay# seconds."
+		);
+	}
+
 }

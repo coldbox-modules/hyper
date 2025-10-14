@@ -11,28 +11,65 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cfengine: ["lucee@5", "lucee@be", "adobe@2018", "adobe@2021", "adobe@be"]
-        coldbox: ["coldbox@6", "coldbox@7", "coldbox@be"]
-        javaVersion: ["openjdk8", "openjdk11"]
+        cfengine: ["lucee@5", "lucee@6", "adobe@2021", "adobe@2023", "boxlang-cfml@1"]
+        coldbox: ["^6.0.0", "^7.0.0", "^8.0.0"]
+        experimental: [ false ]
+        include:
+          - cfengine: "lucee@be"
+            coldbox: "^6.0.0"
+            experimental: true
+          - cfengine: "lucee@be"
+            coldbox: "^7.0.0"
+            experimental: true
+          - cfengine: "lucee@be"
+            coldbox: "^8.0.0"
+            experimental: true
+          - cfengine: "adobe@2025"
+            coldbox: "^7.0.0"
+            experimental: false
+          - cfengine: "adobe@2025"
+            coldbox: "^8.0.0"
+            experimental: false
+          - cfengine: "adobe@be"
+            coldbox: "^6.0.0"
+            experimental: true
+          - cfengine: "adobe@be"
+            coldbox: "^7.0.0"
+            experimental: true
+          - cfengine: "adobe@be"
+            coldbox: "^8.0.0"
+            experimental: true
+          - cfengine: "boxlang@be"
+            coldbox: "^8.0.0"
+            experimental: true
+          - cfengine: "boxlang@1"
+            coldbox: "^8.0.0"
+            experimental: false
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.2.0
 
       - name: Setup Java JDK
-        uses: actions/setup-java@v1.4.3
+        uses: actions/setup-java@v3.9.0
         with:
-          java-version: 11
+          distribution: 'zulu'
+          java-version: 21
 
       - name: Set Up CommandBox
-        uses: elpete/setup-commandbox@v1.0.0
+        uses: Ortus-Solutions/setup-commandbox@v2.0.1
+        with:
+          install: commandbox-boxlang,commandbox-cfconfig
 
       - name: Install dependencies
         run: |
           box install
-          box install ${{ matrix.coldbox }} --noSave
+          box install coldbox@${{ matrix.coldbox }} --noSave
 
       - name: Start server
-        run: box server start cfengine=${{ matrix.cfengine }} javaVersion=${{ matrix.javaVersion }} --noSaveSettings
+        run: |
+          box server start serverConfigFile="server-${{ matrix.cfengine }}.json" --noSaveSettings --debug
+          curl http://127.0.0.1:8500
 
       - name: Run TestBox Tests
+        continue-on-error: ${{ matrix.experimental }}
         run: box testbox run

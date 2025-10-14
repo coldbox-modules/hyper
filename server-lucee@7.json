@@ -1,0 +1,16 @@
+{
+    "name":"hyper-lucee@7",
+    "app":{
+        "serverHomeDirectory":".engine/lucee7",
+        "cfengine":"lucee@7"
+    },
+    "web":{
+        "http":{
+            "port":"8500"
+        },
+        "rewrites":{
+            "enable":"true"
+        }
+    },
+    "openBrowser":"false"
+}

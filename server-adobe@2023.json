@@ -1,0 +1,22 @@
+{
+    "name":"hyper-adobe@2023",
+    "app":{
+        "serverHomeDirectory":".engine/adobe2023",
+        "cfengine":"adobe@2023"
+    },
+    "web":{
+        "http":{
+            "port":"8500"
+        },
+        "rewrites":{
+            "enable":"true"
+        }
+    },
+    "jvm":{
+        "heapSize":"1024"
+    },
+    "openBrowser":"false",
+    "scripts":{
+        "onServerInstall":"cfpm install zip,debugger"
+    }
+}

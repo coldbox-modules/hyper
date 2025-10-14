@@ -1,0 +1,25 @@
+{
+    "name":"hyper-boxlang@1",
+    "app":{
+        "serverHomeDirectory":".engine/boxlang",
+        "cfengine":"boxlang@^1.0.0"
+    },
+    "web":{
+        "http":{
+            "port":"8500"
+        },
+        "rewrites":{
+            "enable":true
+        }
+    },
+    "JVM":{
+        "heapSize":"1024",
+        "javaVersion":"openjdk21_jre",
+        "args":"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8888"
+    },
+    "openBrowser":false,
+    "env":{},
+    "scripts":{
+        "onServerInitialInstall":"install bx-esapi"
+    }
+}

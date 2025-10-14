@@ -254,9 +254,10 @@ component implements="HyperHttpClientInterface" {
 			var queryParams = req.getQueryParams();
 			for ( var param in queryParams ) {
 				cfhttpparam(
-					type  = "url",
-					name  = param.name,
-					value = param.value
+					type    = "url",
+					name    = param.name,
+					value   = param.value,
+					encoded = true // this will be ignored by ACF, but used by Lucee and BoxLang (currently)
 				);
 			}
 

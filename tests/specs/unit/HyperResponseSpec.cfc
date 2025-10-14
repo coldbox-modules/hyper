@@ -228,7 +228,7 @@ component extends="testbox.system.BaseSpec" {
 					headers         = {
 						"Set-Cookie" : [
 							"foo=bar;path=/;secure;samesite=none;httponly",
-							"baz=qux;path=/;expires=Mon, 31 Dec 2038 23:59:59 GMT",
+							"baz=qux;path=/;expires=Fri, 31 Dec 2038 23:59:59 GMT",
 							"one=two;max-age=2592000;domain=example.com"
 						]
 					}
@@ -244,7 +244,7 @@ component extends="testbox.system.BaseSpec" {
 					"baz" : {
 						"value"   : "qux",
 						"path"    : "/",
-						"expires" : "Mon, 31 Dec 2038 23:59:59 GMT"
+						"expires" : "Fri, 31 Dec 2038 23:59:59 GMT"
 					},
 					"one" : {
 						"value"   : "two",
@@ -262,7 +262,7 @@ component extends="testbox.system.BaseSpec" {
 					headers         = {
 						"Set-Cookie" : [
 							"foo=bar;path=/;secure;samesite=none;httponly",
-							"baz=qux;path=/;expires=Mon, 31 Dec 2038 23:59:59 GMT",
+							"baz=qux;path=/;expires=Fri, 31 Dec 2038 23:59:59 GMT",
 							"one=two;max-age=2592000;domain=example.com"
 						]
 					}

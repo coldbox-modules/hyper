@@ -1,6 +1,6 @@
 {
     "name":"hyper",
-    "version":"7.5.2",
+    "version":"8.0.0",
     "author":"Eric Peterson <eric@elpete.com>",
     "location":"forgeboxStorage",
     "homepage":"https://github.com/coldbox-modules/hyper",
@@ -25,7 +25,7 @@
     },
     "devDependencies":{
         "testbox":"^6.0.0",
-        "coldbox":"^7.0.0"
+        "coldbox":"^8.0.0"
     },
     "installPaths":{
         "testbox":"testbox/",
@@ -36,7 +36,7 @@
         "format":"cfformat run ModuleConfig.cfc,models/**/*.cfc,tests/specs/**/*.cfc,tests/resources/app/handlers/**/*.cfc,tests/resources/app/config/**/*.cfc --overwrite",
         "format:check":"cfformat check ModuleConfig.cfc,models/**/*.cfc,tests/specs/**/*.cfc,tests/resources/app/handlers/**/*.cfc,tests/resources/app/config/**/*.cfc --verbose",
         "format:watch":"cfformat watch ModuleConfig.cfc,models/**/*.cfc,tests/specs/**/*.cfc,tests/resources/app/handlers/**/*.cfc,tests/resources/app/config/**/*.cfc",
-        "bx-modules:install": "install bx-compat-cfml@be,bx-esapi"
+        "bx-modules:install":"install bx-compat-cfml@be,bx-esapi"
     },
     "ignore":[
         "**/.*",

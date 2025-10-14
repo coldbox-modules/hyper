@@ -3,6 +3,7 @@
 /tests/resources/app/coldbox
 /node_modules
 /modules
+.engine
 jmimemagic.log
 
 .vscode

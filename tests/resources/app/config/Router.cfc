@@ -1,8 +1,12 @@
 component {
 
 	function configure() {
-		// Set Full Rewrites
-		setFullRewrites( false );
+		if ( listFirst( getController().getColdBoxSetting( "version" ), "." ) >= 8 ) {
+			setMultiDomainDiscovery( false );
+			setBaseUrl( composeRoutingUrl() & "index.cfm/" );
+		} else {
+			setFullRewrites( false );
+		}
 
 		// Conventions based routing
 		route( ":handler/:action?" ).end();

@@ -48,10 +48,10 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 			} );
 
 			it( "deserializes query string parameters in the url (to reserialize later)", function() {
-				var res = hyper
+				var req = hyper
 					.setBaseUrl( "https://jsonplaceholder.typicode.com" )
-					.setUrl( "/posts?param=with+spaces" )
-					.get();
+					.setUrl( "/posts?param=with+spaces" );
+				var res = req.get();
 				expect( res.getRequest().getFullUrl( withQueryString = true ) ).toBeWithCase(
 					"https://jsonplaceholder.typicode.com/posts?param=with+spaces"
 				);
