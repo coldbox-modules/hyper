@@ -1,3 +1,20 @@
+# v8.0.1
+## 14 Oct 2025 — 02:33:56 UTC
+
+### chore
+
++ __CI:__ Update to new CI matrix ([6abf196](https://github.com/coldbox-modules/hyper/commit/6abf196adac4488af93e10cade917bd18e0a9f45))
++ __CI:__ Specify Java version for BoxLang tests
+ ([790795b](https://github.com/coldbox-modules/hyper/commit/790795b1368387d7f82d41c4046b7a282bd6178f))
++ __tests:__ Fix tests that relied on swapi
+ ([6b4ce90](https://github.com/coldbox-modules/hyper/commit/6b4ce90d3efb028df443ce670e6184b0a1ac4012))
+
+### fix
+
++ __Interceptors:__ Ensure backwards compatibility with ColdBox <6
+ ([71444b2](https://github.com/coldbox-modules/hyper/commit/71444b2b0695f2f70a830a6a5963d93566ede663))
+
+
 # v7.5.2
 ## 04 Jun 2024 — 15:52:34 UTC
 
