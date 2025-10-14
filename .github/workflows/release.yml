@@ -14,10 +14,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cfengine: ["lucee@5", "lucee@6", "adobe@2021", "adobe@2023", "adobe@2025", "boxlang-cfml@1"]
+        cfengine: ["lucee@5", "lucee@6", "adobe@2021", "adobe@2023", "boxlang-cfml@1"]
         coldbox: ["^6.0.0", "^7.0.0", "^8.0.0"]
         experimental: [ false ]
         include:
+          - cfengine: "adobe@2025"
+            coldbox: "^7.0.0"
+            experimental: false
+          - cfengine: "adobe@2025"
+            coldbox: "^8.0.0"
+            experimental: false
           - cfengine: "boxlang@1"
             coldbox: "^8.0.0"
             experimental: false
