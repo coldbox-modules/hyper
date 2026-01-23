@@ -1100,7 +1100,7 @@ component accessors="true" {
 		if ( variables.useAnnounceMethodForInterceptorService ) {
 			variables.interceptorService.announce( "onHyperRequest", { "request" : this } );
 		} else {
-			variables.interceptorService.processState( "onHyperRequest", { "request" : this } );
+			variables.interceptorService.announce( "onHyperRequest", { "request" : this } );
 		}
 
 		try {
@@ -1120,7 +1120,7 @@ component accessors="true" {
 					}
 				);
 			} else {
-				variables.interceptorService.processState(
+				variables.interceptorService.announce(
 					"onHyperResponse",
 					{
 						"response" : res,
