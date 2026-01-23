@@ -1110,7 +1110,10 @@ component accessors="true" {
 				callback( res );
 			}
 
-			param variables.useAnnounceMethodForInterceptorService = structKeyExists( variables.interceptorService, "announce" );
+			param variables.useAnnounceMethodForInterceptorService = structKeyExists(
+				variables.interceptorService,
+				"announce"
+			);
 			if ( variables.useAnnounceMethodForInterceptorService ) {
 				variables.interceptorService.announce(
 					"onHyperResponse",
