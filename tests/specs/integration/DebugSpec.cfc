@@ -79,6 +79,30 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 				expect( headers[ 4 ] ).toHaveKey( "value" );
 				expect( headers[ 4 ].value ).toBe( "HyperCFML/#req.getHyperVersion()#" );
 			} );
+
+			it( "includes proxy settings in debug output", function() {
+				var req = hyper
+					.setUrl( "https://example.com" )
+					.throughProxy(
+						proxyHost     = "proxy.example.com",
+						proxyUser     = "proxyuser",
+						proxyPassword = "proxypass",
+						proxyPort     = 8080
+					);
+
+				var debugReq = req.debug();
+
+				expect( debugReq ).toBeStruct();
+				expect( debugReq ).toHaveKey( "attributes" );
+				expect( debugReq.attributes ).toHaveKey( "proxyServer" );
+				expect( debugReq.attributes.proxyServer ).toBe( "proxy.example.com" );
+				expect( debugReq.attributes ).toHaveKey( "proxyPort" );
+				expect( debugReq.attributes.proxyPort ).toBe( 8080 );
+				expect( debugReq.attributes ).toHaveKey( "proxyUser" );
+				expect( debugReq.attributes.proxyUser ).toBe( "proxyuser" );
+				expect( debugReq.attributes ).toHaveKey( "proxyPassword" );
+				expect( debugReq.attributes.proxyPassword ).toBe( "proxypass" );
+			} );
 		} );
 	}
 

@@ -14,28 +14,34 @@ component extends="testbox.system.BaseSpec" {
 
 			it( "can serialize to a memento", function() {
 				expect( variables.req.getMemento() ).toBe( {
-					"requestID"           : variables.req.getRequestID(),
-					"baseUrl"             : variables.req.getBaseUrl(),
-					"url"                 : variables.req.getUrl(),
-					"fullUrl"             : variables.req.getFullUrl(),
-					"method"              : variables.req.getMethod(),
-					"queryParams"         : variables.req.getQueryParams(),
-					"headers"             : variables.req.getHeaders(),
-					"cookies"             : variables.req.getCookies(),
-					"files"               : variables.req.getFiles(),
-					"bodyFormat"          : variables.req.getBodyFormat(),
-					"body"                : variables.req.getBody(),
-					"referrerId"          : "",
-					"throwOnError"        : variables.req.getThrowOnError(),
-					"timeout"             : variables.req.getTimeout(),
-					"maximumRedirects"    : variables.req.getMaximumRedirects(),
-					"authType"            : variables.req.getAuthType(),
-					"username"            : variables.req.getUsername(),
-					"password"            : variables.req.getPassword(),
-					"clientCert"          : "",
-					"clientCertPassword"  : "",
-					"domain"              : variables.req.getDomain(),
-					"workstation"         : variables.req.getWorkstation(),
+					"requestID"          : variables.req.getRequestID(),
+					"baseUrl"            : variables.req.getBaseUrl(),
+					"url"                : variables.req.getUrl(),
+					"fullUrl"            : variables.req.getFullUrl(),
+					"method"             : variables.req.getMethod(),
+					"queryParams"        : variables.req.getQueryParams(),
+					"headers"            : variables.req.getHeaders(),
+					"cookies"            : variables.req.getCookies(),
+					"files"              : variables.req.getFiles(),
+					"bodyFormat"         : variables.req.getBodyFormat(),
+					"body"               : variables.req.getBody(),
+					"referrerId"         : "",
+					"throwOnError"       : variables.req.getThrowOnError(),
+					"timeout"            : variables.req.getTimeout(),
+					"maximumRedirects"   : variables.req.getMaximumRedirects(),
+					"authType"           : variables.req.getAuthType(),
+					"username"           : variables.req.getUsername(),
+					"password"           : variables.req.getPassword(),
+					"clientCert"         : "",
+					"clientCertPassword" : "",
+					"domain"             : variables.req.getDomain(),
+					"workstation"        : variables.req.getWorkstation(),
+					"proxy"              : {
+						"proxyServer"   : variables.req.getProxyServer(),
+						"proxyPort"     : variables.req.getProxyPort(),
+						"proxyUser"     : variables.req.getProxyUser(),
+						"proxyPassword" : variables.req.getProxyPassword()
+					},
 					"resolveUrls"         : variables.req.getResolveUrls(),
 					"encodeUrl"           : variables.req.getEncodeUrl(),
 					"retries"             : variables.req.getRetries(),
@@ -164,6 +170,83 @@ component extends="testbox.system.BaseSpec" {
 				req.withCertificateAuth( "/some/absolute/path", "mypassword" );
 				expect( req.getClientCert() ).toBe( "/some/absolute/path" );
 				expect( req.getClientCertPassword() ).toBe( "mypassword" );
+			} );
+
+			it( "can set proxy settings via throughProxy method", function() {
+				expect( req.getProxyServer() ).toBe( "" );
+				expect( req.getProxyPort() ).toBe( 80 );
+				expect( req.getProxyUser() ).toBe( "" );
+				expect( req.getProxyPassword() ).toBe( "" );
+				req.throughProxy(
+					proxyHost     = "proxy.example.com",
+					proxyUser     = "proxyuser",
+					proxyPassword = "proxypass",
+					proxyPort     = 8080
+				);
+				expect( req.getProxyServer() ).toBe( "proxy.example.com" );
+				expect( req.getProxyPort() ).toBe( 8080 );
+				expect( req.getProxyUser() ).toBe( "proxyuser" );
+				expect( req.getProxyPassword() ).toBe( "proxypass" );
+			} );
+
+			it( "can set proxy settings with default port", function() {
+				expect( req.getProxyPort() ).toBe( 80 );
+				req.throughProxy(
+					proxyHost     = "proxy.example.com",
+					proxyUser     = "proxyuser",
+					proxyPassword = "proxypass"
+				);
+				expect( req.getProxyServer() ).toBe( "proxy.example.com" );
+				expect( req.getProxyPort() ).toBe( 80 );
+				expect( req.getProxyUser() ).toBe( "proxyuser" );
+				expect( req.getProxyPassword() ).toBe( "proxypass" );
+			} );
+
+			it( "can set proxy settings without authentication", function() {
+				req.throughProxy( proxyHost = "proxy.example.com" );
+				expect( req.getProxyServer() ).toBe( "proxy.example.com" );
+				expect( req.getProxyPort() ).toBe( 80 );
+				expect( req.getProxyUser() ).toBe( "" );
+				expect( req.getProxyPassword() ).toBe( "" );
+			} );
+
+			it( "can set proxy settings with custom port but no authentication", function() {
+				req.throughProxy( proxyHost = "proxy.example.com", proxyPort = 8080 );
+				expect( req.getProxyServer() ).toBe( "proxy.example.com" );
+				expect( req.getProxyPort() ).toBe( 8080 );
+				expect( req.getProxyUser() ).toBe( "" );
+				expect( req.getProxyPassword() ).toBe( "" );
+			} );
+
+			it( "includes proxy settings in memento", function() {
+				req.throughProxy(
+					proxyHost     = "proxy.example.com",
+					proxyUser     = "proxyuser",
+					proxyPassword = "proxypass",
+					proxyPort     = 8080
+				);
+				var memento = req.getMemento();
+				expect( memento ).toHaveKey( "proxy" );
+				expect( memento.proxy ).toBe( {
+					"proxyServer"   : "proxy.example.com",
+					"proxyPort"     : 8080,
+					"proxyUser"     : "proxyuser",
+					"proxyPassword" : "proxypass"
+				} );
+			} );
+
+			it( "clones proxy settings to new request", function() {
+				req.throughProxy(
+					proxyHost     = "proxy.example.com",
+					proxyUser     = "proxyuser",
+					proxyPassword = "proxypass",
+					proxyPort     = 8080
+				);
+				var clonedReq = req.clone();
+				expect( clonedReq.getProxyServer() ).toBe( "proxy.example.com" );
+				expect( clonedReq.getProxyPort() ).toBe( 8080 );
+				expect( clonedReq.getProxyUser() ).toBe( "proxyuser" );
+				expect( clonedReq.getProxyPassword() ).toBe( "proxypass" );
 			} );
 
 			it( "can define onRequest callback hooks", function() {

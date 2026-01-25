@@ -187,6 +187,26 @@ component accessors="true" {
 	property name="preventStrayRequests" type="boolean";
 
 	/**
+	 * The proxy server for the request.
+	 */
+	property name="proxyServer" default="";
+
+	/**
+	 * The proxy port for the request.
+	 */
+	property name="proxyPort" default="80";
+
+	/**
+	 * The proxy user for the request.
+	 */
+	property name="proxyUser" default="";
+
+	/**
+	 * The proxy password for the request.
+	 */
+	property name="proxyPassword" default="";
+
+	/**
 	 * A reference to the HyperBuilder that created this request, if any.
 	 */
 	property name="builder" type="HyperBuilder";
@@ -841,6 +861,29 @@ component accessors="true" {
 	}
 
 	/**
+	 * Sets the proxy settings for the request.
+	 *
+	 * @proxyHost     The proxy server host or IP address.
+	 * @proxyPort     The proxy server port. Defaults to 80.
+	 * @proxyUser     The username for proxy authentication. Defaults to empty string.
+	 * @proxyPassword The password for proxy authentication. Defaults to empty string.
+	 *
+	 * @returns       The HyperRequest instance.
+	 */
+	function throughProxy(
+		required string proxyHost,
+		numeric proxyPort    = 80,
+		string proxyUser     = "",
+		string proxyPassword = ""
+	) {
+		setProxyServer( arguments.proxyHost );
+		setProxyPort( arguments.proxyPort );
+		setProxyUser( arguments.proxyUser );
+		setProxyPassword( arguments.proxyPassword );
+		return this;
+	}
+
+	/**
 	 * Schedules a callback to be ran when executing the request.
 	 *
 	 * @callback The callback to run when executing the request.
@@ -1110,7 +1153,10 @@ component accessors="true" {
 				callback( res );
 			}
 
-			param variables.useAnnounceMethodForInterceptorService = structKeyExists( variables.interceptorService, "announce" );
+			param variables.useAnnounceMethodForInterceptorService = structKeyExists(
+				variables.interceptorService,
+				"announce"
+			);
 			if ( variables.useAnnounceMethodForInterceptorService ) {
 				variables.interceptorService.announce(
 					"onHyperResponse",
@@ -1311,6 +1357,10 @@ component accessors="true" {
 		req.setDomain( variables.domain );
 		req.setWorkstation( variables.workstation );
 		req.setAuthType( variables.authType );
+		req.setProxyServer( variables.proxyServer );
+		req.setProxyPort( variables.proxyPort );
+		req.setProxyUser( variables.proxyUser );
+		req.setProxyPassword( variables.proxyPassword );
 		req.setRequestCallbacks( duplicate( variables.requestCallbacks ) );
 		req.setResponseCallbacks( duplicate( variables.responseCallbacks ) );
 		req.setRetries( duplicate( getRetries() ) );
@@ -1429,28 +1479,34 @@ component accessors="true" {
 	public struct function getMemento( array excludes = [] ) {
 		return structFilter(
 			{
-				"requestID"           : getRequestID(),
-				"baseUrl"             : getBaseUrl(),
-				"url"                 : getUrl(),
-				"fullUrl"             : getFullUrl(),
-				"method"              : getMethod(),
-				"queryParams"         : getQueryParams(),
-				"headers"             : getHeaders(),
-				"cookies"             : getCookies(),
-				"files"               : getFiles(),
-				"bodyFormat"          : getBodyFormat(),
-				"body"                : getBody(),
-				"referrerId"          : isNull( variables.referrer ) ? "" : variables.referrer.getResponseID(),
-				"throwOnError"        : getThrowOnError(),
-				"timeout"             : getTimeout(),
-				"maximumRedirects"    : getMaximumRedirects(),
-				"authType"            : getAuthType(),
-				"username"            : getUsername(),
-				"password"            : getPassword(),
-				"clientCert"          : isNull( variables.clientCert ) ? "" : variables.clientCert,
-				"clientCertPassword"  : isNull( variables.clientCertPassword ) ? "" : variables.clientCertPassword,
-				"domain"              : getDomain(),
-				"workstation"         : getWorkstation(),
+				"requestID"          : getRequestID(),
+				"baseUrl"            : getBaseUrl(),
+				"url"                : getUrl(),
+				"fullUrl"            : getFullUrl(),
+				"method"             : getMethod(),
+				"queryParams"        : getQueryParams(),
+				"headers"            : getHeaders(),
+				"cookies"            : getCookies(),
+				"files"              : getFiles(),
+				"bodyFormat"         : getBodyFormat(),
+				"body"               : getBody(),
+				"referrerId"         : isNull( variables.referrer ) ? "" : variables.referrer.getResponseID(),
+				"throwOnError"       : getThrowOnError(),
+				"timeout"            : getTimeout(),
+				"maximumRedirects"   : getMaximumRedirects(),
+				"authType"           : getAuthType(),
+				"username"           : getUsername(),
+				"password"           : getPassword(),
+				"clientCert"         : isNull( variables.clientCert ) ? "" : variables.clientCert,
+				"clientCertPassword" : isNull( variables.clientCertPassword ) ? "" : variables.clientCertPassword,
+				"domain"             : getDomain(),
+				"workstation"        : getWorkstation(),
+				"proxy"              : {
+					"proxyServer"   : getProxyServer(),
+					"proxyPort"     : getProxyPort(),
+					"proxyUser"     : getProxyUser(),
+					"proxyPassword" : getProxyPassword()
+				},
 				"resolveUrls"         : getResolveUrls(),
 				"encodeUrl"           : getEncodeUrl(),
 				"retries"             : getRetries(),
