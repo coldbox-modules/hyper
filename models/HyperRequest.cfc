@@ -187,6 +187,26 @@ component accessors="true" {
 	property name="preventStrayRequests" type="boolean";
 
 	/**
+	 * The proxy server for the request.
+	 */
+	property name="proxyServer" default="";
+
+	/**
+	 * The proxy port for the request.
+	 */
+	property name="proxyPort" default="80";
+
+	/**
+	 * The proxy user for the request.
+	 */
+	property name="proxyUser" default="";
+
+	/**
+	 * The proxy password for the request.
+	 */
+	property name="proxyPassword" default="";
+
+	/**
 	 * A reference to the HyperBuilder that created this request, if any.
 	 */
 	property name="builder" type="HyperBuilder";
@@ -841,6 +861,29 @@ component accessors="true" {
 	}
 
 	/**
+	 * Sets the proxy settings for the request.
+	 *
+	 * @proxyHost     The proxy server host or IP address.
+	 * @proxyUser     The username for proxy authentication.
+	 * @proxyPassword The password for proxy authentication.
+	 * @proxyPort     The proxy server port. Defaults to 80.
+	 *
+	 * @returns       The HyperRequest instance.
+	 */
+	function throughProxy(
+		required string proxyHost,
+		required string proxyUser,
+		required string proxyPassword,
+		numeric proxyPort = 80
+	) {
+		setProxyServer( arguments.proxyHost );
+		setProxyUser( arguments.proxyUser );
+		setProxyPassword( arguments.proxyPassword );
+		setProxyPort( arguments.proxyPort );
+		return this;
+	}
+
+	/**
 	 * Schedules a callback to be ran when executing the request.
 	 *
 	 * @callback The callback to run when executing the request.
@@ -1314,6 +1357,10 @@ component accessors="true" {
 		req.setDomain( variables.domain );
 		req.setWorkstation( variables.workstation );
 		req.setAuthType( variables.authType );
+		req.setProxyServer( variables.proxyServer );
+		req.setProxyPort( variables.proxyPort );
+		req.setProxyUser( variables.proxyUser );
+		req.setProxyPassword( variables.proxyPassword );
 		req.setRequestCallbacks( duplicate( variables.requestCallbacks ) );
 		req.setResponseCallbacks( duplicate( variables.responseCallbacks ) );
 		req.setRetries( duplicate( getRetries() ) );
@@ -1454,6 +1501,12 @@ component accessors="true" {
 				"clientCertPassword"  : isNull( variables.clientCertPassword ) ? "" : variables.clientCertPassword,
 				"domain"              : getDomain(),
 				"workstation"         : getWorkstation(),
+				"proxy"               : {
+					"proxyServer"   : getProxyServer(),
+					"proxyPort"     : getProxyPort(),
+					"proxyUser"     : getProxyUser(),
+					"proxyPassword" : getProxyPassword()
+				},
 				"resolveUrls"         : getResolveUrls(),
 				"encodeUrl"           : getEncodeUrl(),
 				"retries"             : getRetries(),
