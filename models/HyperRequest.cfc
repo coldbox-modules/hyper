@@ -864,22 +864,22 @@ component accessors="true" {
 	 * Sets the proxy settings for the request.
 	 *
 	 * @proxyHost     The proxy server host or IP address.
+	 * @proxyPort     The proxy server port. Defaults to 80.
 	 * @proxyUser     The username for proxy authentication.
 	 * @proxyPassword The password for proxy authentication.
-	 * @proxyPort     The proxy server port. Defaults to 80.
 	 *
 	 * @returns       The HyperRequest instance.
 	 */
 	function throughProxy(
 		required string proxyHost,
-		required string proxyUser,
-		required string proxyPassword,
-		numeric proxyPort = 80
+		numeric proxyPort = 80,
+		string proxyUser = "",
+		string proxyPassword = ""
 	) {
 		setProxyServer( arguments.proxyHost );
+		setProxyPort( arguments.proxyPort );
 		setProxyUser( arguments.proxyUser );
 		setProxyPassword( arguments.proxyPassword );
-		setProxyPort( arguments.proxyPort );
 		return this;
 	}
 

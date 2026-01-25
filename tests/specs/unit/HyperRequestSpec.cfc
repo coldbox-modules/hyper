@@ -202,6 +202,25 @@ component extends="testbox.system.BaseSpec" {
 				expect( req.getProxyPassword() ).toBe( "proxypass" );
 			} );
 
+			it( "can set proxy settings without authentication", function() {
+				req.throughProxy( proxyHost = "proxy.example.com" );
+				expect( req.getProxyServer() ).toBe( "proxy.example.com" );
+				expect( req.getProxyPort() ).toBe( 80 );
+				expect( req.getProxyUser() ).toBe( "" );
+				expect( req.getProxyPassword() ).toBe( "" );
+			} );
+
+			it( "can set proxy settings with custom port but no authentication", function() {
+				req.throughProxy(
+					proxyHost = "proxy.example.com",
+					proxyPort = 8080
+				);
+				expect( req.getProxyServer() ).toBe( "proxy.example.com" );
+				expect( req.getProxyPort() ).toBe( 8080 );
+				expect( req.getProxyUser() ).toBe( "" );
+				expect( req.getProxyPassword() ).toBe( "" );
+			} );
+
 			it( "includes proxy settings in memento", function() {
 				req.throughProxy(
 					proxyHost     = "proxy.example.com",
