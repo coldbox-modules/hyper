@@ -92,7 +92,7 @@ component implements="HyperHttpClientInterface" {
 		if ( len( req.getProxyServer() ) ) {
 			attrCollection[ "proxyServer" ] = req.getProxyServer();
 			attrCollection[ "proxyPort" ] = req.getProxyPort();
-			
+
 			if ( len( req.getProxyUser() ) ) {
 				attrCollection[ "proxyUser" ] = req.getProxyUser();
 			}
@@ -251,7 +251,7 @@ component implements="HyperHttpClientInterface" {
 		if ( len( req.getProxyServer() ) ) {
 			attrCollection[ "proxyServer" ] = req.getProxyServer();
 			attrCollection[ "proxyPort" ] = req.getProxyPort();
-			
+
 			if ( len( req.getProxyUser() ) ) {
 				attrCollection[ "proxyUser" ] = req.getProxyUser();
 			}
