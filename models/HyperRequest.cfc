@@ -872,8 +872,8 @@ component accessors="true" {
 	 */
 	function throughProxy(
 		required string proxyHost,
-		numeric proxyPort = 80,
-		string proxyUser = "",
+		numeric proxyPort    = 80,
+		string proxyUser     = "",
 		string proxyPassword = ""
 	) {
 		setProxyServer( arguments.proxyHost );

@@ -211,10 +211,7 @@ component extends="testbox.system.BaseSpec" {
 			} );
 
 			it( "can set proxy settings with custom port but no authentication", function() {
-				req.throughProxy(
-					proxyHost = "proxy.example.com",
-					proxyPort = 8080
-				);
+				req.throughProxy( proxyHost = "proxy.example.com", proxyPort = 8080 );
 				expect( req.getProxyServer() ).toBe( "proxy.example.com" );
 				expect( req.getProxyPort() ).toBe( 8080 );
 				expect( req.getProxyUser() ).toBe( "" );
