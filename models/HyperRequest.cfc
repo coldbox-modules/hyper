@@ -865,8 +865,8 @@ component accessors="true" {
 	 *
 	 * @proxyHost     The proxy server host or IP address.
 	 * @proxyPort     The proxy server port. Defaults to 80.
-	 * @proxyUser     The username for proxy authentication.
-	 * @proxyPassword The password for proxy authentication.
+	 * @proxyUser     The username for proxy authentication. Defaults to empty string.
+	 * @proxyPassword The password for proxy authentication. Defaults to empty string.
 	 *
 	 * @returns       The HyperRequest instance.
 	 */
