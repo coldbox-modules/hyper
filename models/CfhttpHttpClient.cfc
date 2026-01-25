@@ -91,18 +91,15 @@ component implements="HyperHttpClientInterface" {
 
 		if ( len( req.getProxyServer() ) ) {
 			attrCollection[ "proxyServer" ] = req.getProxyServer();
-		}
-
-		if ( len( req.getProxyPort() ) ) {
 			attrCollection[ "proxyPort" ] = req.getProxyPort();
-		}
+			
+			if ( len( req.getProxyUser() ) ) {
+				attrCollection[ "proxyUser" ] = req.getProxyUser();
+			}
 
-		if ( len( req.getProxyUser() ) ) {
-			attrCollection[ "proxyUser" ] = req.getProxyUser();
-		}
-
-		if ( len( req.getProxyPassword() ) ) {
-			attrCollection[ "proxyPassword" ] = req.getProxyPassword();
+			if ( len( req.getProxyPassword() ) ) {
+				attrCollection[ "proxyPassword" ] = req.getProxyPassword();
+			}
 		}
 
 		var cfhttpHeaders = [];
@@ -253,18 +250,15 @@ component implements="HyperHttpClientInterface" {
 
 		if ( len( req.getProxyServer() ) ) {
 			attrCollection[ "proxyServer" ] = req.getProxyServer();
-		}
-
-		if ( len( req.getProxyPort() ) ) {
 			attrCollection[ "proxyPort" ] = req.getProxyPort();
-		}
+			
+			if ( len( req.getProxyUser() ) ) {
+				attrCollection[ "proxyUser" ] = req.getProxyUser();
+			}
 
-		if ( len( req.getProxyUser() ) ) {
-			attrCollection[ "proxyUser" ] = req.getProxyUser();
-		}
-
-		if ( len( req.getProxyPassword() ) ) {
-			attrCollection[ "proxyPassword" ] = req.getProxyPassword();
+			if ( len( req.getProxyPassword() ) ) {
+				attrCollection[ "proxyPassword" ] = req.getProxyPassword();
+			}
 		}
 
 		cfhttp( attributeCollection = attrCollection ) {
