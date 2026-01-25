@@ -1,3 +1,16 @@
+# v8.1.0
+## 25 Jan 2026 — 19:19:44 UTC
+
+### chore
+
++ __CI:__ Remove coldbox@^6 from CI tests
+ ([c3127b6](https://github.com/coldbox-modules/hyper/commit/c3127b634e08e36526ea63a9bac01f83e3ff5548))
+
+### feat
+
++ __HyperRequest:__ Add proxy support via `throughProxy()` ([31f3679](https://github.com/coldbox-modules/hyper/commit/31f36793af7841d5b15e9049a19011c02219cecf))
+
+
 # v8.0.2
 ## 14 Oct 2025 — 15:21:52 UTC
 
