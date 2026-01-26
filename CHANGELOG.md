@@ -1,3 +1,16 @@
+# v8.2.0
+## 26 Jan 2026 — 11:42:00 UTC
+
+### feat
+
++ __HyperRequest:__ Add request as the second argument of a response callback ([01cd487](https://github.com/coldbox-modules/hyper/commit/01cd487b324ab6cf4927ed93646364f5c5ae687e))
+
+### other
+
++ __\*:__ chore: Make clear that Hyper works with BoxLang
+ ([c37535f](https://github.com/coldbox-modules/hyper/commit/c37535f16ff8f5cf29d1eac093aa41b207466fd8))
+
+
 # v8.1.0
 ## 25 Jan 2026 — 19:19:44 UTC
 
