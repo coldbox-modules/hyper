@@ -1150,7 +1150,7 @@ component accessors="true" {
 			var res = shouldFake() ? generateFakeRequest() : variables.httpClient.send( this );
 
 			for ( var callback in variables.responseCallbacks ) {
-				callback( res );
+				callback( res, res.getRequest() );
 			}
 
 			param variables.useAnnounceMethodForInterceptorService = structKeyExists(
