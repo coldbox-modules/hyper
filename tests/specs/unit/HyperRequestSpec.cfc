@@ -268,7 +268,7 @@ component extends="testbox.system.BaseSpec" {
 				expect( headers ).toBe( {
 					"Accept"       : "application/xml",
 					"Content-Type" : "application/json",
-					"User-Agent"   : "HyperCFML/#req.getHyperVersion()#"
+					"User-Agent"   : "#isBoxLang() ? "HyperBoxLang" : "HyperCFML"#/#req.getHyperVersion()#"
 				} );
 			} );
 
@@ -329,7 +329,7 @@ component extends="testbox.system.BaseSpec" {
 			} );
 
 			it( "defaults to the Hyper User-Agent", () => {
-				expect( req.getHeader( "User-Agent" ) ).toBe( "HyperCFML/#req.getHyperVersion()#" );
+				expect( req.getHeader( "User-Agent" ) ).toBe( "#isBoxLang() ? "HyperBoxLang" : "HyperCFML"#/#req.getHyperVersion()#" );
 			} );
 		} );
 	}

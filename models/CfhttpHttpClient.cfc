@@ -106,7 +106,7 @@ component implements="HyperHttpClientInterface" {
 		var headers       = req.getHeaders();
 		for ( var name in headers ) {
 			// we want to skip adding a Content-Type header when there are files
-			// so that the CFML engines can add the correct boundary to the Content-Type
+			// so that BoxLang and CFML engines can add the correct boundary to the Content-Type
 			if ( name == "Content-Type" && !req.getFiles().isEmpty() ) {
 				continue;
 			}
@@ -265,7 +265,7 @@ component implements="HyperHttpClientInterface" {
 			var headers = req.getHeaders();
 			for ( var name in headers ) {
 				// we want to skip adding a Content-Type header when there are files
-				// so that the CFML engines can add the correct boundary to the Content-Type
+				// so that BoxLang and CFML engines can add the correct boundary to the Content-Type
 				if ( name == "Content-Type" && !req.getFiles().isEmpty() ) {
 					continue;
 				}

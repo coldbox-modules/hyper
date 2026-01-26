@@ -77,7 +77,7 @@ component extends="tests.resources.ModuleIntegrationSpec" appMapping="/app" {
 				expect( headers[ 4 ] ).toHaveKey( "name" );
 				expect( headers[ 4 ].name ).toBe( "User-Agent" );
 				expect( headers[ 4 ] ).toHaveKey( "value" );
-				expect( headers[ 4 ].value ).toBe( "HyperCFML/#req.getHyperVersion()#" );
+				expect( headers[ 4 ].value ).toBe( "#isBoxLang() ? "HyperBoxLang" : "HyperCFML"#/#req.getHyperVersion()#" );
 			} );
 
 			it( "includes proxy settings in debug output", function() {

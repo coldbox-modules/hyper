@@ -4,7 +4,7 @@
     <img src="https://cfmlbadges.monkehworks.com/images/badges/tested-with-testbox.svg" alt="Tested With TestBox" />
 </p>
 
-## A CFML HTTP Builder
+## A BoxLang and CFML HTTP Builder
 
 ### Inspiration
 

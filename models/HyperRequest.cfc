@@ -232,7 +232,7 @@ component accessors="true" {
 			return res.isError();
 		};
 
-		setUserAgent( "HyperCFML/#getHyperVersion()#" );
+		setUserAgent( "#isBoxLang() ? "HyperBoxLang" : "HyperCFML"#/#getHyperVersion()#" );
 
 		// This is overwritten by the HyperBuilder if WireBox exists.
 		variables.interceptorService = {
@@ -705,7 +705,7 @@ component accessors="true" {
 
 	/**
 	 * Adds specified headers to the request if they exist.
-	 * Usually used in conjunction with the current CFML request headers.
+	 * Usually used in conjunction with the current request headers.
 	 *
 	 * @names   An array of header names to add to the request, if they exist in the `headers` struct.
 	 * @headers A struct of headers to inspect. Default: `getHTTPRequestData( false ).headers`
@@ -1643,6 +1643,10 @@ component accessors="true" {
 			application.hyperVersion = deserializeJSON( fileRead( expandPath( "/hyper/box.json" ) ) ).version;
 		}
 		return application.hyperVersion;
+	}
+
+	private boolean function isBoxLang() {
+		return isDefined( "server" ) && structKeyExists( server, "boxlang" );
 	}
 
 }
