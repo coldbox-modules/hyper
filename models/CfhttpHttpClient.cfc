@@ -60,11 +60,8 @@ component implements="HyperHttpClientInterface" {
 			attrCollection[ "encodeurl" ] = false;
 		}
 
-		if ( len( req.getUsername() ) ) {
+		if ( len( req.getUsername() ) || len( req.getPassword() ) ) {
 			attrCollection[ "username" ] = req.getUsername();
-		}
-
-		if ( len( req.getPassword() ) ) {
 			attrCollection[ "password" ] = req.getPassword();
 		}
 
