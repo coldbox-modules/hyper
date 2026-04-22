@@ -1,3 +1,14 @@
+# v8.2.1
+## 22 Apr 2026 — 03:53:55 UTC
+
+### fix
+
++ __Adobe:__ Ignore port when persisting default cookie domain for Adobe 2025+
+ ([65d7d59](https://github.com/coldbox-modules/hyper/commit/65d7d5951f223a4144b066ef9c86e20d850e0572))
++ __CfhttpHttpClient:__ If either username or password is set, send both
+ ([d4f4624](https://github.com/coldbox-modules/hyper/commit/d4f4624f76ec4d951c1f7dcdd454096cfbf54123))
+
+
 # v8.2.0
 ## 26 Jan 2026 — 11:42:00 UTC
 
