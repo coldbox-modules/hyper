@@ -267,7 +267,7 @@ component accessors="true" {
 			cookieStruct[ "name" ]         = name;
 			cookieStruct[ "preservecase" ] = true;
 			if ( !cookieStruct.keyExists( "domain" ) ) {
-				cookieStruct[ "domain" ] = CGI.HTTP_HOST;
+				cookieStruct[ "domain" ] = listFirst( CGI.HTTP_HOST, ":" );
 			}
 			cfcookie( attributeCollection = cookieStruct );
 		} );
