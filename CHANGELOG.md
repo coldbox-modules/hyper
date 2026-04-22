@@ -1,3 +1,12 @@
+# v8.2.2
+## 22 Apr 2026 — 04:21:44 UTC
+
+### fix
+
++ __CfhttpHttpClient:__ Fix the HTTP call, not just the debug output
+ ([d430d10](https://github.com/coldbox-modules/hyper/commit/d430d10655ee911d538e319ae501557ba036efe0))
+
+
 # v8.2.1
 ## 22 Apr 2026 — 03:53:55 UTC
 
